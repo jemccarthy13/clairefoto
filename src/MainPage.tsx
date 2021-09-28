@@ -5,7 +5,7 @@ export default class Home extends React.PureComponent {
     return (
       <div className="app">
         <div className="body-content" style={{ width: "100%" }}>
-          Hello world
+          <header>Hello World</header>
         </div>
       </div>
     );
