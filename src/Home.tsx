@@ -8,7 +8,7 @@ import MainPage from "./MainPage";
 export default class Home extends React.PureComponent {
   render(): React.ReactElement {
     return (
-      <div className="app">
+      <div className="app" style={{ background: "white" }}>
         <div className="body-content">
           <HashRouter>
             <Suspense fallback={<div>Loading...</div>}>

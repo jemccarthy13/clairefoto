@@ -26,6 +26,36 @@ export default class Home extends React.Component<
 
   theme = createTheme({
     components: {
+      MuiTextField: {
+        styleOverrides: {
+          root: {
+            padding: "10px",
+          },
+        },
+      },
+      MuiInputLabel: {
+        styleOverrides: {
+          root: {
+            padding: "10px",
+          },
+        },
+      },
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            backgroundColor: "#eee",
+            //color: "#444",
+            cursor: "pointer",
+            padding: "10px",
+            border: "none",
+            textAlign: "left",
+            outline: "none",
+            fontSize: "15px",
+            width: "95%",
+            borderRadius: "10px",
+          },
+        },
+      },
       MuiLink: {
         styleOverrides: {
           root: {

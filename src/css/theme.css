@@ -50,6 +50,11 @@ h2 {
   margin-top:10px;
 }
 
+.icon {
+  padding-left:5px;
+  padding-right:5px;
+}
+
 h3 {
   font-family: "Nunito", sans-serif;
   font-size:large;
