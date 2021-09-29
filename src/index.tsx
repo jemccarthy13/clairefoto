@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
-import "./css/index.css";
+import "./css/theme.css";
 // import reportWebVitals from "./reportWebVitals";
 
 import Home from "./Home";
@@ -8,6 +8,7 @@ import GlobalSnackbarProvider from "./alert/globalalertprovider";
 import CookieConsent, { Cookies } from "react-cookie-consent";
 
 require("typeface-playfair-display");
+require("typeface-nunito");
 
 export default ReactDOM.render(
   <React.StrictMode>

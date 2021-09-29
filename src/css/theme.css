@@ -1,14 +1,63 @@
-body, html{
+body, html {
   height: 100%;
-  background: #222222;
+  background: #eee;
   font-display: swap;
-  font-family: "Lato", sans-serif;
-  color:#eee;
+  font-family: "Nunito", sans-serif;
+  color: #222222;
   width:100%;
   display:inline-flex;
+  margin:0px;
+}
+
+.my-header {
+  height: 100%;
+  background: #f0f0f0;
+}
+
+.my-content {
+  margin:8px;
+}
+
+.MuiLink-root{
+  color:black;
+}
+
+.linkbar {
+  padding:20px;
+  padding-bottom: 40px;
+  color:black;
+}
+
+#root {
+  width:100%;
+  background:white;
 }
 
 header {
     font-family: "Playfair Display", sans-serif;
+    font-size: xx-large;
+    padding-top: 50px;
 }
 
+h2 {
+  font-family: "Nunito", sans-serif;
+  font-size:larger;
+  font-variant-caps:all-small-caps;
+}
+
+.h2-compressed {
+  padding-top:0px;
+  margin-top:10px;
+}
+
+h3 {
+  font-family: "Nunito", sans-serif;
+  font-size:large;
+  font-weight:normal;
+  font-style:italic;
+  text-align:center;
+}
+
+.centerText {
+  text-align:center
+}

@@ -1,6 +1,5 @@
 import React, { Suspense } from "react";
 import "./css/App.css";
-import "./css/theme.css";
 
 import { Route } from "react-router";
 import { HashRouter } from "react-router-dom";
@@ -10,7 +9,7 @@ export default class Home extends React.PureComponent {
   render(): React.ReactElement {
     return (
       <div className="app">
-        <div className="body-content" style={{ width: "100%" }}>
+        <div className="body-content">
           <HashRouter>
             <Suspense fallback={<div>Loading...</div>}>
               <Route exact path="/" component={MainPage} />
