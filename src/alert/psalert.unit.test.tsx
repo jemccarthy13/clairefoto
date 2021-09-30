@@ -1,19 +1,19 @@
-import { mount } from "enzyme"
-import React from "react"
-import { act } from "react-dom/test-utils"
+import { mount } from "enzyme";
+import React from "react";
+import { act } from "react-dom/test-utils";
 
-import GlobalAlertProvider from "./globalalertprovider"
-import snackActions from "./psalert"
+import GlobalAlertProvider from "./globalalertprovider";
+import snackActions from "./alert";
 
-jest.setTimeout(10000)
+jest.setTimeout(10000);
 
 beforeAll(() => {
   console.warn(
     "05/07/2021- Surpressing external usage of console.error\r\n" +
       "Use '(test command) --silent' to turn off all console messages."
-  )
-  jest.spyOn(console, "error").mockImplementation()
-})
+  );
+  jest.spyOn(console, "error").mockImplementation();
+});
 
 /**
  * For each of these snackbar tests; since the developer can override
@@ -22,7 +22,7 @@ beforeAll(() => {
  */
 describe("snackbar_test", () => {
   it("snackbar_shows_default", async () => {
-    const testTxt = "hello world"
+    const testTxt = "hello world";
     const wrapper = mount(
       <div id="root">
         <GlobalAlertProvider>
@@ -30,20 +30,20 @@ describe("snackbar_test", () => {
         </GlobalAlertProvider>
       </div>,
       { attachTo: document.getElementById("root") }
-    )
-    snackActions.toast(testTxt)
+    );
+    snackActions.toast(testTxt);
 
-    if (!wrapper) fail("Failed to mount.")
-    expect(wrapper.text()).toEqual(testTxt)
+    if (!wrapper) fail("Failed to mount.");
+    expect(wrapper.text()).toEqual(testTxt);
 
     await act(async () => {
-      await new Promise((r) => setTimeout(r, 6000))
-    })
-    expect(wrapper?.text()).toEqual("")
-  })
+      await new Promise((r) => setTimeout(r, 6000));
+    });
+    expect(wrapper?.text()).toEqual("");
+  });
 
   it("snackbar_shows_indefinite", () => {
-    const testTxt = "hello world"
+    const testTxt = "hello world";
     const wrapper = mount(
       <div id="root">
         <GlobalAlertProvider>
@@ -51,14 +51,14 @@ describe("snackbar_test", () => {
         </GlobalAlertProvider>
       </div>,
       { attachTo: document.getElementById("root") }
-    )
-    snackActions.toast(testTxt, { persist: true })
+    );
+    snackActions.toast(testTxt, { persist: true });
 
-    expect(wrapper.text()).toEqual(testTxt)
-  })
+    expect(wrapper.text()).toEqual(testTxt);
+  });
 
   it("snackbar_programatically_closes", async () => {
-    const testTxt = "hello world"
+    const testTxt = "hello world";
     const wrapper = mount(
       <div id="root">
         <GlobalAlertProvider>
@@ -66,21 +66,21 @@ describe("snackbar_test", () => {
         </GlobalAlertProvider>
       </div>,
       { attachTo: document.getElementById("root") }
-    )
-    const key = snackActions.toast(testTxt, { persist: true })
+    );
+    const key = snackActions.toast(testTxt, { persist: true });
 
-    expect(wrapper.text()).toEqual(testTxt)
+    expect(wrapper.text()).toEqual(testTxt);
 
-    snackActions.closeSnackbar(key)
+    snackActions.closeSnackbar(key);
 
     await act(async () => {
-      await new Promise((r) => setTimeout(r, 1500))
-    })
-    expect(wrapper.text()).toEqual("")
-  })
+      await new Promise((r) => setTimeout(r, 1500));
+    });
+    expect(wrapper.text()).toEqual("");
+  });
 
   it("snackbar_closes_when_clicked", async () => {
-    const testTxt = "hello world"
+    const testTxt = "hello world";
     const wrapper = mount(
       <div id="root">
         <GlobalAlertProvider>
@@ -88,21 +88,22 @@ describe("snackbar_test", () => {
         </GlobalAlertProvider>
       </div>,
       { attachTo: document.getElementById("root") }
-    )
-    const key = snackActions.toast(testTxt, { persist: true })
+    );
+    const key = snackActions.toast(testTxt, { persist: true });
 
-    const dismissNot = wrapper.find(GlobalAlertProvider)
-    const gap: GlobalAlertProvider = dismissNot.instance() as GlobalAlertProvider
-    gap.dismissNotification(key)()
+    const dismissNot = wrapper.find(GlobalAlertProvider);
+    const gap: GlobalAlertProvider =
+      dismissNot.instance() as GlobalAlertProvider;
+    gap.dismissNotification(key)();
 
     await act(async () => {
-      await new Promise((r) => setTimeout(r, 1500))
-    })
-    expect(wrapper.text()).toEqual("")
-  })
+      await new Promise((r) => setTimeout(r, 1500));
+    });
+    expect(wrapper.text()).toEqual("");
+  });
 
   it("snackbar_stacks_custom_max", async () => {
-    const testTxt = "hello world"
+    const testTxt = "hello world";
     const wrapper = mount(
       <div id="root">
         <GlobalAlertProvider maxSnack={10}>
@@ -110,16 +111,16 @@ describe("snackbar_test", () => {
         </GlobalAlertProvider>
       </div>,
       { attachTo: document.getElementById("root") }
-    )
+    );
 
-    snackActions.success(testTxt, { persist: true })
-    snackActions.error(testTxt, { persist: true })
-    snackActions.warning(testTxt, { persist: true })
-    snackActions.info(testTxt, { persist: true })
-    snackActions.success(testTxt)
-    snackActions.error(testTxt)
-    snackActions.warning(testTxt)
-    snackActions.info(testTxt)
+    snackActions.success(testTxt, { persist: true });
+    snackActions.error(testTxt, { persist: true });
+    snackActions.warning(testTxt, { persist: true });
+    snackActions.info(testTxt, { persist: true });
+    snackActions.success(testTxt);
+    snackActions.error(testTxt);
+    snackActions.warning(testTxt);
+    snackActions.info(testTxt);
 
     expect(wrapper.text()).toEqual(
       testTxt +
@@ -130,6 +131,6 @@ describe("snackbar_test", () => {
         testTxt +
         testTxt +
         testTxt
-    )
-  })
-})
+    );
+  });
+});
