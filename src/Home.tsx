@@ -1,5 +1,7 @@
 import React, { Suspense } from "react";
+
 import "./css/App.css";
+import "./css/snackbar.css";
 
 import { Route } from "react-router";
 import { HashRouter } from "react-router-dom";
