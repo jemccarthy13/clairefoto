@@ -23,7 +23,7 @@ export default function ContactForm(props: Record<string, unknown>) {
   const [fNameErrorTxt, setFNameErrorTxt] = useState("");
   const [lNameErrorTxt, setLNameErrorTxt] = useState("");
   const [subjErrorTxt, setSubjErrorTxt] = useState("");
-  const [msgError, setMsgError] = useSyncState(false);
+  const [msgErrorTxt, setMsgErrorTxt] = useState("");
 
   const emailValidate = (event: any) => {
     _emailCheck(event.target.value);
@@ -74,8 +74,19 @@ export default function ContactForm(props: Record<string, unknown>) {
     }
   };
 
+  const msgValidate = (event: any) => {
+    _msgCheck(event.target.value);
+  };
+
+  const _msgCheck = (val: string) => {
+    if (val.length < 1) {
+      setMsgErrorTxt(required);
+    } else {
+      setMsgErrorTxt("");
+    }
+  };
+
   const checkSubmit = () => {
-    // TODO -- convert from refs to state -- manage value / errors
     const firstName = firstNameRef.current;
     if (firstName !== null) _fNameCheck(firstName.value);
 
@@ -89,13 +100,14 @@ export default function ContactForm(props: Record<string, unknown>) {
     if (subject !== null) _subjCheck(subject.value);
 
     const msg = msgRef.current;
-    if (msg !== null) setMsgError(msg.value.length < 1);
+    if (msg !== null) _msgCheck(msg.value);
 
     if (
       subjErrorTxt !== "" ||
       fNameErrorTxt !== "" ||
       lNameErrorTxt !== "" ||
-      emailErrorTxt !== ""
+      emailErrorTxt !== "" ||
+      msgErrorTxt !== ""
     ) {
       snackActions.error("Please correct the highlighted fields");
     } else {
@@ -172,14 +184,16 @@ export default function ContactForm(props: Record<string, unknown>) {
           <div style={{ paddingBottom: "20px" }}>
             <TextField
               inputRef={msgRef}
-              error={msgError()}
-              helperText={msgError() && "Required"}
+              error={msgErrorTxt !== ""}
+              helperText={msgErrorTxt}
               fullWidth
               required
               multiline
               minRows={10}
               id="msgtext"
               label="Message"
+              onChange={msgValidate}
+              onBlur={msgValidate}
             />
           </div>
           <div style={{ paddingBottom: "25%" }}>
