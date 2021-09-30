@@ -17,10 +17,12 @@ export default function ContactForm(props: Record<string, unknown>) {
   const msgRef = React.createRef<HTMLInputElement>();
   const emailRef = React.createRef<HTMLInputElement>();
 
+  const required = "Required";
+
   const [emailErrorTxt, setEmailErrorTxt] = useState("");
-  const [firstNameError, setFirstNameError] = useSyncState(false);
-  const [lastNameError, setLastNameError] = useSyncState(false);
-  const [subjectError, setSubjectError] = useSyncState(false);
+  const [fNameErrorTxt, setFNameErrorTxt] = useState("");
+  const [lNameErrorTxt, setLNameErrorTxt] = useState("");
+  const [subjErrorTxt, setSubjErrorTxt] = useState("");
   const [msgError, setMsgError] = useSyncState(false);
 
   const emailValidate = (event: any) => {
@@ -36,27 +38,63 @@ export default function ContactForm(props: Record<string, unknown>) {
     }
   };
 
+  const firstNameValidate = (event: any) => {
+    _fNameCheck(event.target.value);
+  };
+
+  const _fNameCheck = (val: string) => {
+    if (val.length < 1) {
+      setFNameErrorTxt(required);
+    } else {
+      setFNameErrorTxt("");
+    }
+  };
+
+  const lastNameValidate = (event: any) => {
+    _lNameCheck(event.target.value);
+  };
+
+  const _lNameCheck = (val: string) => {
+    if (val.length < 1) {
+      setLNameErrorTxt(required);
+    } else {
+      setLNameErrorTxt("");
+    }
+  };
+
+  const subjValidate = (event: any) => {
+    _subjCheck(event.target.value);
+  };
+
+  const _subjCheck = (val: string) => {
+    if (val.length < 1) {
+      setSubjErrorTxt(required);
+    } else {
+      setSubjErrorTxt("");
+    }
+  };
+
   const checkSubmit = () => {
     // TODO -- convert from refs to state -- manage value / errors
     const firstName = firstNameRef.current;
-    if (firstName !== null) setFirstNameError(firstName.value.length < 1);
+    if (firstName !== null) _fNameCheck(firstName.value);
 
     const lastName = lastNameRef.current;
-    if (lastName !== null) setLastNameError(lastName.value.length < 1);
+    if (lastName !== null) _lNameCheck(lastName.value);
 
     const email = emailRef.current;
     if (email !== null) _emailCheck(email.value);
 
     const subject = subjRef.current;
-    if (subject !== null) setSubjectError(subject.value.length < 1);
+    if (subject !== null) _subjCheck(subject.value);
 
     const msg = msgRef.current;
     if (msg !== null) setMsgError(msg.value.length < 1);
 
     if (
-      subjectError() ||
-      firstNameError() ||
-      lastNameError() ||
+      subjErrorTxt !== "" ||
+      fNameErrorTxt !== "" ||
+      lNameErrorTxt !== "" ||
       emailErrorTxt !== ""
     ) {
       snackActions.error("Please correct the highlighted fields");
@@ -85,21 +123,25 @@ export default function ContactForm(props: Record<string, unknown>) {
           <div style={{ display: "inline-flex" }}>
             <TextField
               inputRef={firstNameRef}
-              error={firstNameError()}
-              helperText={firstNameError() && "Required"}
+              error={fNameErrorTxt !== ""}
+              helperText={fNameErrorTxt}
               required
               size="small"
               id="firstname"
               label="First Name"
+              onChange={firstNameValidate}
+              onBlur={firstNameValidate}
             />
             <TextField
               inputRef={lastNameRef}
-              error={lastNameError()}
-              helperText={lastNameError() && "Required"}
+              error={lNameErrorTxt !== ""}
+              helperText={lNameErrorTxt}
               required
               size="small"
               id="lastname"
               label="Last Name"
+              onChange={lastNameValidate}
+              onBlur={lastNameValidate}
             />
           </div>
           <div>
@@ -117,12 +159,14 @@ export default function ContactForm(props: Record<string, unknown>) {
           <div>
             <TextField
               inputRef={subjRef}
-              error={subjectError()}
-              helperText={subjectError() && "Required"}
+              error={subjErrorTxt !== ""}
+              helperText={subjErrorTxt}
               fullWidth
               required
               id="subject"
               label="Subject"
+              onChange={subjValidate}
+              onBlur={subjValidate}
             />
           </div>
           <div style={{ paddingBottom: "20px" }}>
