@@ -9,6 +9,7 @@ import CookieConsent, { Cookies } from "react-cookie-consent";
 
 require("typeface-playfair-display");
 require("typeface-nunito");
+require("typeface-satisfy");
 
 export default ReactDOM.render(
   <React.StrictMode>

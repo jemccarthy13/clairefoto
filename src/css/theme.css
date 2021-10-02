@@ -18,6 +18,18 @@ body, html {
   margin:8px;
 }
 
+.page-content {
+  margin:auto;
+  width:60%;
+  padding-top:100px;
+}
+
+.page-header{
+  font-family:"Satisfy",sans-serif;
+  font-style:italic;
+  text-align:center
+}
+
 .MuiLink-root{
   color:black;
 }

@@ -2,6 +2,7 @@ import React from "react";
 
 import { createTheme, Link, ThemeProvider } from "@mui/material";
 import ContactForm from "./contactform";
+import PricingPage from "./pricingpage";
 
 interface HomeState {
   panel: string;
@@ -128,7 +129,11 @@ export default class Home extends React.Component<
             </div>
           </div>
           {this.state.panel === "contact" && <ContactForm />}
-          {this.state.panel !== "contact" && (
+          {this.state.panel === "pricing" && <PricingPage />}
+          {(this.state.panel === "portraits" ||
+            this.state.panel === "family" ||
+            this.state.panel === "maternity" ||
+            this.state.panel === "couples") && (
             <div className="my-content">Other pages</div>
           )}
         </div>

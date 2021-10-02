@@ -23,6 +23,7 @@
     "react-scripts": "4.0.3",
     "typeface-nunito": "^1.1.13",
     "typeface-playfair-display": "^1.1.13",
+    "typeface-satisfy": "^1.1.13",
     "typescript": "^4.4.3",
     "web-vitals": "^1.0.1"
   },
