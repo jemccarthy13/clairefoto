@@ -32,7 +32,7 @@ export default class Home extends React.PureComponent {
                 render={() => {
                   return <MainPage panel={"maternity"} />;
                 }}
-              />{" "}
+              />
               <Route
                 path="/family"
                 render={() => {
@@ -50,11 +50,17 @@ export default class Home extends React.PureComponent {
                 render={() => {
                   return <MainPage panel={"portraits"} />;
                 }}
-              />{" "}
+              />
               <Route
                 path="/contact"
                 render={() => {
                   return <MainPage panel={"contact"} />;
+                }}
+              />
+              <Route
+                path="/booking"
+                render={() => {
+                  return <MainPage panel={"booking"} />;
                 }}
               />
             </Suspense>

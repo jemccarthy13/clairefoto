@@ -7,6 +7,8 @@ import HomePage from "./pages/homepage";
 import CouplesPage from "./pages/couplespage";
 import MaternityPage from "./pages/maternitypage";
 import FamilyPage from "./pages/familypage";
+import PortraitPage from "./pages/portraitpage";
+import BookingPage from "./pages/bookingpage";
 
 interface HomeProps {
   panel: string;
@@ -81,7 +83,7 @@ export default class MainPage extends React.Component<
               </h2>
             </div>
             <div className="centerText linkbar">
-              <Link href="/" underline="hover">
+              <Link href="/#/" underline="hover">
                 Home
               </Link>
               <Link href="/#/couples" underline="hover">
@@ -110,9 +112,8 @@ export default class MainPage extends React.Component<
           {this.props.panel === "couples" && <CouplesPage />}
           {this.props.panel === "maternity" && <MaternityPage />}
           {this.props.panel === "family" && <FamilyPage />}
-          {this.props.panel === "portraits" && (
-            <div className="my-content">Other pages</div>
-          )}
+          {this.props.panel === "portraits" && <PortraitPage />}
+          {this.props.panel === "booking" && <BookingPage />}
         </div>
       </ThemeProvider>
     );
