@@ -4,6 +4,8 @@ import { createTheme, Link, ThemeProvider } from "@mui/material";
 import ContactForm from "./pages/contactform";
 import PricingPage from "./pages/pricingpage";
 import HomePage from "./pages/homepage";
+import CouplesPage from "./pages/couplespage";
+import MaternityPage from "./pages/maternitypage";
 
 interface HomeState {
   panel: string;
@@ -135,10 +137,10 @@ export default class Home extends React.Component<
           {this.state.panel === "home" && <HomePage />}
           {this.state.panel === "contact" && <ContactForm />}
           {this.state.panel === "pricing" && <PricingPage />}
+          {this.state.panel === "couples" && <CouplesPage />}
+          {this.state.panel === "maternity" && <MaternityPage />}
           {(this.state.panel === "portraits" ||
-            this.state.panel === "family" ||
-            this.state.panel === "maternity" ||
-            this.state.panel === "couples") && (
+            this.state.panel === "family") && (
             <div className="my-content">Other pages</div>
           )}
         </div>
