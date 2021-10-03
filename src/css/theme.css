@@ -33,6 +33,7 @@ body, html {
 
 .MuiLink-root{
   color:black;
+  display:inline-flex;
 }
 
 .linkbar {
