@@ -150,10 +150,10 @@ export default function ContactForm(props: Record<string, unknown>) {
   };
 
   return (
-    <div className="my-content" style={{ textAlign: "center" }}>
-      <h3>Contact Me</h3>
+    <div className="page-content" style={{ textAlign: "center" }}>
+      <div className="page-header">Contact Me</div>
       <SocialIcons />
-      <div style={{ width: "50%", margin: "auto" }}>
+      <div style={{ width: "90%", margin: "auto" }}>
         <Box
           component="form"
           style={{

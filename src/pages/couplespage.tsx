@@ -87,5 +87,5 @@ export default function CouplesPage() {
     x.title = "";
   });
 
-  return <PhotoPage columns={5} photos={photos} />;
+  return <PhotoPage title={"Couples"} columns={5} photos={photos} />;
 }

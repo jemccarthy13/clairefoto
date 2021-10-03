@@ -94,5 +94,5 @@ export default function FamilyPage() {
     x.title = "";
   });
 
-  return <PhotoPage columns={5} photos={photos} />;
+  return <PhotoPage title={"Family"} columns={5} photos={photos} />;
 }

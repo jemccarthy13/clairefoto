@@ -66,5 +66,5 @@ export default function MaternityPage() {
     x.title = "";
   });
 
-  return <PhotoPage columns={5} photos={photos} />;
+  return <PhotoPage title={"Maternity"} columns={5} photos={photos} />;
 }

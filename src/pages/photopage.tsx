@@ -5,6 +5,7 @@ import ImageFadeIn from "react-image-fade-in";
 import FadeInSection from "./fadeinsection";
 
 interface PPProps {
+  title: string;
   columns: number;
   photos: {
     src: string;
@@ -62,6 +63,7 @@ export default function PhotoPage(props: PPProps) {
       style={{ paddingBottom: "100px" }}
       onContextMenu={customContext}
     >
+      <div className="page-header">{props.title}</div>
       <Gallery
         columns={props.columns}
         photos={props.photos}
