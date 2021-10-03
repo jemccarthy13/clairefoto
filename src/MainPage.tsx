@@ -6,22 +6,16 @@ import PricingPage from "./pages/pricingpage";
 import HomePage from "./pages/homepage";
 import CouplesPage from "./pages/couplespage";
 import MaternityPage from "./pages/maternitypage";
+import FamilyPage from "./pages/familypage";
 
-interface HomeState {
+interface HomeProps {
   panel: string;
 }
 
-export default class Home extends React.Component<
-  Record<string, unknown>,
-  HomeState
+export default class MainPage extends React.Component<
+  HomeProps,
+  Record<string, unknown>
 > {
-  constructor(props: Record<string, unknown>) {
-    super(props);
-    this.state = {
-      panel: "",
-    };
-  }
-
   changeTo(val: string): React.MouseEventHandler {
     return () => {
       this.setState({ panel: val });
@@ -87,60 +81,36 @@ export default class Home extends React.Component<
               </h2>
             </div>
             <div className="centerText linkbar">
-              <Link href="#" onClick={this.changeTo("home")} underline="hover">
+              <Link href="/" underline="hover">
                 Home
               </Link>
-              <Link
-                href="#"
-                onClick={this.changeTo("couples")}
-                underline="hover"
-              >
+              <Link href="/#/couples" underline="hover">
                 Couples
               </Link>
-              <Link
-                href="#"
-                onClick={this.changeTo("maternity")}
-                underline="hover"
-              >
+              <Link href="/#/maternity" underline="hover">
                 Maternity
               </Link>
-              <Link
-                href="#"
-                onClick={this.changeTo("family")}
-                underline="hover"
-              >
+              <Link href="/#/family" underline="hover">
                 Family
               </Link>
-              <Link
-                href="#"
-                onClick={this.changeTo("pricing")}
-                underline="hover"
-              >
+              <Link href="/#/pricing" underline="hover">
                 Pricing
               </Link>
-              <Link
-                href="#"
-                onClick={this.changeTo("portraits")}
-                underline="hover"
-              >
+              <Link href="/#/portraits" underline="hover">
                 Portraits
               </Link>
-              <Link
-                href="#"
-                onClick={this.changeTo("contact")}
-                underline="hover"
-              >
+              <Link href="/#/contact" underline="hover">
                 Contact
               </Link>
             </div>
           </div>
-          {this.state.panel === "home" && <HomePage />}
-          {this.state.panel === "contact" && <ContactForm />}
-          {this.state.panel === "pricing" && <PricingPage />}
-          {this.state.panel === "couples" && <CouplesPage />}
-          {this.state.panel === "maternity" && <MaternityPage />}
-          {(this.state.panel === "portraits" ||
-            this.state.panel === "family") && (
+          {this.props.panel === "home" && <HomePage />}
+          {this.props.panel === "contact" && <ContactForm />}
+          {this.props.panel === "pricing" && <PricingPage />}
+          {this.props.panel === "couples" && <CouplesPage />}
+          {this.props.panel === "maternity" && <MaternityPage />}
+          {this.props.panel === "family" && <FamilyPage />}
+          {this.props.panel === "portraits" && (
             <div className="my-content">Other pages</div>
           )}
         </div>
