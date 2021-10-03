@@ -55,7 +55,7 @@ function mail_attachment($filename, $path, $mailto, $from_mail, $from_name, $rep
   $message .= $content.$eol;
   $message .= "------=_NextPart_" . $uid . "--";
  
-  if (@mail($mailto, $subject, $message, $header, " -fwebmaster@parrotsour.com")) {
+  if (@mail($mailto, $subject, $message, $header, " -fwebmaster@clairemariefotografie.com")) {
     echo "mail send ... OK"; // or use booleans here
   } else {
     $errorMessage = error_get_last()['message'];
