@@ -2,10 +2,11 @@ import { Link } from "@mui/material";
 import React from "react";
 
 import { PricingTable, PricingSlot, PricingDetail } from "react-pricing-table";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
-export default class PricingPage extends React.PureComponent {
+class PricingPage extends React.PureComponent<RouteComponentProps> {
   slotClick = () => {
-    console.log("book?");
+    this.props.history.push("/booking");
   };
 
   render() {
@@ -67,3 +68,5 @@ export default class PricingPage extends React.PureComponent {
     );
   }
 }
+
+export default withRouter(PricingPage);
