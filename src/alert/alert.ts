@@ -3,32 +3,34 @@ import {
   SnackbarKey,
   useSnackbar,
   WithSnackbarProps,
-} from "notistack"
-import React from "react"
+} from "notistack";
+import React from "react";
 
-let snackbarRef: WithSnackbarProps
+let snackbarRef: WithSnackbarProps;
 export const SnackbarUtilsConfigurator: React.FC = () => {
-  snackbarRef = useSnackbar()
-  return null
-}
+  snackbarRef = useSnackbar();
+  return null;
+};
 
-export default {
+const SnackActions = {
   success(msg: string, options: OptionsObject = {}): SnackbarKey {
-    return this.toast(msg, { ...options, variant: "success" })
+    return this.toast(msg, { ...options, variant: "success" });
   },
   warning(msg: string, options: OptionsObject = {}): SnackbarKey {
-    return this.toast(msg, { ...options, variant: "warning" })
+    return this.toast(msg, { ...options, variant: "warning" });
   },
   info(msg: string, options: OptionsObject = {}): SnackbarKey {
-    return this.toast(msg, { ...options, variant: "info" })
+    return this.toast(msg, { ...options, variant: "info" });
   },
   error(msg: string, options: OptionsObject = {}): SnackbarKey {
-    return this.toast(msg, { ...options, variant: "error" })
+    return this.toast(msg, { ...options, variant: "error" });
   },
   closeSnackbar(key: SnackbarKey): void {
-    snackbarRef.closeSnackbar(key)
+    snackbarRef.closeSnackbar(key);
   },
   toast(msg: string, options: OptionsObject = {}): SnackbarKey {
-    return snackbarRef.enqueueSnackbar(msg, options)
+    return snackbarRef.enqueueSnackbar(msg, options);
   },
-}
+};
+
+export default SnackActions;

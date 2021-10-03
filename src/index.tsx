@@ -5,7 +5,7 @@ import "./css/theme.css";
 
 import Home from "./Home";
 import GlobalSnackbarProvider from "./alert/globalalertprovider";
-import CookieConsent, { Cookies } from "react-cookie-consent";
+import CookieConsent from "react-cookie-consent";
 
 require("typeface-playfair-display");
 require("typeface-nunito");

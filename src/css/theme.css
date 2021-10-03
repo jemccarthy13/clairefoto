@@ -21,13 +21,14 @@ body, html {
 .page-content {
   margin:auto;
   width:60%;
-  padding-top:100px;
+  padding-top:50px;
 }
 
 .page-header{
   font-family:"Satisfy",sans-serif;
   font-style:italic;
-  text-align:center
+  text-align:center;
+  font-size:xx-large;
 }
 
 .MuiLink-root{

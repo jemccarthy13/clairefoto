@@ -1,10 +1,10 @@
 import React from "react";
 
 import { Box, Button, TextField } from "@mui/material";
-import SocialIcons from "./socialicons";
+import SocialIcons from "../socialicons";
 
-import snackActions from "./alert/alert";
-import { useSyncState } from "./syncstate";
+import snackActions from "../alert/alert";
+import { useSyncState } from "../syncstate";
 
 /**
  * TODO -- This needs some styling adjustments

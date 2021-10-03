@@ -1,8 +1,9 @@
 import React from "react";
 
 import { createTheme, Link, ThemeProvider } from "@mui/material";
-import ContactForm from "./contactform";
-import PricingPage from "./pricingpage";
+import ContactForm from "./pages/contactform";
+import PricingPage from "./pages/pricingpage";
+import HomePage from "./pages/homepage";
 
 interface HomeState {
   panel: string;
@@ -84,6 +85,9 @@ export default class Home extends React.Component<
               </h2>
             </div>
             <div className="centerText linkbar">
+              <Link href="#" onClick={this.changeTo("home")} underline="hover">
+                Home
+              </Link>
               <Link
                 href="#"
                 onClick={this.changeTo("couples")}
@@ -128,6 +132,7 @@ export default class Home extends React.Component<
               </Link>
             </div>
           </div>
+          {this.state.panel === "home" && <HomePage />}
           {this.state.panel === "contact" && <ContactForm />}
           {this.state.panel === "pricing" && <PricingPage />}
           {(this.state.panel === "portraits" ||
