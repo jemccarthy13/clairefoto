@@ -101,6 +101,7 @@ export default function BookingPage(props: Record<string, unknown>) {
       >
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <CalendarPicker
+            className={"datepicker"}
             date={value}
             minDate={today}
             onChange={(date: Date | null) => {
@@ -112,7 +113,7 @@ export default function BookingPage(props: Record<string, unknown>) {
               return <CircularProgress />;
             }}
           />
-          <div style={{ margin: "auto" }}>
+          <div style={{ margin: "auto", marginLeft: "unset" }}>
             <DatePicker
               selected={value}
               onChange={(date: Date | null) => {
@@ -132,7 +133,7 @@ export default function BookingPage(props: Record<string, unknown>) {
           </div>
         </LocalizationProvider>
       </div>
-      <div style={{ paddingBottom: "100px" }}>
+      <div>
         <Box
           component="form"
           style={{

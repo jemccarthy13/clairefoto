@@ -18,10 +18,15 @@ body, html {
   margin:8px;
 }
 
+.datepicker {
+  margin:0 0 0 auto !important;
+}
+
 .page-content {
   margin:auto;
   width:60%;
   padding-top:50px;
+  padding-bottom:100px;
 }
 
 .page-header{

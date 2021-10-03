@@ -8,6 +8,9 @@ class PricingPage extends React.PureComponent<RouteComponentProps> {
   slotClick = () => {
     this.props.history.push("/booking");
   };
+  pkgClick = () => {
+    this.props.history.push("/contact");
+  };
 
   render() {
     return (
@@ -56,8 +59,8 @@ class PricingPage extends React.PureComponent<RouteComponentProps> {
           <PricingSlot
             title="Packages"
             priceText="Contact Me"
-            buttonText="Book Now"
-            onClick={this.slotClick}
+            buttonText="Contact"
+            onClick={this.pkgClick}
           >
             <PricingDetail>Birthdays</PricingDetail>
             <PricingDetail>Weddings</PricingDetail>

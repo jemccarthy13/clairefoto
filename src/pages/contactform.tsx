@@ -226,7 +226,7 @@ export default function ContactForm(props: Record<string, unknown>) {
               onBlur={msgValidate}
             />
           </div>
-          <div style={{ paddingBottom: "25%" }}>
+          <div>
             <Button
               style={{ border: "1px black" }}
               onClick={checkSubmit}

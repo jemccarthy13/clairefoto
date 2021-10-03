@@ -1,8 +1,9 @@
-import React, { useCallback, useState } from "react";
+import React, { Suspense, useCallback, useState } from "react";
 import Carousel, { Modal, ModalGateway } from "react-images";
 import Gallery, { RenderImageProps } from "react-photo-gallery";
 import ImageFadeIn from "react-image-fade-in";
 import FadeInSection from "./fadeinsection";
+import { CircularProgress } from "@mui/material";
 
 interface PPProps {
   title: string;
@@ -44,16 +45,18 @@ export default function PhotoPage(props: PPProps) {
 
   const render = (riprops: RenderImageProps): any => {
     return (
-      <FadeInSection>
-        <ImageFadeIn
-          src={props.photos[riprops.index].src}
-          width={riprops.photo.width}
-          height={riprops.photo.height}
-          opacityTransition={1}
-          style={{ margin: riprops.margin }}
-          onClick={openViewer(riprops.index)}
-        />
-      </FadeInSection>
+      <Suspense key={riprops.photo.src} fallback={<CircularProgress />}>
+        <FadeInSection>
+          <ImageFadeIn
+            src={props.photos[riprops.index].src}
+            width={riprops.photo.width}
+            height={riprops.photo.height}
+            opacityTransition={1}
+            style={{ margin: riprops.margin }}
+            onClick={openViewer(riprops.index)}
+          />
+        </FadeInSection>
+      </Suspense>
     );
   };
 
