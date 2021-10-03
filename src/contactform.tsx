@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { Box, Button, TextField } from "@mui/material";
 import SocialIcons from "./socialicons";
@@ -19,11 +19,12 @@ export default function ContactForm(props: Record<string, unknown>) {
 
   const required = "Required";
 
-  const [emailErrorTxt, setEmailErrorTxt] = useState("");
-  const [fNameErrorTxt, setFNameErrorTxt] = useState("");
-  const [lNameErrorTxt, setLNameErrorTxt] = useState("");
-  const [subjErrorTxt, setSubjErrorTxt] = useState("");
-  const [msgErrorTxt, setMsgErrorTxt] = useState("");
+  const [emailErrorTxt, setEmailErrorTxt] = useSyncState("");
+  const [fNameErrorTxt, setFNameErrorTxt] = useSyncState("");
+  const [lNameErrorTxt, setLNameErrorTxt] = useSyncState("");
+  const [subjErrorTxt, setSubjErrorTxt] = useSyncState("");
+  const [msgErrorTxt, setMsgErrorTxt] = useSyncState("");
+  const [submitEnabled, setSubmitEnabled] = useSyncState(true);
 
   const emailValidate = (event: any) => {
     _emailCheck(event.target.value);
@@ -103,11 +104,11 @@ export default function ContactForm(props: Record<string, unknown>) {
     if (msg !== null) _msgCheck(msg.value);
 
     if (
-      subjErrorTxt !== "" ||
-      fNameErrorTxt !== "" ||
-      lNameErrorTxt !== "" ||
-      emailErrorTxt !== "" ||
-      msgErrorTxt !== ""
+      subjErrorTxt() !== "" ||
+      fNameErrorTxt() !== "" ||
+      lNameErrorTxt() !== "" ||
+      emailErrorTxt() !== "" ||
+      msgErrorTxt() !== ""
     ) {
       snackActions.error("Please correct the highlighted fields");
     } else {
@@ -115,8 +116,37 @@ export default function ContactForm(props: Record<string, unknown>) {
     }
   };
 
-  const submitForm = () => {
-    snackActions.success("TODO-- submit form");
+  const submitForm = async () => {
+    setSubmitEnabled(false);
+
+    const emailCur = emailRef.current;
+    const email = emailCur ? emailCur.value : "";
+
+    let realEmail = email ? email : "unknown";
+    if (email && email.indexOf("@") === -1) realEmail += "@gmail.com";
+
+    const textCur = msgRef.current;
+    const realText = textCur ? textCur.value : "";
+
+    const formData = new FormData();
+    formData.append("email", realEmail);
+    formData.append("comments", realText + " \n\n");
+
+    const response = await fetch(
+      process.env.PUBLIC_URL + "/database/emailissue.php",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    if (response.ok) {
+      snackActions.success("Submitted!");
+    } else {
+      snackActions.error("Form submit failed.\nPlease try again.");
+    }
+
+    setSubmitEnabled(true);
   };
 
   return (
@@ -135,8 +165,8 @@ export default function ContactForm(props: Record<string, unknown>) {
           <div style={{ display: "inline-flex" }}>
             <TextField
               inputRef={firstNameRef}
-              error={fNameErrorTxt !== ""}
-              helperText={fNameErrorTxt}
+              error={fNameErrorTxt() !== ""}
+              helperText={fNameErrorTxt()}
               required
               size="small"
               id="firstname"
@@ -146,8 +176,8 @@ export default function ContactForm(props: Record<string, unknown>) {
             />
             <TextField
               inputRef={lastNameRef}
-              error={lNameErrorTxt !== ""}
-              helperText={lNameErrorTxt}
+              error={lNameErrorTxt() !== ""}
+              helperText={lNameErrorTxt()}
               required
               size="small"
               id="lastname"
@@ -159,8 +189,8 @@ export default function ContactForm(props: Record<string, unknown>) {
           <div>
             <TextField
               inputRef={emailRef}
-              error={emailErrorTxt !== ""}
-              helperText={emailErrorTxt}
+              error={emailErrorTxt() !== ""}
+              helperText={emailErrorTxt()}
               fullWidth
               required
               id="email"
@@ -171,8 +201,8 @@ export default function ContactForm(props: Record<string, unknown>) {
           <div>
             <TextField
               inputRef={subjRef}
-              error={subjErrorTxt !== ""}
-              helperText={subjErrorTxt}
+              error={subjErrorTxt() !== ""}
+              helperText={subjErrorTxt()}
               fullWidth
               required
               id="subject"
@@ -184,8 +214,8 @@ export default function ContactForm(props: Record<string, unknown>) {
           <div style={{ paddingBottom: "20px" }}>
             <TextField
               inputRef={msgRef}
-              error={msgErrorTxt !== ""}
-              helperText={msgErrorTxt}
+              error={msgErrorTxt() !== ""}
+              helperText={msgErrorTxt()}
               fullWidth
               required
               multiline
@@ -197,7 +227,11 @@ export default function ContactForm(props: Record<string, unknown>) {
             />
           </div>
           <div style={{ paddingBottom: "25%" }}>
-            <Button style={{ border: "1px black" }} onClick={checkSubmit}>
+            <Button
+              style={{ border: "1px black" }}
+              onClick={checkSubmit}
+              disabled={!submitEnabled()}
+            >
               Submit
             </Button>
           </div>
