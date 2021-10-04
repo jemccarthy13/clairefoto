@@ -9,6 +9,22 @@ export type PricingData = {
   booking: boolean;
 };
 
+export type GoogleDateTime = {
+  dateTime: string;
+  timeZone: string;
+};
+
+export type BlackOut = {
+  dates: BlackOutDate[];
+  times: BlackOutDate[];
+};
+
+export type BlackOutDate = {
+  start: Date;
+  end: Date;
+};
+
 export interface Backend {
   getPrices: { (): PricingData[] };
+  getBlackOutDates: { (): Promise<BlackOut> };
 }

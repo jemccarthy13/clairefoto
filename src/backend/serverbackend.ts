@@ -1,9 +1,14 @@
-import { Backend, PricingData } from "./backendinterface";
+import {
+  Backend,
+  BlackOut,
+  BlackOutDate,
+  PricingData,
+} from "./backendinterface";
 
 const baseURL = "";
 
 // FETCH GET for server API
-async function get(url = "") {
+export async function get(url = "") {
   // Default options are marked with *
   const response = await fetch(baseURL + url, {
     method: "GET", // *GET, POST, PUT, DELETE, etc.
@@ -21,7 +26,7 @@ async function get(url = "") {
 
 // FETCH PUT for server API
 // eslint-disable-next-line
-async function post(data: any, url = "") {
+export async function post(data: any, url = "") {
   const response = await fetch(baseURL + url, {
     method: "PUT",
     mode: "cors",
@@ -39,6 +44,12 @@ async function post(data: any, url = "") {
 class sBackend implements Backend {
   async addPrice(price: PricingData): Promise<string> {
     return post(price, "/api/prices.php");
+  }
+
+  getBlackOutDates(): Promise<BlackOut> {
+    return new Promise(() => {
+      return { dates: [], times: [] };
+    });
   }
 
   // SELECT * FROM PRICING

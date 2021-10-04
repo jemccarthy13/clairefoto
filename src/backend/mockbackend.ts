@@ -1,4 +1,10 @@
-import { Backend, PricingData } from "./backendinterface";
+import {
+  Backend,
+  BlackOut,
+  BlackOutDate,
+  PricingData,
+} from "./backendinterface";
+import { get } from "./serverbackend";
 
 class mBackend implements Backend {
   //-----------------------------------------------------------------------------
@@ -62,6 +68,37 @@ class mBackend implements Backend {
       )
     );
     return array;
+  }
+
+  getBlackOutDates(): Promise<BlackOut> {
+    const arrDates: BlackOutDate[] = [];
+    const arrTimes: BlackOutDate[] = [];
+    let mydata: any;
+    return get(
+      "https://www.googleapis.com/calendar/v3/calendars/jemccarthy13@gmail.com/events" +
+        "?key=AIzaSyAr9L-CnWqSC2mCEkA-4eCHxJ-uZuuL5lg" +
+        ""
+    ).then((data: any) => {
+      mydata = data.items;
+      mydata.forEach((date: any) => {
+        let start = new Date(date.start.dateTime);
+        let end = new Date(date.end.dateTime);
+        if (isNaN(start.getTime()) && isNaN(end.getTime())) {
+          start = new Date(date.start.date + "T00:00:00Z");
+          end = new Date(date.end.date + "T17:59:00Z");
+          arrDates.push({
+            start: start,
+            end: end,
+          });
+        } else {
+          arrTimes.push({
+            start: start,
+            end: end,
+          });
+        }
+      });
+      return { dates: arrDates, times: arrTimes };
+    });
   }
 }
 
