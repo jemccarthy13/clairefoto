@@ -1,4 +1,4 @@
-import { CircularProgress, Link } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import React from "react";
 
 import { PricingTable, PricingSlot, PricingDetail } from "react-pricing-table";
