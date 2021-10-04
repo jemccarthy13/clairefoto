@@ -1,136 +1,55 @@
 import React from "react";
 
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import SocialIcons from "../socialicons";
 
 import snackActions from "../alert/alert";
 import { useSyncState } from "../syncstate";
+import ValidatedTextField from "./validatedtextfield";
 
-/**
- * TODO -- This needs some styling adjustments
- */
+export const ValidateContext = React.createContext(false);
 
 export default function ContactForm(props: Record<string, unknown>) {
-  const firstNameRef = React.createRef<HTMLInputElement>();
-  const lastNameRef = React.createRef<HTMLInputElement>();
-  const subjRef = React.createRef<HTMLInputElement>();
-  const msgRef = React.createRef<HTMLInputElement>();
-  const emailRef = React.createRef<HTMLInputElement>();
+  // form fields
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [subject, setSubj] = React.useState("");
+  const [content, setMsgTxt] = React.useState("");
 
-  const required = "Required";
+  // validate on submit clicked
+  const [validateFlag, setValidate] = React.useState(false);
 
-  const [emailErrorTxt, setEmailErrorTxt] = useSyncState("");
-  const [fNameErrorTxt, setFNameErrorTxt] = useSyncState("");
-  const [lNameErrorTxt, setLNameErrorTxt] = useSyncState("");
-  const [subjErrorTxt, setSubjErrorTxt] = useSyncState("");
-  const [msgErrorTxt, setMsgErrorTxt] = useSyncState("");
+  // disable submit when request in progress
   const [submitEnabled, setSubmitEnabled] = useSyncState(true);
 
-  const emailValidate = (event: any) => {
-    _emailCheck(event.target.value);
-  };
-
-  const _emailCheck = (val: string) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!re.test(val)) {
-      setEmailErrorTxt("Invalid email");
-    } else {
-      setEmailErrorTxt("");
-    }
-  };
-
-  const firstNameValidate = (event: any) => {
-    _fNameCheck(event.target.value);
-  };
-
-  const _fNameCheck = (val: string) => {
-    if (val.length < 1) {
-      setFNameErrorTxt(required);
-    } else {
-      setFNameErrorTxt("");
-    }
-  };
-
-  const lastNameValidate = (event: any) => {
-    _lNameCheck(event.target.value);
-  };
-
-  const _lNameCheck = (val: string) => {
-    if (val.length < 1) {
-      setLNameErrorTxt(required);
-    } else {
-      setLNameErrorTxt("");
-    }
-  };
-
-  const subjValidate = (event: any) => {
-    _subjCheck(event.target.value);
-  };
-
-  const _subjCheck = (val: string) => {
-    if (val.length < 1) {
-      setSubjErrorTxt(required);
-    } else {
-      setSubjErrorTxt("");
-    }
-  };
-
-  const msgValidate = (event: any) => {
-    _msgCheck(event.target.value);
-  };
-
-  const _msgCheck = (val: string) => {
-    if (val.length < 1) {
-      setMsgErrorTxt(required);
-    } else {
-      setMsgErrorTxt("");
-    }
-  };
-
   const checkSubmit = () => {
-    const firstName = firstNameRef.current;
-    if (firstName !== null) _fNameCheck(firstName.value);
+    let formValid = true;
 
-    const lastName = lastNameRef.current;
-    if (lastName !== null) _lNameCheck(lastName.value);
+    if (firstName === "") formValid = false;
+    if (lastName === "") formValid = false;
+    if (email === "") formValid = false;
+    if (subject === "") formValid = false;
+    if (content === "") formValid = false;
 
-    const email = emailRef.current;
-    if (email !== null) _emailCheck(email.value);
-
-    const subject = subjRef.current;
-    if (subject !== null) _subjCheck(subject.value);
-
-    const msg = msgRef.current;
-    if (msg !== null) _msgCheck(msg.value);
-
-    if (
-      subjErrorTxt() !== "" ||
-      fNameErrorTxt() !== "" ||
-      lNameErrorTxt() !== "" ||
-      emailErrorTxt() !== "" ||
-      msgErrorTxt() !== ""
-    ) {
-      snackActions.error("Please correct the highlighted fields");
-    } else {
+    if (formValid) {
       submitForm();
+    } else {
+      snackActions.error("Please correct the highlighted fields");
     }
   };
 
   const submitForm = async () => {
     setSubmitEnabled(false);
 
-    const emailCur = emailRef.current;
-    const email = emailCur ? emailCur.value : "";
+    setValidate(!validateFlag);
 
     let realEmail = email ? email : "unknown";
     if (email && email.indexOf("@") === -1) realEmail += "@gmail.com";
 
-    const textCur = msgRef.current;
-    const realText = textCur ? textCur.value : "";
-
     const formData = new FormData();
     formData.append("email", realEmail);
-    formData.append("comments", realText + " \n\n");
+    formData.append("comments", content + " \n\n");
 
     const response = await fetch(
       process.env.PUBLIC_URL + "/database/emailissue.php",
@@ -154,88 +73,68 @@ export default function ContactForm(props: Record<string, unknown>) {
       <div className="page-header">Contact Me</div>
       <SocialIcons />
       <div style={{ width: "90%", margin: "auto" }}>
-        <Box
-          component="form"
-          style={{
-            paddingTop: "25px",
-            paddingLeft: "10px",
-            paddingRight: "10px",
-          }}
-        >
-          <div style={{ display: "inline-flex" }}>
-            <TextField
-              inputRef={firstNameRef}
-              error={fNameErrorTxt() !== ""}
-              helperText={fNameErrorTxt()}
-              required
-              size="small"
-              id="firstname"
-              label="First Name"
-              onChange={firstNameValidate}
-              onBlur={firstNameValidate}
-            />
-            <TextField
-              inputRef={lastNameRef}
-              error={lNameErrorTxt() !== ""}
-              helperText={lNameErrorTxt()}
-              required
-              size="small"
-              id="lastname"
-              label="Last Name"
-              onChange={lastNameValidate}
-              onBlur={lastNameValidate}
-            />
-          </div>
-          <div>
-            <TextField
-              inputRef={emailRef}
-              error={emailErrorTxt() !== ""}
-              helperText={emailErrorTxt()}
-              fullWidth
-              required
-              id="email"
-              label="Email Address"
-              onBlur={emailValidate}
-            />
-          </div>
-          <div>
-            <TextField
-              inputRef={subjRef}
-              error={subjErrorTxt() !== ""}
-              helperText={subjErrorTxt()}
-              fullWidth
-              required
-              id="subject"
-              label="Subject"
-              onChange={subjValidate}
-              onBlur={subjValidate}
-            />
-          </div>
-          <div style={{ paddingBottom: "20px" }}>
-            <TextField
-              inputRef={msgRef}
-              error={msgErrorTxt() !== ""}
-              helperText={msgErrorTxt()}
-              fullWidth
-              required
-              multiline
-              minRows={10}
-              id="msgtext"
-              label="Message"
-              onChange={msgValidate}
-              onBlur={msgValidate}
-            />
-          </div>
-          <div>
-            <Button
-              style={{ border: "1px black" }}
-              onClick={checkSubmit}
-              disabled={!submitEnabled()}
-            >
-              Submit
-            </Button>
-          </div>
-        </Box>
+        <ValidateContext.Provider value={validateFlag}>
+          <Box
+            component="form"
+            style={{
+              paddingTop: "25px",
+              paddingLeft: "10px",
+              paddingRight: "10px",
+            }}
+          >
+            <div style={{ display: "inline-flex" }}>
+              <ValidatedTextField
+                id="firstname"
+                label="First Name"
+                postValidate={setFirstName}
+                size="small"
+              />
+              <ValidatedTextField
+                id="lastname"
+                label="Last Name"
+                postValidate={setLastName}
+                size="small"
+              />
+            </div>
+            <div>
+              <ValidatedTextField
+                id="email"
+                label="Email Address"
+                postValidate={setEmail}
+                email
+                size="small"
+                fullWidth
+              />
+            </div>
+            <div>
+              <ValidatedTextField
+                id="subject"
+                label="Subject"
+                postValidate={setSubj}
+                fullWidth
+              />
+            </div>
+            <div style={{ paddingBottom: "20px" }}>
+              <ValidatedTextField
+                id="msgtext"
+                label="Message"
+                postValidate={setMsgTxt}
+                fullWidth
+                multiline
+                minRows={10}
+              />
+            </div>
+            <div>
+              <Button
+                style={{ border: "1px black" }}
+                onClick={checkSubmit}
+                disabled={!submitEnabled()}
+              >
+                Submit
+              </Button>
+            </div>
+          </Box>
+        </ValidateContext.Provider>
       </div>
     </div>
   );

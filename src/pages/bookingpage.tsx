@@ -8,71 +8,32 @@ import SocialIcons from "../socialicons";
 import DatePicker from "react-datepicker";
 
 import "../css/datepicker.css";
-import { Box, Button, CircularProgress, TextField } from "@mui/material";
+import { Box, Button, CircularProgress } from "@mui/material";
 import { useSyncState } from "../syncstate";
 import backend from "../backend/backend";
 import { BlackOutDate } from "../backend/backendinterface";
-
-/**
- * TODO -- This needs some styling adjustments
- */
+import ValidatedTextField from "./validatedtextfield";
+import { ValidateContext } from "./contactform";
 
 export default function BookingPage(props: Record<string, unknown>) {
+  // Form Fields
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+
+  // Date Picker
   const [value, setValue] = React.useState(new Date());
   const tmpDates: BlackOutDate[] = [];
   const [outDates, setOutDates] = React.useState(tmpDates);
   const [outTimes, setOutTimes] = React.useState(tmpDates);
+  const [reload, setReload] = React.useState(1);
+
+  const [validateFlag, setValidateFlag] = React.useState(false);
 
   const today = new Date();
   today.setHours(today.getHours() + 3);
 
-  const firstNameRef = React.createRef<HTMLInputElement>();
-  const lastNameRef = React.createRef<HTMLInputElement>();
-  const emailRef = React.createRef<HTMLInputElement>();
-
-  const required = "Required";
-
-  const [emailErrorTxt, setEmailErrorTxt] = useSyncState("");
-  const [fNameErrorTxt, setFNameErrorTxt] = useSyncState("");
-  const [lNameErrorTxt, setLNameErrorTxt] = useSyncState("");
   const [submitEnabled, setSubmitEnabled] = useSyncState(false);
-
-  const emailValidate = (event: any) => {
-    _emailCheck(event.target.value);
-  };
-
-  const _emailCheck = (val: string) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!re.test(val)) {
-      setEmailErrorTxt("Invalid email");
-    } else {
-      setEmailErrorTxt("");
-    }
-  };
-
-  const firstNameValidate = (event: any) => {
-    _fNameCheck(event.target.value);
-  };
-
-  const _fNameCheck = (val: string) => {
-    if (val.length < 1) {
-      setFNameErrorTxt(required);
-    } else {
-      setFNameErrorTxt("");
-    }
-  };
-
-  const lastNameValidate = (event: any) => {
-    _lNameCheck(event.target.value);
-  };
-
-  const _lNameCheck = (val: string) => {
-    if (val.length < 1) {
-      setLNameErrorTxt(required);
-    } else {
-      setLNameErrorTxt("");
-    }
-  };
 
   const filterTimes = (time: number) => {
     const currentDate = new Date();
@@ -104,18 +65,19 @@ export default function BookingPage(props: Record<string, unknown>) {
   };
 
   const makeBooking = () => {
-    console.log(value);
+    console.log(value, firstName, lastName, email);
+    console.log("making booking...");
+    setValidateFlag(!validateFlag);
   };
 
   useEffect(() => {
     async function myFun() {
       const blackout = await backend.getBlackOutDates();
       setOutDates(blackout.dates);
-      console.log(blackout.times);
       setOutTimes(blackout.times);
     }
     myFun();
-  }, []);
+  }, [reload]);
 
   return (
     <div className="page-content" style={{ textAlign: "center" }}>
@@ -136,7 +98,10 @@ export default function BookingPage(props: Record<string, unknown>) {
             date={value}
             minDate={today}
             onChange={(date: Date | null) => {
-              if (date !== null) setValue(date);
+              if (date !== null) {
+                setValue(date);
+                setReload(reload + 1);
+              }
             }}
             shouldDisableDate={checkDate}
             loading={outDates.length === 0}
@@ -165,55 +130,43 @@ export default function BookingPage(props: Record<string, unknown>) {
         </LocalizationProvider>
       </div>
       <div>
-        <Box
-          component="form"
-          style={{
-            paddingTop: "25px",
-            paddingLeft: "10px",
-            paddingRight: "10px",
-          }}
-        >
-          <div style={{ display: "inline-flex" }}>
-            <TextField
-              inputRef={firstNameRef}
-              error={fNameErrorTxt() !== ""}
-              helperText={fNameErrorTxt()}
-              required
-              size="small"
-              id="firstname"
-              label="First Name"
-              onChange={firstNameValidate}
-              onBlur={firstNameValidate}
-            />
-            <TextField
-              inputRef={lastNameRef}
-              error={lNameErrorTxt() !== ""}
-              helperText={lNameErrorTxt()}
-              required
-              size="small"
-              id="lastname"
-              label="Last Name"
-              onChange={lastNameValidate}
-              onBlur={lastNameValidate}
-            />
-          </div>
-          <div>
-            <TextField
-              inputRef={emailRef}
-              error={emailErrorTxt() !== ""}
-              helperText={emailErrorTxt()}
-              fullWidth
-              required
-              size="small"
-              id="email"
-              label="Email Address"
-              onBlur={emailValidate}
-            />
-          </div>
-          <Button disabled={!submitEnabled()} onClick={makeBooking}>
-            Submit
-          </Button>
-        </Box>
+        <ValidateContext.Provider value={validateFlag}>
+          <Box
+            component="form"
+            style={{
+              paddingTop: "25px",
+              paddingLeft: "10px",
+              paddingRight: "10px",
+            }}
+          >
+            <div style={{ display: "inline-flex" }}>
+              <ValidatedTextField
+                id="firstname"
+                label="First Name"
+                postValidate={setFirstName}
+                size="small"
+              />
+              <ValidatedTextField
+                id="lastname"
+                label="Last Name"
+                postValidate={setLastName}
+                size="small"
+              />
+            </div>
+            <div>
+              <ValidatedTextField
+                id="email"
+                label="Email Address"
+                postValidate={setEmail}
+                size="small"
+                fullWidth
+              />
+            </div>
+            <Button disabled={!submitEnabled()} onClick={makeBooking}>
+              Submit
+            </Button>
+          </Box>
+        </ValidateContext.Provider>
       </div>
     </div>
   );

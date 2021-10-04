@@ -4,9 +4,10 @@ import {
   BlackOutDate,
   PricingData,
 } from "./backendinterface";
-import { get } from "./serverbackend";
+import { get, post } from "./serverbackend";
 
 class mBackend implements Backend {
+  cID = "jemccarthy13@gmail.com";
   //-----------------------------------------------------------------------------
   //
   // Mock data generators for frontend only development
@@ -70,35 +71,43 @@ class mBackend implements Backend {
     return array;
   }
 
+  calBaseURL = "https://content.googleapis.com/calendar/v3/calendars/";
+  calKey = "AIzaSyAr9L-CnWqSC2mCEkA-4eCHxJ-uZuuL5lg";
+
+  submitBookingAppt(): Promise<void> {
+    let url = this.calBaseURL + this.cID + "/events?";
+    url += "sendUpdates=all&sendNotifications=true&alt=json";
+    url += "&key=" + this.calKey;
+    return post({}, "https://www.google.com");
+  }
+
   getBlackOutDates(): Promise<BlackOut> {
     const arrDates: BlackOutDate[] = [];
     const arrTimes: BlackOutDate[] = [];
     let mydata: any;
-    return get(
-      "https://www.googleapis.com/calendar/v3/calendars/jemccarthy13@gmail.com/events" +
-        "?key=AIzaSyAr9L-CnWqSC2mCEkA-4eCHxJ-uZuuL5lg" +
-        ""
-    ).then((data: any) => {
-      mydata = data.items;
-      mydata.forEach((date: any) => {
-        let start = new Date(date.start.dateTime);
-        let end = new Date(date.end.dateTime);
-        if (isNaN(start.getTime()) && isNaN(end.getTime())) {
-          start = new Date(date.start.date + "T00:00:00Z");
-          end = new Date(date.end.date + "T17:59:00Z");
-          arrDates.push({
-            start: start,
-            end: end,
-          });
-        } else {
-          arrTimes.push({
-            start: start,
-            end: end,
-          });
-        }
-      });
-      return { dates: arrDates, times: arrTimes };
-    });
+    return get(this.calBaseURL + this.cID + "/events?key=" + this.calKey).then(
+      (data: any) => {
+        mydata = data.items;
+        mydata.forEach((date: any) => {
+          let start = new Date(date.start.dateTime);
+          let end = new Date(date.end.dateTime);
+          if (isNaN(start.getTime()) && isNaN(end.getTime())) {
+            start = new Date(date.start.date + "T00:00:00Z");
+            end = new Date(date.end.date + "T17:59:00Z");
+            arrDates.push({
+              start: start,
+              end: end,
+            });
+          } else {
+            arrTimes.push({
+              start: start,
+              end: end,
+            });
+          }
+        });
+        return { dates: arrDates, times: arrTimes };
+      }
+    );
   }
 }
 
