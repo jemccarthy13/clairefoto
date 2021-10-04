@@ -14,7 +14,7 @@ import backend from "../backend/backend";
 import { BlackOutDate } from "../backend/backendinterface";
 import ValidatedTextField from "./validatedtextfield";
 
-export default function BookingPage(props: Record<string, unknown>) {
+export default function BookingPage() {
   // Form Fields
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
@@ -61,7 +61,8 @@ export default function BookingPage(props: Record<string, unknown>) {
     return blackout;
   };
 
-  const makeBooking = () => {
+  const makeBooking = (event: any) => {
+    event.currentTarget.form.reportValidity();
     console.log(value, firstName, lastName, email);
     console.log("making booking...");
   };

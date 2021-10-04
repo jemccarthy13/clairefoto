@@ -42,6 +42,7 @@ export default function ValidatedTextField(props: ValidatedTFProps) {
     }
   };
 
+  const { email, postValidate, ...rest } = props;
   return (
     <TextField
       inputRef={inputRef}
@@ -50,7 +51,7 @@ export default function ValidatedTextField(props: ValidatedTFProps) {
       required
       onChange={validate}
       onBlur={validate}
-      {...props}
+      {...rest}
     />
   );
 }
