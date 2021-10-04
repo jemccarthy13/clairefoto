@@ -65,68 +65,66 @@ export default function ContactForm(props: Record<string, unknown>) {
       <div className="page-header">Contact Me</div>
       <SocialIcons />
       <div style={{ width: "90%", margin: "auto" }}>
-        <form>
-          <Box
-            component="form"
-            style={{
-              paddingTop: "25px",
-              paddingLeft: "10px",
-              paddingRight: "10px",
-            }}
-          >
-            <div style={{ display: "inline-flex" }}>
-              <ValidatedTextField
-                id="firstname"
-                label="First Name"
-                postValidate={setFirstName}
-                size="small"
-              />
-              <ValidatedTextField
-                id="lastname"
-                label="Last Name"
-                postValidate={setLastName}
-                size="small"
-              />
-            </div>
-            <div>
-              <ValidatedTextField
-                id="email"
-                label="Email Address"
-                postValidate={setEmail}
-                email
-                size="small"
-                fullWidth
-              />
-            </div>
-            <div>
-              <ValidatedTextField
-                id="subject"
-                label="Subject"
-                postValidate={setSubj}
-                fullWidth
-              />
-            </div>
-            <div style={{ paddingBottom: "20px" }}>
-              <ValidatedTextField
-                id="msgtext"
-                label="Message"
-                postValidate={setMsgTxt}
-                fullWidth
-                multiline
-                minRows={10}
-              />
-            </div>
-            <div>
-              <Button
-                style={{ border: "1px black" }}
-                onClick={checkSubmit}
-                disabled={!submitEnabled()}
-              >
-                Submit
-              </Button>
-            </div>
-          </Box>
-        </form>
+        <Box
+          component="form"
+          style={{
+            paddingTop: "25px",
+            paddingLeft: "10px",
+            paddingRight: "10px",
+          }}
+        >
+          <div style={{ display: "inline-flex" }}>
+            <ValidatedTextField
+              id="firstname"
+              label="First Name"
+              postValidate={setFirstName}
+              size="small"
+            />
+            <ValidatedTextField
+              id="lastname"
+              label="Last Name"
+              postValidate={setLastName}
+              size="small"
+            />
+          </div>
+          <div>
+            <ValidatedTextField
+              id="email"
+              label="Email Address"
+              postValidate={setEmail}
+              email
+              size="small"
+              fullWidth
+            />
+          </div>
+          <div>
+            <ValidatedTextField
+              id="subject"
+              label="Subject"
+              postValidate={setSubj}
+              fullWidth
+            />
+          </div>
+          <div style={{ paddingBottom: "20px" }}>
+            <ValidatedTextField
+              id="msgtext"
+              label="Message"
+              postValidate={setMsgTxt}
+              fullWidth
+              multiline
+              minRows={10}
+            />
+          </div>
+          <div>
+            <Button
+              style={{ border: "1px black" }}
+              onClick={checkSubmit}
+              disabled={!submitEnabled()}
+            >
+              Submit
+            </Button>
+          </div>
+        </Box>
       </div>
     </div>
   );
