@@ -19,6 +19,8 @@ export default class HomePage extends React.PureComponent {
           style={{
             textAlign: "center",
             paddingTop: "20px",
+            marginLeft: "50px",
+            marginRight: "50px",
           }}
         >
           Hi and welcome to my page. My name is Claire and I love capturing

@@ -37,6 +37,8 @@ export default class MainPage extends React.Component<
         styleOverrides: {
           root: {
             padding: "10px",
+            maxWidth: "calc(60%)",
+            fontSize: "1.1vmax",
           },
         },
       },
