@@ -7,7 +7,6 @@ import {
 import { get, post } from "./serverbackend";
 
 class mBackend implements Backend {
-  cID = "jemccarthy13@gmail.com";
   //-----------------------------------------------------------------------------
   //
   // Mock data generators for frontend only development
@@ -71,13 +70,16 @@ class mBackend implements Backend {
     return array;
   }
 
+  cID = "jemccarthy13@gmail.com";
   calBaseURL = "https://content.googleapis.com/calendar/v3/calendars/";
   calKey = "AIzaSyAr9L-CnWqSC2mCEkA-4eCHxJ-uZuuL5lg";
 
-  submitBookingAppt(): Promise<void> {
+  //TODO -- replace event:any with event:BookingAppointment
+  submitBookingAppt(event: any): Promise<void> {
     let url = this.calBaseURL + this.cID + "/events?";
-    url += "sendUpdates=all&sendNotifications=true&alt=json";
+    url += "sendUpdates=all&alt=json";
     url += "&key=" + this.calKey;
+    const data = JSON.stringify(event);
     return post({}, "https://www.google.com");
   }
 

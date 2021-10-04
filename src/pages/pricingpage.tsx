@@ -33,8 +33,10 @@ class PricingPage extends React.Component<RouteComponentProps, PState> {
     this.setState({ prices });
   }
 
-  slotClick = () => {
-    this.props.history.push("/booking");
+  slotClick = (title: string) => {
+    return () => {
+      this.props.history.push("/booking?type=" + title);
+    };
   };
   pkgClick = () => {
     this.props.history.push("/contact");
@@ -50,7 +52,9 @@ class PricingPage extends React.Component<RouteComponentProps, PState> {
         return (
           <PricingSlot
             key={price.title + Math.random() * 1000}
-            onClick={price.booking ? this.slotClick : this.pkgClick}
+            onClick={
+              price.booking ? this.slotClick(price.title) : this.pkgClick
+            }
             title={price.title}
             priceText={price.price}
             buttonText={price.booking ? "Book Now" : "Contact"}

@@ -7,8 +7,6 @@ import snackActions from "../alert/alert";
 import { useSyncState } from "../syncstate";
 import ValidatedTextField from "./validatedtextfield";
 
-export const ValidateContext = React.createContext(false);
-
 export default function ContactForm(props: Record<string, unknown>) {
   // form fields
   const [firstName, setFirstName] = React.useState("");
@@ -17,14 +15,13 @@ export default function ContactForm(props: Record<string, unknown>) {
   const [subject, setSubj] = React.useState("");
   const [content, setMsgTxt] = React.useState("");
 
-  // validate on submit clicked
-  const [validateFlag, setValidate] = React.useState(false);
-
   // disable submit when request in progress
   const [submitEnabled, setSubmitEnabled] = useSyncState(true);
 
-  const checkSubmit = () => {
+  const checkSubmit = (event: any) => {
     let formValid = true;
+
+    event.currentTarget.form.reportValidity();
 
     if (firstName === "") formValid = false;
     if (lastName === "") formValid = false;
@@ -34,16 +31,11 @@ export default function ContactForm(props: Record<string, unknown>) {
 
     if (formValid) {
       submitForm();
-    } else {
-      snackActions.error("Please correct the highlighted fields");
     }
   };
 
   const submitForm = async () => {
     setSubmitEnabled(false);
-
-    setValidate(!validateFlag);
-
     let realEmail = email ? email : "unknown";
     if (email && email.indexOf("@") === -1) realEmail += "@gmail.com";
 
@@ -73,7 +65,7 @@ export default function ContactForm(props: Record<string, unknown>) {
       <div className="page-header">Contact Me</div>
       <SocialIcons />
       <div style={{ width: "90%", margin: "auto" }}>
-        <ValidateContext.Provider value={validateFlag}>
+        <form>
           <Box
             component="form"
             style={{
@@ -134,7 +126,7 @@ export default function ContactForm(props: Record<string, unknown>) {
               </Button>
             </div>
           </Box>
-        </ValidateContext.Provider>
+        </form>
       </div>
     </div>
   );

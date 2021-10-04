@@ -13,7 +13,6 @@ import { useSyncState } from "../syncstate";
 import backend from "../backend/backend";
 import { BlackOutDate } from "../backend/backendinterface";
 import ValidatedTextField from "./validatedtextfield";
-import { ValidateContext } from "./contactform";
 
 export default function BookingPage(props: Record<string, unknown>) {
   // Form Fields
@@ -28,8 +27,6 @@ export default function BookingPage(props: Record<string, unknown>) {
   const [outTimes, setOutTimes] = React.useState(tmpDates);
   const [reload, setReload] = React.useState(1);
 
-  const [validateFlag, setValidateFlag] = React.useState(false);
-
   const today = new Date();
   today.setHours(today.getHours() + 3);
 
@@ -40,7 +37,7 @@ export default function BookingPage(props: Record<string, unknown>) {
     const selectedDate = new Date(value);
     selectedDate.setTime(time);
 
-    const passed = currentDate.getTime() < selectedDate.getTime();
+    const passed = currentDate.getTime() <= selectedDate.getTime();
 
     let unavail = false;
     outTimes.forEach((t) => {
@@ -67,7 +64,6 @@ export default function BookingPage(props: Record<string, unknown>) {
   const makeBooking = () => {
     console.log(value, firstName, lastName, email);
     console.log("making booking...");
-    setValidateFlag(!validateFlag);
   };
 
   useEffect(() => {
@@ -119,8 +115,8 @@ export default function BookingPage(props: Record<string, unknown>) {
               showTimeSelect
               showTimeSelectOnly
               minDate={today}
-              minTime={new Date(value).setHours(6)}
-              maxTime={new Date(value).setHours(20)}
+              minTime={new Date(value).setHours(5)}
+              maxTime={new Date(value).setHours(21)}
               timeIntervals={30}
               dateFormat="h:mm aa"
               inline
@@ -130,43 +126,41 @@ export default function BookingPage(props: Record<string, unknown>) {
         </LocalizationProvider>
       </div>
       <div>
-        <ValidateContext.Provider value={validateFlag}>
-          <Box
-            component="form"
-            style={{
-              paddingTop: "25px",
-              paddingLeft: "10px",
-              paddingRight: "10px",
-            }}
-          >
-            <div style={{ display: "inline-flex" }}>
-              <ValidatedTextField
-                id="firstname"
-                label="First Name"
-                postValidate={setFirstName}
-                size="small"
-              />
-              <ValidatedTextField
-                id="lastname"
-                label="Last Name"
-                postValidate={setLastName}
-                size="small"
-              />
-            </div>
-            <div>
-              <ValidatedTextField
-                id="email"
-                label="Email Address"
-                postValidate={setEmail}
-                size="small"
-                fullWidth
-              />
-            </div>
-            <Button disabled={!submitEnabled()} onClick={makeBooking}>
-              Submit
-            </Button>
-          </Box>
-        </ValidateContext.Provider>
+        <Box
+          component="form"
+          style={{
+            paddingTop: "25px",
+            paddingLeft: "10px",
+            paddingRight: "10px",
+          }}
+        >
+          <div style={{ display: "inline-flex" }}>
+            <ValidatedTextField
+              id="firstname"
+              label="First Name"
+              postValidate={setFirstName}
+              size="small"
+            />
+            <ValidatedTextField
+              id="lastname"
+              label="Last Name"
+              postValidate={setLastName}
+              size="small"
+            />
+          </div>
+          <div>
+            <ValidatedTextField
+              id="email"
+              label="Email Address"
+              postValidate={setEmail}
+              size="small"
+              fullWidth
+            />
+          </div>
+          <Button disabled={!submitEnabled()} onClick={makeBooking}>
+            Submit
+          </Button>
+        </Box>
       </div>
     </div>
   );
