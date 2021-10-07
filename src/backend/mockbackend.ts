@@ -42,6 +42,11 @@ class mBackend implements Backend {
   //
   //-----------------------------------------------------------------------------
 
+  // Mock SELECT * FROM PRICING WHERE BOOKING=1
+  getPricingOptions(): string[] {
+    return ["30-minute", "45-minute"];
+  }
+
   // Mock SELECT * FROM PRICING
   getPrices(): PricingData[] {
     const array: PricingData[] = [];
@@ -75,6 +80,8 @@ class mBackend implements Backend {
   calBaseURL = "https://content.googleapis.com/calendar/v3/calendars/";
   calKey = "AIzaSyCsyQYXAr3wjRTbhvvS--WDFVsESAObrS4";
 
+  baseURL = "http://claire.parrotsour.com";
+
   submitBookingAppt(event: BookingAppointment): Promise<boolean> {
     // let url = this.calBaseURL + this.cID + "/events?";
     // // url += "sendUpdates=all&alt=json";
@@ -82,8 +89,10 @@ class mBackend implements Backend {
     // // const data = JSON.stringify(event);
     // return post(data, url);
 
+    let url = this.baseURL + "/api/event.php";
     const data = JSON.stringify(event);
 
+    post(data, url);
     return new Promise(() => true);
   }
 

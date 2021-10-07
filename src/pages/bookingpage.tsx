@@ -8,17 +8,19 @@ import SocialIcons from "../socialicons";
 import DatePicker from "react-datepicker";
 
 import "../css/datepicker.css";
-import { Box, Button, CircularProgress } from "@mui/material";
+import { Box, Button, CircularProgress, MenuItem } from "@mui/material";
 import { useSyncState } from "../syncstate";
 import backend from "../backend/backend";
 import { BlackOutDate, BookingAppointment } from "../backend/backendinterface";
 import ValidatedTextField from "./validatedtextfield";
+import SnackActions from "../alert/alert";
 
 export default function BookingPage() {
   // Form Fields
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [email, setEmail] = React.useState("");
+  const [type, setType] = React.useState("");
 
   // Date Picker
   const [value, setValue] = React.useState(new Date());
@@ -77,9 +79,9 @@ export default function BookingPage() {
       summary: "30-minute",
       attendees: [
         {
-          email: "jemccarthy13@gmail.com",
+          email: "jemccarthy13@gmail.com", //TODO -- change to clairemariefotografie@yahoo.de
         },
-        { email: "fake@fake.c.com.c", displayName: "Claire" },
+        { email: email, displayName: firstName + " " + lastName },
       ],
     };
 
@@ -89,6 +91,8 @@ export default function BookingPage() {
 
     if (result) {
       setSubmitted(true);
+    } else {
+      SnackActions.error("Submission failed. Please try again later.");
     }
   };
 
@@ -102,6 +106,16 @@ export default function BookingPage() {
     myFun();
     setLoaded(true);
   }, [reload]);
+
+  useEffect(() => {
+    const queryString = window.location.hash;
+    console.log(queryString.replace("#/booking", ""));
+    const urlParams = new URLSearchParams(queryString.replace("#/booking", ""));
+    console.log(urlParams);
+    const t = urlParams.get("type");
+    console.log(t);
+    setType(t === null ? "30-minute" : t);
+  }, []);
 
   return (
     <div className="page-content" style={{ textAlign: "center" }}>
@@ -162,21 +176,23 @@ export default function BookingPage() {
             paddingRight: "10px",
           }}
         >
-          <div style={{ display: "inline-flex" }}>
+          <div style={{ display: "inline-flex", width: "100%" }}>
             <ValidatedTextField
               id="firstname"
               label="First Name"
               postValidate={setFirstName}
               size="small"
+              fullWidth
             />
             <ValidatedTextField
               id="lastname"
               label="Last Name"
               postValidate={setLastName}
               size="small"
+              fullWidth
             />
           </div>
-          <div>
+          <div style={{ display: "inline-flex", width: "100%" }}>
             <ValidatedTextField
               id="email"
               label="Email Address"
@@ -184,6 +200,18 @@ export default function BookingPage() {
               size="small"
               fullWidth
             />
+            <ValidatedTextField
+              id="shoot_type"
+              label="Session"
+              size="small"
+              postValidate={setType}
+              select
+              fullWidth
+              value={type}
+            >
+              <MenuItem value={"30-minute"}>30-minute</MenuItem>
+              <MenuItem value={"45-minute"}>45-minute</MenuItem>
+            </ValidatedTextField>
           </div>
           <Button disabled={!submitEnabled()} onClick={makeBooking}>
             Submit
