@@ -1,4 +1,3 @@
-import { CircularProgress } from "@mui/material";
 import React from "react";
 
 import { PricingTable, PricingSlot, PricingDetail } from "react-pricing-table";
@@ -45,7 +44,9 @@ class PricingPage extends React.Component<RouteComponentProps, PState> {
   getPricingRows = () => {
     const { prices } = this.state;
 
-    let tableRows: JSX.Element[] = [<CircularProgress key={"prog" + 1} />];
+    let tableRows: JSX.Element[] = [
+      <div key={prices.length + Math.random() * 1000}>Loading...</div>,
+    ];
 
     if (prices.length !== 0) {
       tableRows = prices.map((price) => {

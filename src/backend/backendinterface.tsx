@@ -24,7 +24,21 @@ export type BlackOutDate = {
   end: Date;
 };
 
+export type Attendee = {
+  email: string;
+  displayName?: string;
+};
+
+export type BookingAppointment = {
+  end: { dateTime: string };
+  start: { dateTime: string };
+  status: string;
+  summary: string;
+  attendees: Attendee[];
+};
+
 export interface Backend {
   getPrices: { (): PricingData[] };
   getBlackOutDates: { (): Promise<BlackOut> };
+  submitBookingAppt: (event: BookingAppointment) => Promise<boolean>;
 }

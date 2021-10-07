@@ -11,7 +11,7 @@ import "../css/datepicker.css";
 import { Box, Button, CircularProgress } from "@mui/material";
 import { useSyncState } from "../syncstate";
 import backend from "../backend/backend";
-import { BlackOutDate } from "../backend/backendinterface";
+import { BlackOutDate, BookingAppointment } from "../backend/backendinterface";
 import ValidatedTextField from "./validatedtextfield";
 
 export default function BookingPage() {
@@ -23,9 +23,13 @@ export default function BookingPage() {
   // Date Picker
   const [value, setValue] = React.useState(new Date());
   const tmpDates: BlackOutDate[] = [];
+  const [outDatesLoaded, setLoaded] = React.useState(false);
   const [outDates, setOutDates] = React.useState(tmpDates);
   const [outTimes, setOutTimes] = React.useState(tmpDates);
   const [reload, setReload] = React.useState(1);
+
+  // Booking submitted
+  const [submitted, setSubmitted] = React.useState(false);
 
   const today = new Date();
   today.setHours(today.getHours() + 3);
@@ -56,8 +60,6 @@ export default function BookingPage() {
         blackout = true;
       }
     });
-
-    // TODO -- implement blackout dates
     return blackout;
   };
 
@@ -65,15 +67,40 @@ export default function BookingPage() {
     event.currentTarget.form.reportValidity();
     console.log(value, firstName, lastName, email);
     console.log("making booking...");
+
+    const end = new Date(value.getTime() + 30 * 60000);
+
+    let appt: BookingAppointment = {
+      start: { dateTime: value.toISOString() },
+      end: { dateTime: end.toISOString() },
+      status: "tentative",
+      summary: "30-minute",
+      attendees: [
+        {
+          email: "jemccarthy13@gmail.com",
+        },
+        { email: "fake@fake.c.com.c", displayName: "Claire" },
+      ],
+    };
+
+    const result: any = backend.submitBookingAppt(appt);
+
+    console.log(result);
+
+    if (result) {
+      setSubmitted(true);
+    }
   };
 
   useEffect(() => {
+    setLoaded(false);
     async function myFun() {
       const blackout = await backend.getBlackOutDates();
       setOutDates(blackout.dates);
       setOutTimes(blackout.times);
     }
     myFun();
+    setLoaded(true);
   }, [reload]);
 
   return (
@@ -101,7 +128,7 @@ export default function BookingPage() {
               }
             }}
             shouldDisableDate={checkDate}
-            loading={outDates.length === 0}
+            loading={!outDatesLoaded}
             renderLoading={() => {
               return <CircularProgress />;
             }}

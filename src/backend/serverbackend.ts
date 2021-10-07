@@ -1,7 +1,7 @@
 import {
   Backend,
   BlackOut,
-  BlackOutDate,
+  BookingAppointment,
   PricingData,
 } from "./backendinterface";
 
@@ -28,7 +28,7 @@ export async function get(url = "") {
 // eslint-disable-next-line
 export async function post(data: any, url = "") {
   const response = await fetch(baseURL + url, {
-    method: "PUT",
+    method: "POST",
     mode: "cors",
     cache: "no-cache",
     credentials: "same-origin",
@@ -60,6 +60,10 @@ class sBackend implements Backend {
       mydata = data;
     });
     return mydata;
+  }
+
+  submitBookingAppt(event: BookingAppointment): Promise<boolean> {
+    return new Promise(() => true);
   }
 }
 

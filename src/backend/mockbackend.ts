@@ -2,6 +2,7 @@ import {
   Backend,
   BlackOut,
   BlackOutDate,
+  BookingAppointment,
   PricingData,
 } from "./backendinterface";
 import { get, post } from "./serverbackend";
@@ -72,15 +73,18 @@ class mBackend implements Backend {
 
   cID = "jemccarthy13@gmail.com";
   calBaseURL = "https://content.googleapis.com/calendar/v3/calendars/";
-  calKey = "AIzaSyAr9L-CnWqSC2mCEkA-4eCHxJ-uZuuL5lg";
+  calKey = "AIzaSyCsyQYXAr3wjRTbhvvS--WDFVsESAObrS4";
 
-  //TODO -- replace event:any with event:BookingAppointment
-  submitBookingAppt(event: any): Promise<void> {
-    let url = this.calBaseURL + this.cID + "/events?";
-    url += "sendUpdates=all&alt=json";
-    url += "&key=" + this.calKey;
+  submitBookingAppt(event: BookingAppointment): Promise<boolean> {
+    // let url = this.calBaseURL + this.cID + "/events?";
+    // // url += "sendUpdates=all&alt=json";
+    // // url += "&key=" + this.calKey;
+    // // const data = JSON.stringify(event);
+    // return post(data, url);
+
     const data = JSON.stringify(event);
-    return post({}, "https://www.google.com");
+
+    return new Promise(() => true);
   }
 
   getBlackOutDates(): Promise<BlackOut> {
