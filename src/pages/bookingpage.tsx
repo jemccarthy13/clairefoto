@@ -116,11 +116,8 @@ export default function BookingPage() {
 
   useEffect(() => {
     const queryString = window.location.hash;
-    console.log(queryString.replace("#/booking", ""));
     const urlParams = new URLSearchParams(queryString.replace("#/booking", ""));
-    console.log(urlParams);
     const t = urlParams.get("type");
-    console.log(t);
     setType(t === null ? "30-minute" : t);
   }, []);
 
@@ -225,7 +222,7 @@ export default function BookingPage() {
           </Button>
         </Box>
       </div>
-      {true && (
+      {(true || submitted) && (
         <div
           style={{
             overflow: "auto",
