@@ -89,7 +89,7 @@ class mBackend implements Backend {
     // // const data = JSON.stringify(event);
     // return post(data, url);
 
-    let url = this.baseURL + "/api/event.php";
+    let url = "/api/event.php";
     const data = JSON.stringify(event);
 
     post(data, url);
