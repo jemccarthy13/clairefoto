@@ -1,0 +1,20 @@
+
+-- Contact Form 
+---- Email customer for contact form (your response submitted)
+---- Validation for email address ("report validity" -> should not send with "jem")
+
+-- aspect ratio for photos
+
+-- pricing -> booking -> Timify
+---- Timify dev access  
+---- Timify backend with api dev / key
+---- Timify custom widget for booking (component)
+---- Link products to pricing slots / tiles
+---- Payment?
+---- Email notification for booking
+
+-- album linked to timify customers
+---- Give claire ability to make albums associated with Timify customers
+---- Create page for album, load photos from the database
+-------- Enable download for photos associated with an album
+---- When album is created, send email notification

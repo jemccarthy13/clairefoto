@@ -65,7 +65,7 @@ export default function BookingPage() {
     return blackout;
   };
 
-  const makeBooking = (event: any) => {
+  const makeBooking = async (event: any) => {
     event.currentTarget.form.reportValidity();
     console.log(value, firstName, lastName, email);
     console.log("making booking...");
@@ -85,10 +85,17 @@ export default function BookingPage() {
       ],
     };
 
-    const result: any = backend.submitBookingAppt(appt);
+    // TODO -- fix this to be non-testing functionality
 
+    let result = false;
+    try {
+      result = await backend.submitBookingAppt(appt);
+    } catch {
+      setSubmitted(true);
+    }
     console.log(result);
 
+    setSubmitted(true);
     if (result) {
       setSubmitted(true);
     } else {
@@ -218,6 +225,44 @@ export default function BookingPage() {
           </Button>
         </Box>
       </div>
+      {true && (
+        <div
+          style={{
+            overflow: "auto",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            width: "259px",
+            background: "#FFFFFF",
+            borderRadius: "10px",
+            fontFamily: "SQ Market, Helvetica, Arial, sans-serif",
+          }}
+        >
+          <div style={{ padding: "20px" }}>
+            <a
+              id="embedded-checkout-modal-checkout-button"
+              target="_blank"
+              rel="noreferrer"
+              data-url="https://checkout.square.site/merchant/MLZ8VWJTQG29V/checkout/4TWWJSNJZFEJM4MF7DBVANKB?src=embd"
+              href="https://checkout.square.site/merchant/MLZ8VWJTQG29V/checkout/4TWWJSNJZFEJM4MF7DBVANKB?src=embed"
+              style={{
+                display: "inline-block",
+                fontSize: "18px",
+                lineHeight: "48px",
+                height: "48px",
+                color: "#ffffff",
+                minWidth: "212px",
+                backgroundColor: "#000000",
+                textAlign: "center",
+                boxShadow: "0 0 0 1px rgba(0,0,0,0.1) inset",
+              }}
+            >
+              Pay now
+            </a>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

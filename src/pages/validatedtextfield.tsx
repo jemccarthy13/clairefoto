@@ -38,6 +38,7 @@ export default function ValidatedTextField(props: ValidatedTFProps) {
     if (!re.test(val)) {
       setErrorText("Invalid email");
     } else {
+      props.postValidate(val)
       setErrorText("");
     }
   };
