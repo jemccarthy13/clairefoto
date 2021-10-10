@@ -225,15 +225,7 @@ export default function BookingPage() {
       {(true || submitted) && (
         <div
           style={{
-            overflow: "auto",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            width: "259px",
-            background: "#FFFFFF",
-            borderRadius: "10px",
-            fontFamily: "SQ Market, Helvetica, Arial, sans-serif",
+            width: "100%",
           }}
         >
           <div style={{ padding: "20px" }}>
@@ -250,9 +242,11 @@ export default function BookingPage() {
                 height: "48px",
                 color: "#ffffff",
                 minWidth: "212px",
-                backgroundColor: "#000000",
+                backgroundColor: "#1976d2",
                 textAlign: "center",
-                boxShadow: "0 0 0 1px rgba(0,0,0,0.1) inset",
+                boxShadow: "0 0 0 5px rgba(0,0,0,0.1) inset",
+                borderRadius: "10px",
+                textDecoration: "none",
               }}
             >
               Pay now
