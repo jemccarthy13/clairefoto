@@ -1,20 +1,23 @@
 
--- Contact Form 
----- Email customer for contact form (your response submitted)
----- Validation for email address ("report validity" -> should not send with "jem")
-
 -- aspect ratio for photos
 
--- pricing -> booking -> Timify
+-- pricing -> booking -> Timify / Square?
+--- If Timify
 ---- Timify dev access  
 ---- Timify backend with api dev / key
 ---- Timify custom widget for booking (component)
 ---- Link products to pricing slots / tiles
 ---- Payment?
 ---- Email notification for booking
+--- If Square
+---- Schedule bookings -> blackout dates?
+---- Confirm bookings
+---- After booking is confirmed, pay now button?
+---- Send email with "pay now" link?
 
--- album linked to timify customers
----- Give claire ability to make albums associated with Timify customers
----- Create page for album, load photos from the database
+-- album linked to timify/square customers
+---- Give claire ability to make albums associated with customers
+---- Create page for album (password entry screen), load photos from the database
 -------- Enable download for photos associated with an album
----- When album is created, send email notification
+-------- Timed Cookies for save login to re-visit album site
+---- When album is created, send email notification (avail to download)
