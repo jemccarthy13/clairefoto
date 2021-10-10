@@ -11,7 +11,7 @@ export default function ContactForm(props: Record<string, unknown>) {
   // form fields
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
-  const [email, setEmail] = React.useState("");
+  const [emailAddress, setEmail] = React.useState("");
   const [subject, setSubj] = React.useState("");
   const [content, setMsgTxt] = React.useState("");
 
@@ -19,16 +19,13 @@ export default function ContactForm(props: Record<string, unknown>) {
   const [submitEnabled, setSubmitEnabled] = useSyncState(true);
 
   const checkSubmit = (event: any) => {
-    let formValid = true;
+    let formValid = event.currentTarget.form.reportValidity();
 
-    event.currentTarget.form.reportValidity();
+    formValid = formValid && emailAddress!==""
 
-    if (firstName === "") formValid = false;
-    if (lastName === "") formValid = false;
-    if (email === "") formValid = false;
-    if (subject === "") formValid = false;
-    if (content === "") formValid = false;
-
+    if (emailAddress===""){
+      snackActions.error("Please correct the highlighted fields.")
+    }
     if (formValid) {
       submitForm();
     }
@@ -36,25 +33,35 @@ export default function ContactForm(props: Record<string, unknown>) {
 
   const submitForm = async () => {
     setSubmitEnabled(false);
-    let realEmail = email ? email : "unknown";
-    if (email && email.indexOf("@") === -1) realEmail += "@gmail.com";
+    
+    const contactData = new FormData();
+    contactData.append("email", emailAddress);
+    contactData.append("subj",subject)
+    contactData.append("comments", content + " \n\n");
 
-    const formData = new FormData();
-    formData.append("email", realEmail);
-    formData.append("comments", content + " \n\n");
+    const confirmData = new FormData();
+    confirmData.append("email", emailAddress);
+    confirmData.append("first_name",firstName);
+    confirmData.append("last_name",lastName);
 
     const response = await fetch(
-      process.env.PUBLIC_URL + "/database/emailissue.php",
+      process.env.PUBLIC_URL + "/database/contactme.php",
       {
         method: "POST",
-        body: formData,
+        body: contactData,
       }
     );
+
+    await fetch(process.env.PUBLIC_URL+"/database/contactconfirm.php",
+    {
+      method:"POST",
+      body: confirmData,
+    })
 
     if (response.ok) {
       snackActions.success("Submitted!");
     } else {
-      snackActions.error("Form submit failed.\nPlease try again.");
+      snackActions.error("Form submit failed. Please try again later.");
     }
 
     setSubmitEnabled(true);
