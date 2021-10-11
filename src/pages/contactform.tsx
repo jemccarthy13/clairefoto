@@ -47,20 +47,31 @@ export default function ContactForm(props: Record<string, unknown>) {
     confirmData.append("first_name", firstName);
     confirmData.append("last_name", lastName);
 
-    const response = await fetch(
-      process.env.PUBLIC_URL + "/database/contactme.php",
-      {
+    let success = false;
+
+    try {
+      // TODO -- build API for this?
+      const response = await fetch(
+        process.env.PUBLIC_URL + "/database/contactme.php",
+        {
+          method: "POST",
+          body: contactData,
+        }
+      );
+
+      await fetch(process.env.PUBLIC_URL + "/database/contactconfirm.php", {
         method: "POST",
-        body: contactData,
+        body: confirmData,
+      });
+
+      if (response.ok) {
+        success = true;
       }
-    );
+    } catch {
+      // do nothing
+    }
 
-    await fetch(process.env.PUBLIC_URL + "/database/contactconfirm.php", {
-      method: "POST",
-      body: confirmData,
-    });
-
-    if (response.ok) {
+    if (success) {
       snackActions.success("Submitted!");
     } else {
       snackActions.error("Form submit failed. Please try again later.");
