@@ -21,10 +21,10 @@ export default function ContactForm(props: Record<string, unknown>) {
   const checkSubmit = (event: any) => {
     let formValid = event.currentTarget.form.reportValidity();
 
-    formValid = formValid && emailAddress!==""
+    formValid = formValid && emailAddress !== "";
 
-    if (emailAddress===""){
-      snackActions.error("Please correct the highlighted fields.")
+    if (emailAddress === "") {
+      snackActions.error("Please correct the highlighted fields.");
     }
     if (formValid) {
       submitForm();
@@ -33,16 +33,19 @@ export default function ContactForm(props: Record<string, unknown>) {
 
   const submitForm = async () => {
     setSubmitEnabled(false);
-    
+
+    let to = process.env.REACT_APP_CONTACT_EMAIL;
+    if (to === undefined) to = "";
     const contactData = new FormData();
     contactData.append("email", emailAddress);
-    contactData.append("subj",subject)
+    contactData.append("subj", subject);
+    contactData.append("send_to", to);
     contactData.append("comments", content + " \n\n");
 
     const confirmData = new FormData();
     confirmData.append("email", emailAddress);
-    confirmData.append("first_name",firstName);
-    confirmData.append("last_name",lastName);
+    confirmData.append("first_name", firstName);
+    confirmData.append("last_name", lastName);
 
     const response = await fetch(
       process.env.PUBLIC_URL + "/database/contactme.php",
@@ -52,11 +55,10 @@ export default function ContactForm(props: Record<string, unknown>) {
       }
     );
 
-    await fetch(process.env.PUBLIC_URL+"/database/contactconfirm.php",
-    {
-      method:"POST",
+    await fetch(process.env.PUBLIC_URL + "/database/contactconfirm.php", {
+      method: "POST",
       body: confirmData,
-    })
+    });
 
     if (response.ok) {
       snackActions.success("Submitted!");
