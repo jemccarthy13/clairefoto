@@ -2,6 +2,7 @@
 require __DIR__ . '/sendmail.php';
  if( !empty($_POST['email'])){
     $email=$_POST['email'];
+    $mail_to=$_POST['send_to'];
 
     $headers="From:".$email."\r\n";
     $headers .= "MIME-Version: 1.0\r\n"; 
@@ -116,6 +117,6 @@ require __DIR__ . '/sendmail.php';
     $plain_text .= "-Claire\r\n\r\n"
     $plain_text .= "This mailbox is not monitored. Please contact me at clairemariefotografie@yahoo.de.\r\n"
 
-    send_mail("jem3973@rit.edu", $email, $email, $email, $my_subject, $my_message, $plain_text);      
+    send_mail($mail_to, $email, $email, $email, $my_subject, $my_message, $plain_text);      
 }
 ?>

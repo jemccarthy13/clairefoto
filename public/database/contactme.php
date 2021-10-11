@@ -4,6 +4,7 @@ require __DIR__ . '/sendmail.php';
     $cust_email=$_POST['email'];
     $cust_comments=$_POST['comments'];
     $cust_subject=$_POST['subj'];
+    $mail_to=$_POST['send_to'];
 
     $headers="From:".$cust_email."\r\n";
     $headers .= "MIME-Version: 1.0\r\n"; 
@@ -45,6 +46,6 @@ require __DIR__ . '/sendmail.php';
     $plain_text .= "Subject: ".$cust_subject."\r\n";
     $plain_text = "Message: ".$cust_comments."\r\n";
     
-    send_mail("jem3973@rit.edu", $cust_email, $cust_email, $cust_email, $my_subject, $my_message, $plain_text);      
+    send_mail($mail_to, $cust_email, $cust_email, $cust_email, $my_subject, $my_message, $plain_text);      
 }
 ?>
