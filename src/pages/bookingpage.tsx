@@ -121,139 +121,153 @@ export default function BookingPage() {
     setType(t === null ? "30-minute" : t);
   }, []);
 
-  return (
-    <div className="page-content" style={{ textAlign: "center" }}>
-      <div className="page-header">Booking</div>
-      <SocialIcons />
+  if (process.env.REACT_APP_BOOKING_ENABLED === "false") {
+    return (
+      <div className="page-content" style={{ textAlign: "center" }}>
+        <div className="page-header">Booking</div>
+        <SocialIcons />
+        <br />
+        <br />
+        <div>
+          Coming soon. For now, please <a href="/#/contact">contact me.</a>
+        </div>
+      </div>
+    );
+  } else {
+    return (
+      <div className="page-content" style={{ textAlign: "center" }}>
+        <div className="page-header">Booking</div>
+        <SocialIcons />
 
-      <div
-        style={{
-          display: "inline-flex",
-          width: "90%",
-          margin: "auto",
-          paddingTop: "20px",
-        }}
-      >
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <CalendarPicker
-            className={"datepicker"}
-            date={value}
-            minDate={today}
-            onChange={(date: Date | null) => {
-              if (date !== null) {
-                setValue(date);
-                setReload(reload + 1);
-              }
-            }}
-            shouldDisableDate={checkDate}
-            loading={!outDatesLoaded}
-            renderLoading={() => {
-              return <CircularProgress />;
-            }}
-          />
-          <div style={{ margin: "auto", marginLeft: "unset" }}>
-            <DatePicker
-              selected={value}
-              onChange={(date: Date | null) => {
-                if (date !== null) setValue(date);
-                setSubmitEnabled(true);
-              }}
-              showTimeSelect
-              showTimeSelectOnly
-              minDate={today}
-              minTime={new Date(value).setHours(5)}
-              maxTime={new Date(value).setHours(21)}
-              timeIntervals={30}
-              dateFormat="h:mm aa"
-              inline
-              filterTime={filterTimes}
-            />
-          </div>
-        </LocalizationProvider>
-      </div>
-      <div>
-        <Box
-          component="form"
-          style={{
-            paddingTop: "25px",
-            paddingLeft: "10px",
-            paddingRight: "10px",
-          }}
-        >
-          <div style={{ display: "inline-flex", width: "100%" }}>
-            <ValidatedTextField
-              id="firstname"
-              label="First Name"
-              postValidate={setFirstName}
-              size="small"
-              fullWidth
-            />
-            <ValidatedTextField
-              id="lastname"
-              label="Last Name"
-              postValidate={setLastName}
-              size="small"
-              fullWidth
-            />
-          </div>
-          <div style={{ display: "inline-flex", width: "100%" }}>
-            <ValidatedTextField
-              id="email"
-              label="Email Address"
-              postValidate={setEmail}
-              size="small"
-              fullWidth
-            />
-            <ValidatedTextField
-              id="shoot_type"
-              label="Session"
-              size="small"
-              postValidate={setType}
-              select
-              fullWidth
-              value={type}
-            >
-              <MenuItem value={"30-minute"}>30-minute</MenuItem>
-              <MenuItem value={"45-minute"}>45-minute</MenuItem>
-            </ValidatedTextField>
-          </div>
-          <Button disabled={!submitEnabled()} onClick={makeBooking}>
-            Submit
-          </Button>
-        </Box>
-      </div>
-      {(true || submitted) && (
         <div
           style={{
-            width: "100%",
+            display: "inline-flex",
+            width: "90%",
+            margin: "auto",
+            paddingTop: "20px",
           }}
         >
-          <div style={{ padding: "20px" }}>
-            <a
-              id="embedded-checkout-modal-checkout-button"
-              target="_blank"
-              rel="noreferrer"
-              data-url="https://checkout.square.site/merchant/MLZ8VWJTQG29V/checkout/4TWWJSNJZFEJM4MF7DBVANKB?src=embd"
-              href="https://checkout.square.site/merchant/MLZ8VWJTQG29V/checkout/4TWWJSNJZFEJM4MF7DBVANKB?src=embed"
-              style={{
-                display: "inline-block",
-                fontSize: "18px",
-                lineHeight: "48px",
-                height: "48px",
-                color: "#ffffff",
-                minWidth: "212px",
-                backgroundColor: "#1976d2",
-                textAlign: "center",
-                boxShadow: "0 0 0 5px rgba(0,0,0,0.1) inset",
-                borderRadius: "10px",
-                textDecoration: "none",
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <CalendarPicker
+              className={"datepicker"}
+              date={value}
+              minDate={today}
+              onChange={(date: Date | null) => {
+                if (date !== null) {
+                  setValue(date);
+                  setReload(reload + 1);
+                }
               }}
-            >
-              Pay now
-            </a>
-          </div>
+              shouldDisableDate={checkDate}
+              loading={!outDatesLoaded}
+              renderLoading={() => {
+                return <CircularProgress />;
+              }}
+            />
+            <div style={{ margin: "auto", marginLeft: "unset" }}>
+              <DatePicker
+                selected={value}
+                onChange={(date: Date | null) => {
+                  if (date !== null) setValue(date);
+                  setSubmitEnabled(true);
+                }}
+                showTimeSelect
+                showTimeSelectOnly
+                minDate={today}
+                minTime={new Date(value).setHours(5)}
+                maxTime={new Date(value).setHours(21)}
+                timeIntervals={30}
+                dateFormat="h:mm aa"
+                inline
+                filterTime={filterTimes}
+              />
+            </div>
+          </LocalizationProvider>
         </div>
-      )}
-    </div>
-  );
+        <div>
+          <Box
+            component="form"
+            style={{
+              paddingTop: "25px",
+              paddingLeft: "10px",
+              paddingRight: "10px",
+            }}
+          >
+            <div style={{ display: "inline-flex", width: "100%" }}>
+              <ValidatedTextField
+                id="firstname"
+                label="First Name"
+                postValidate={setFirstName}
+                size="small"
+                fullWidth
+              />
+              <ValidatedTextField
+                id="lastname"
+                label="Last Name"
+                postValidate={setLastName}
+                size="small"
+                fullWidth
+              />
+            </div>
+            <div style={{ display: "inline-flex", width: "100%" }}>
+              <ValidatedTextField
+                id="email"
+                label="Email Address"
+                postValidate={setEmail}
+                size="small"
+                fullWidth
+              />
+              <ValidatedTextField
+                id="shoot_type"
+                label="Session"
+                size="small"
+                postValidate={setType}
+                select
+                fullWidth
+                value={type}
+              >
+                <MenuItem value={"30-minute"}>30-minute</MenuItem>
+                <MenuItem value={"45-minute"}>45-minute</MenuItem>
+              </ValidatedTextField>
+            </div>
+            <Button disabled={!submitEnabled()} onClick={makeBooking}>
+              Submit
+            </Button>
+          </Box>
+        </div>
+        {(true || submitted) && (
+          <div
+            style={{
+              width: "100%",
+            }}
+          >
+            <div style={{ padding: "20px" }}>
+              <a
+                id="embedded-checkout-modal-checkout-button"
+                target="_blank"
+                rel="noreferrer"
+                data-url="https://checkout.square.site/merchant/MLZ8VWJTQG29V/checkout/4TWWJSNJZFEJM4MF7DBVANKB?src=embd"
+                href="https://checkout.square.site/merchant/MLZ8VWJTQG29V/checkout/4TWWJSNJZFEJM4MF7DBVANKB?src=embed"
+                style={{
+                  display: "inline-block",
+                  fontSize: "18px",
+                  lineHeight: "48px",
+                  height: "48px",
+                  color: "#ffffff",
+                  minWidth: "212px",
+                  backgroundColor: "#1976d2",
+                  textAlign: "center",
+                  boxShadow: "0 0 0 5px rgba(0,0,0,0.1) inset",
+                  borderRadius: "10px",
+                  textDecoration: "none",
+                }}
+              >
+                Pay now
+              </a>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
 }
