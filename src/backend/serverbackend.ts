@@ -1,9 +1,4 @@
-import {
-  Backend,
-  BlackOut,
-  BookingAppointment,
-  PricingData,
-} from "./backendinterface";
+import { BlackOut, BookingAppointment, PricingData } from "./backendinterface";
 
 const baseURL = "";
 
@@ -41,7 +36,7 @@ export async function post(data: any, url = "") {
   return response.json();
 }
 
-class sBackend implements Backend {
+class sBackend {
   async addPrice(price: PricingData): Promise<string> {
     return post(price, "/api/prices.php");
   }

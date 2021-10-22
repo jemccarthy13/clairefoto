@@ -36,9 +36,3 @@ export type BookingAppointment = {
   summary: string;
   attendees: Attendee[];
 };
-
-export interface Backend {
-  getPrices: { (): PricingData[] };
-  getBlackOutDates: { (): Promise<BlackOut> };
-  submitBookingAppt: (event: BookingAppointment) => Promise<boolean>;
-}

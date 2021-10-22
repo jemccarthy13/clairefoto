@@ -1,11 +1,11 @@
 import React from "react";
 
 import { Box, Button } from "@mui/material";
-import SocialIcons from "../socialicons";
+import SocialIcons from "../../socialicons";
 
-import snackActions from "../alert/alert";
-import { useSyncState } from "../syncstate";
-import ValidatedTextField from "./validatedtextfield";
+import snackActions from "../../alert/alert";
+import { useSyncState } from "../../syncstate";
+import ValidatedTextField from "../validatedtextfield";
 
 export default function ContactForm(props: Record<string, unknown>) {
   // form fields

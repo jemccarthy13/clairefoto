@@ -3,6 +3,10 @@ import ReactDOM from "react-dom";
 import "./css/theme.css";
 // import reportWebVitals from "./reportWebVitals";
 
+import "react-app-polyfill/ie9";
+import "react-app-polyfill/ie11";
+import "react-app-polyfill/stable";
+
 import Home from "./Home";
 import GlobalSnackbarProvider from "./alert/globalalertprovider";
 import CookieConsent from "react-cookie-consent";

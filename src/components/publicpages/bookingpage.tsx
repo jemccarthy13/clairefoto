@@ -3,17 +3,20 @@ import React, { useEffect } from "react";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { CalendarPicker, LocalizationProvider } from "@mui/lab";
 
-import SocialIcons from "../socialicons";
+import SocialIcons from "../../socialicons";
 
 import DatePicker from "react-datepicker";
 
-import "../css/datepicker.css";
+import "../../css/datepicker.css";
 import { Box, Button, CircularProgress, MenuItem } from "@mui/material";
-import { useSyncState } from "../syncstate";
-import backend from "../backend/backend";
-import { BlackOutDate, BookingAppointment } from "../backend/backendinterface";
-import ValidatedTextField from "./validatedtextfield";
-import SnackActions from "../alert/alert";
+import { useSyncState } from "../../syncstate";
+import backend from "../../backend/backend";
+import {
+  BlackOutDate,
+  BookingAppointment,
+} from "../../backend/backendinterface";
+import ValidatedTextField from "../validatedtextfield";
+import SnackActions from "../../alert/alert";
 
 export default function BookingPage() {
   // Form Fields

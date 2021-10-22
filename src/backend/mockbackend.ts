@@ -1,5 +1,4 @@
 import {
-  Backend,
   BlackOut,
   BlackOutDate,
   BookingAppointment,
@@ -7,7 +6,7 @@ import {
 } from "./backendinterface";
 import { get, post } from "./serverbackend";
 
-class mBackend implements Backend {
+class mBackend {
   //-----------------------------------------------------------------------------
   //
   // Mock data generators for frontend only development
