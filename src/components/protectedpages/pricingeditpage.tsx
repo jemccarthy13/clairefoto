@@ -8,9 +8,7 @@ export default function PricingEditor() {
   const defPrices: PricingData[] = [];
   const [prices, setPrices] = useState(defPrices);
 
-  console.log("shit");
   useEffect(() => {
-    console.log("fetch prices");
     const prices = backend.getPrices();
     setPrices(prices);
   }, []);

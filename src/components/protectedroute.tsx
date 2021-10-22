@@ -1,25 +1,20 @@
 import React from "react";
-import { Route, RouteProps, useHistory } from "react-router-dom";
-import { AuthContext } from "./authcontext";
+import { Redirect, Route } from "react-router-dom";
 
-function ProtectedRoute(props: RouteProps) {
-  const isAuthenticated = localStorage.getItem("isAuthenticated");
-  console.log("isAuth: ", isAuthenticated);
-
-  const { component, ...restOfProps } = props;
-
-  const history = useHistory();
-
-  return (
-    <AuthContext.Consumer>
-      {({ auth, setAuth }) => (
-        <Route {...restOfProps}>
-          {auth && props.children}
-          {!auth && history.goBack()}
-        </Route>
-      )}
-    </AuthContext.Consumer>
-  );
-}
+const ProtectedRoute = ({ component, path, ...rest }: any) => {
+  const routeComponent = (props: any) =>
+    localStorage.getItem("isAuthenticated") === "true" ? (
+      React.createElement(component, props)
+    ) : (
+      <Redirect
+        push
+        to={{
+          pathname: "/signin",
+          state: { prevLocation: path },
+        }}
+      />
+    );
+  return <Route path={path} {...rest} render={routeComponent} />;
+};
 
 export default ProtectedRoute;

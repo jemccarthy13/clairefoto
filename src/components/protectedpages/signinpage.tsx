@@ -1,81 +1,84 @@
+import React from "react";
+
 import { Box, Button } from "@mui/material";
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import SnackActions from "../../alert/alert";
 import ValidatedTextField from "../validatedtextfield";
 
-function SignInPage() {
-  const [userData, setUserData] = useState({ username: "", password: "" });
-  const history = useHistory();
+class SignInPage extends React.Component<any, any> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      username: "",
+      password: "",
+    };
+  }
 
-  const setUserName = (newname: string) => {
-    setUserData((prevState) => {
-      return {
-        ...prevState,
-        username: newname,
-      };
-    });
-  };
-  const setUserPassword = (passwd: string) => {
-    setUserData((prevState) => {
-      return {
-        ...prevState,
-        password: passwd,
-      };
-    });
+  setUserName = (newname: string) => {
+    this.setState({ username: newname });
   };
 
-  const handleSubmit = (e: any) => {
+  setUserPassword = (passwd: string) => {
+    this.setState({ password: passwd });
+  };
+
+  handleSubmit = (e: any) => {
     e.preventDefault();
     e.currentTarget.form.reportValidity();
 
-    // TODO -- login auth with php
+    // TODO -- login auth with server / php database
 
-    if (userData.username === "admin" && userData.password === "123456") {
-      //Signin Success
+    let prevLoc = "/";
+    try {
+      prevLoc = this.props.history.location.state.prevLocation;
+    } catch {}
+
+    if (this.state.username === "admin" && this.state.password === "123456") {
       localStorage.setItem("isAuthenticated", "true");
-      history.goBack();
+      this.props.history.replace(prevLoc);
     } else {
       SnackActions.error("Invalid username/password");
     }
   };
 
-  return (
-    <div className="page-content" style={{ textAlign: "center" }}>
-      <div className="page-header">Signin User</div>
+  render = (): JSX.Element => {
+    return (
+      <div className="page-content" style={{ textAlign: "center" }}>
+        <div className="page-header">Signin User</div>
 
-      <div style={{ width: "90%", margin: "auto" }}>
-        <Box
-          component="form"
-          style={{
-            paddingTop: "25px",
-            paddingLeft: "10px",
-            paddingRight: "10px",
-          }}
-        >
-          <div>
-            <ValidatedTextField
-              id="username"
-              label="Username"
-              size="small"
-              postValidate={setUserName}
-            />
-          </div>
-          <div>
-            <ValidatedTextField
-              id="password"
-              label="Password"
-              size="small"
-              postValidate={setUserPassword}
-            />
-          </div>
-          <Button style={{ width: "50%" }} onClick={handleSubmit}>
-            Submit
-          </Button>
-        </Box>
+        <div style={{ width: "90%", margin: "auto" }}>
+          <Box
+            component="form"
+            style={{
+              paddingTop: "25px",
+              paddingLeft: "10px",
+              paddingRight: "10px",
+            }}
+          >
+            <div>
+              <ValidatedTextField
+                id="username"
+                label="Username"
+                size="small"
+                postValidate={this.setUserName}
+              />
+            </div>
+            <div>
+              <ValidatedTextField
+                id="password"
+                label="Password"
+                size="small"
+                postValidate={this.setUserPassword}
+              />
+            </div>
+            <Button style={{ width: "50%" }} onClick={this.handleSubmit}>
+              Submit
+            </Button>
+          </Box>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 }
 
-export default SignInPage;
+export default withRouter(SignInPage);

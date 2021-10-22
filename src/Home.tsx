@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "./css/App.css";
 import "./css/snackbar.css";
@@ -26,6 +26,12 @@ import SignInPage from "./components/protectedpages/signinpage";
 
 export default function Home() {
   const [authenticated, setAuthenticated] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("isAuthenticated") === "true") {
+      setAuthenticated(true);
+    }
+  }, []);
 
   if (/\/api\/.*/.test(window.location.pathname)) {
     return <div />;
@@ -66,9 +72,10 @@ export default function Home() {
               <Route path="/signin">
                 <SignInPage />
               </Route>
-              <ProtectedRoute path="/pricingedit">
-                <PricingEditor />
-              </ProtectedRoute>
+              <ProtectedRoute
+                path="/pricingedit"
+                component={PricingEditor}
+              ></ProtectedRoute>
             </HashRouter>
           </div>
         </AuthContext.Provider>
