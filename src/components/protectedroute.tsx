@@ -2,8 +2,12 @@ import React from "react";
 import { Redirect, Route } from "react-router-dom";
 
 const ProtectedRoute = ({ component, path, ...rest }: any) => {
-  const routeComponent = (props: any) =>
-    localStorage.getItem("isAuthenticated") === "true" ? (
+  const isAuth = () => {
+    return localStorage.getItem("isAuthenticated") === "true";
+  };
+
+  const RouteComponent = (props: any) =>
+    isAuth() ? (
       React.createElement(component, props)
     ) : (
       <Redirect
@@ -14,7 +18,11 @@ const ProtectedRoute = ({ component, path, ...rest }: any) => {
         }}
       />
     );
-  return <Route path={path} {...rest} render={routeComponent} />;
+  return (
+    <Route path={path} {...rest}>
+      <RouteComponent {...rest} />
+    </Route>
+  );
 };
 
 export default ProtectedRoute;

@@ -14,6 +14,7 @@ class mBackend {
   //-----------------------------------------------------------------------------
   // Mock endpoint for getting unit data
   mockPrice(
+    id: string,
     title: string,
     price: string,
     num_images: string,
@@ -22,12 +23,13 @@ class mBackend {
     bkg?: boolean
   ): PricingData {
     return {
-      title: title,
-      price: price,
+      id,
+      title,
+      price,
       options: {
-        num_images: num_images,
-        print_rel: print_rel,
-        custom_txt: custom_txt,
+        num_images,
+        print_rel,
+        custom_txt,
       },
       booking: bkg !== false,
     };
@@ -50,10 +52,11 @@ class mBackend {
   getPrices(): PricingData[] {
     const array: PricingData[] = [];
 
-    array.push(this.mockPrice("30-minute", "$75", "20+", "Full", []));
-    array.push(this.mockPrice("45-minute", "$95", "35+", "Full", []));
+    array.push(this.mockPrice("1", "30-minute", "$75", "20+", "Full", []));
+    array.push(this.mockPrice("2", "45-minute", "$95", "35+", "Full", []));
     array.push(
       this.mockPrice(
+        "3",
         "Seasonal",
         "TBD",
         "",
@@ -64,6 +67,7 @@ class mBackend {
     );
     array.push(
       this.mockPrice(
+        "4",
         "Packages",
         "Contact Me",
         "",

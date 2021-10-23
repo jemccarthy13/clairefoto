@@ -72,10 +72,7 @@ export default function Home() {
               <Route path="/signin">
                 <SignInPage />
               </Route>
-              <ProtectedRoute
-                path="/pricingedit"
-                component={PricingEditor}
-              ></ProtectedRoute>
+              <ProtectedRoute path="/pricingedit" component={PricingEditor} />
             </HashRouter>
           </div>
         </AuthContext.Provider>

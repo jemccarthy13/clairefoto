@@ -1,4 +1,5 @@
 export type PricingData = {
+  id: string;
   title: string;
   price: string;
   options: {
