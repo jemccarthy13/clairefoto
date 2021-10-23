@@ -1,3 +1,11 @@
+export interface ImageList {
+  title: string;
+  width: number;
+  height: number;
+  srcSet: string;
+  src: string;
+}
+
 export type PricingData = {
   id: string;
   title: string;

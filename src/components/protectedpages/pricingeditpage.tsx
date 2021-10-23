@@ -2,10 +2,17 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import backend from "../../backend/backend";
 import { PricingData } from "../../backend/backendinterface";
 
-import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridToolbarContainer,
+} from "@mui/x-data-grid";
+
+import { randomId } from "@mui/x-data-grid-generator";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
+import { Button } from "@mui/material";
 
 export default function PricingEditor() {
   const defPrices: PricingData[] = [];
@@ -106,6 +113,32 @@ export default function PricingEditor() {
     return apiRef;
   }
 
+  function EditToolbar(props: any) {
+    const { apiRef } = props;
+
+    const handleClick = () => {
+      const id = randomId();
+      apiRef.current.updateRows([{ id, isNew: true }]);
+      apiRef.current.setRowMode(id, "edit");
+      // Wait for the grid to render with the new row
+      setTimeout(() => {
+        apiRef.current.scrollToIndexes({
+          rowIndex: apiRef.current.getRowsCount() - 1,
+        });
+
+        apiRef.current.setCellFocus(id, "name");
+      });
+    };
+
+    return (
+      <GridToolbarContainer>
+        <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
+          Add record
+        </Button>
+      </GridToolbarContainer>
+    );
+  }
+
   return (
     <div className="page-content">
       <div className="page-header">Pricing Editor</div>
@@ -114,8 +147,15 @@ export default function PricingEditor() {
           rows={prices}
           columns={columns}
           editMode="row"
+          disableColumnFilter
           hideFooterSelectedRowCount
           rowsPerPageOptions={[]}
+          components={{
+            Toolbar: EditToolbar,
+          }}
+          componentsProps={{
+            toolbar: { apiRef },
+          }}
         />
       </div>
     </div>

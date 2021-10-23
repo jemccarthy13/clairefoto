@@ -2,11 +2,22 @@ import {
   BlackOut,
   BlackOutDate,
   BookingAppointment,
+  ImageList,
   PricingData,
 } from "./backendinterface";
-import { get, post } from "./serverbackend";
+import { httputils } from "./httputils";
 
 class Backend {
+  getImages(dir: string) {
+    let mydata: ImageList[] = [];
+    httputils
+      .get("/database/getimages.php?directory=" + dir)
+      .then((data: ImageList[]) => {
+        mydata = data;
+      });
+    return mydata;
+  }
+
   //-----------------------------------------------------------------------------
   //
   // Mock data generators for frontend only development
@@ -83,8 +94,6 @@ class Backend {
   calBaseURL = "https://content.googleapis.com/calendar/v3/calendars/";
   calKey = "AIzaSyCsyQYXAr3wjRTbhvvS--WDFVsESAObrS4";
 
-  baseURL = "http://claire.parrotsour.com";
-
   submitBookingAppt(event: BookingAppointment): Promise<boolean> {
     // let url = this.calBaseURL + this.cID + "/events?";
     // // url += "sendUpdates=all&alt=json";
@@ -95,7 +104,7 @@ class Backend {
     let url = "/api/event.php";
     const data = JSON.stringify(event);
 
-    post(data, url);
+    httputils.post(data, url);
     return new Promise(() => true);
   }
 
@@ -103,8 +112,9 @@ class Backend {
     const arrDates: BlackOutDate[] = [];
     const arrTimes: BlackOutDate[] = [];
     let mydata: any;
-    return get(this.calBaseURL + this.cID + "/events?key=" + this.calKey).then(
-      (data: any) => {
+    return httputils
+      .get(this.calBaseURL + this.cID + "/events?key=" + this.calKey)
+      .then((data: any) => {
         mydata = data.items;
         mydata.forEach((date: any) => {
           let start = new Date(date.start.dateTime);
@@ -124,8 +134,7 @@ class Backend {
           }
         });
         return { dates: arrDates, times: arrTimes };
-      }
-    );
+      });
   }
 }
 
