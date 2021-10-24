@@ -57,7 +57,7 @@ export default function Home() {
               <Route path="/portraits">
                 <PhotoPage
                   title={"Portraits & Senior Sessions"}
-                  serverDir="portraits"
+                  serverDir="portrait"
                 />
               </Route>
               <Route path="/pricing">

@@ -26,7 +26,7 @@ export default function PricingEditor() {
       flex: 1.0,
       editable: true,
       valueGetter: (params: any) => {
-        if (params.row.options.num_images) {
+        if (params.row.options && params.row.options.num_images) {
           return params.row.options.num_images;
         } else {
           return "";
@@ -34,17 +34,76 @@ export default function PricingEditor() {
       },
       valueSetter: (params: any) => {
         const numImgs = params.value!.toString();
-        params.row.options.num_images = numImgs;
+        if (params.row.options) {
+          params.row.options.num_images = numImgs;
+        } else {
+          params.row.options = {
+            num_images: numImgs,
+          };
+        }
         return { ...params.row, numImgs };
       },
     },
+    {
+      field: "print_rel",
+      headerName: "Print Release",
+      flex: 1.0,
+      editable: true,
+      valueGetter: (params: any) => {
+        if (params.row.options && params.row.options.print_rel) {
+          return params.row.options.print_rel;
+        } else {
+          return "";
+        }
+      },
+      valueSetter: (params: any) => {
+        const printRel = params.value!.toString();
+        if (params.row.options) {
+          params.row.options.print_rel = printRel;
+        } else {
+          params.row.options = {
+            print_rel: printRel,
+          };
+        }
+        return { ...params.row, printRel };
+      },
+    },
+    {
+      field: "custom_txt",
+      headerName: "Custom Text",
+      flex: 2.0,
+      editable: true,
+      valueGetter: (params: any) => {
+        if (params.row.options && params.row.options.custom_txt) {
+          return params.row.options.custom_txt;
+        } else {
+          return "";
+        }
+      },
+      valueSetter: (params: any) => {
+        const txt = params.value!.toString();
+        if (params.row.options) {
+          params.row.options.custom_txt = txt;
+        } else {
+          params.row.options = {
+            custom_txt: txt,
+          };
+        }
+        return { ...params.row, txt };
+      },
+    },
     // other options
-    { field: "booking", headerName: "Book Now?", flex: 1.0, editable: true },
     // options: {
-    //   num_images: string;
-    //   print_rel: string;
     //   custom_txt: string[];
     // };
+    {
+      field: "booking",
+      headerName: "Book Now?",
+      flex: 1.0,
+      editable: true,
+      type: "boolean",
+    },
+
     {
       field: "actions",
       type: "actions",
@@ -125,13 +184,24 @@ export default function PricingEditor() {
           rowIndex: apiRef.current.getRowsCount() - 1,
         });
 
-        apiRef.current.setCellFocus(id, "name");
+        apiRef.current.setCellFocus(id, "title");
       });
     };
 
     return (
       <GridToolbarContainer>
-        <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
+        <Button
+          style={{
+            width: "fit-content",
+            height: "min-content",
+            padding: "5px",
+            backgroundColor: "white",
+          }}
+          size="small"
+          color="primary"
+          startIcon={<AddIcon />}
+          onClick={handleClick}
+        >
           Add record
         </Button>
       </GridToolbarContainer>

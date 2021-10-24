@@ -81,7 +81,7 @@ export default function ContactForm(props: Record<string, unknown>) {
   };
 
   return (
-    <div className="page-content" style={{ textAlign: "center" }}>
+    <div className="page-content" style={{ textAlign: "center", width: "50%" }}>
       <div className="page-header">Contact Me</div>
       <SocialIcons />
       <div style={{ width: "90%", margin: "auto" }}>

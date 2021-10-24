@@ -22,7 +22,7 @@ export default function PhotoPage(props: PPProps) {
   const [photos, setImgs] = useState(defLst);
 
   useEffect(() => {
-    backend.getImages("couples").then((data) => {
+    backend.getImages(props.serverDir).then((data) => {
       setImgs(data);
     });
   }, []);
