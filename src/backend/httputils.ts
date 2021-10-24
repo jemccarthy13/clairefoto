@@ -21,11 +21,12 @@ export const httputils = {
   },
 
   // FETCH PUT for server API
-  async post(data: any, url = "") {
+  async post(url: string, data: any, stringify = true) {
+    console.log(JSON.stringify(data));
     const response = await fetch(baseURL + url, {
-      method: "POST",
-      body: JSON.stringify(data),
       ...params,
+      method: "POST",
+      body: stringify ? JSON.stringify(data) : data,
     });
     return response.json();
   },

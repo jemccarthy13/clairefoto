@@ -1,9 +1,4 @@
 
--- make website easier to migrate to Claire's contact info
------ php accepts a "to_email"/"from_email", POST'd from 
------ front-end, taken from process.env.
------ similar configurations for backend/api stuff
-
 -- pricing -> booking -> Timify / Square?
 --- If Timify
 ---- Timify dev access  

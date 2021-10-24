@@ -1,25 +1,31 @@
-import React, { Suspense, useCallback, useState } from "react";
+import React, { Suspense, useCallback, useEffect, useState } from "react";
 import Carousel, { Modal, ModalGateway } from "react-images";
 import Gallery, { RenderImageProps } from "react-photo-gallery";
 import ImageFadeIn from "react-image-fade-in";
 import FadeInSection from "./fadeinsection";
 import { CircularProgress } from "@mui/material";
 
+import backend from "../../../backend/backend";
+
+import { ImageList } from "../../../backend/backendinterface";
+
 interface PPProps {
   title: string;
-  columns: number;
-  photos: {
-    src: string;
-    height: number;
-    width: number;
-    title: string;
-    srcSet: any;
-  }[];
+  serverDir: string;
 }
 
 export default function PhotoPage(props: PPProps) {
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
+
+  const defLst: ImageList[] = [];
+  const [photos, setImgs] = useState(defLst);
+
+  useEffect(() => {
+    backend.getImages("couples").then((data) => {
+      setImgs(data);
+    });
+  }, []);
 
   const openLightbox = useCallback((event, { photo, index }) => {
     setCurrentImage(index);
@@ -35,7 +41,6 @@ export default function PhotoPage(props: PPProps) {
 
   const customContext = (event: any) => {
     event.preventDefault();
-    console.log(event);
   };
 
   const closeLightbox = () => {
@@ -48,7 +53,7 @@ export default function PhotoPage(props: PPProps) {
       <Suspense key={riprops.photo.src} fallback={<CircularProgress />}>
         <FadeInSection>
           <ImageFadeIn
-            src={props.photos[riprops.index].src}
+            src={photos[riprops.index].src}
             width={riprops.photo.width}
             height={riprops.photo.height}
             opacityTransition={1}
@@ -67,18 +72,13 @@ export default function PhotoPage(props: PPProps) {
       onContextMenu={customContext}
     >
       <div className="page-header">{props.title}</div>
-      <Gallery
-        columns={props.columns}
-        photos={props.photos}
-        onClick={openLightbox}
-        renderImage={render}
-      />
+      <Gallery photos={photos} onClick={openLightbox} renderImage={render} />
       <ModalGateway>
         {viewerIsOpen ? (
           <Modal onClose={closeLightbox}>
             <Carousel
               currentIndex={currentImage}
-              views={props.photos.map((x) => ({
+              views={photos.map((x) => ({
                 ...x,
                 srcset: x.srcSet,
                 caption: x.title,

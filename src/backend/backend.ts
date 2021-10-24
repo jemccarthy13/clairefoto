@@ -8,14 +8,10 @@ import {
 import { httputils } from "./httputils";
 
 class Backend {
-  getImages(dir: string) {
-    let mydata: ImageList[] = [];
-    httputils
-      .get("/database/getimages.php?directory=" + dir)
-      .then((data: ImageList[]) => {
-        mydata = data;
-      });
-    return mydata;
+  async getImages(dir: string) {
+    const formd = { directory: dir };
+
+    return await httputils.post("/database/getimages.php", formd);
   }
 
   //-----------------------------------------------------------------------------

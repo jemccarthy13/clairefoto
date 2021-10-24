@@ -1,6 +1,6 @@
 <?php
-    $dir_to_read=$_POST['directory'];
-    echo $dir_to_read."\n";
+    $post = json_decode(file_get_contents('php://input'), true);
+    $dir_to_read=$post['directory'];
 
     $dir=$_SERVER['DOCUMENT_ROOT'].'/images/'.$dir_to_read;
 
@@ -13,7 +13,7 @@
         $myObj = new \stdClass();
         $myObj->width=$imgSize[0];
         $myObj->height=$imgSize[1];
-        $myObj->src="/images/".$fileInfo->getFilename();
+        $myObj->src="/images/".$dir_to_read."/".$fileInfo->getFilename();
         $myObj->srcSet="";
         $myObj->title=$fileInfo->getFilename();
         $entries[] = $myObj;

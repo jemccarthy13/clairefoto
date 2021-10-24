@@ -8,7 +8,6 @@ import {
   GridToolbarContainer,
 } from "@mui/x-data-grid";
 
-import { randomId } from "@mui/x-data-grid-generator";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
@@ -117,7 +116,7 @@ export default function PricingEditor() {
     const { apiRef } = props;
 
     const handleClick = () => {
-      const id = randomId();
+      const id = Math.floor(Math.random() * 100000);
       apiRef.current.updateRows([{ id, isNew: true }]);
       apiRef.current.setRowMode(id, "edit");
       // Wait for the grid to render with the new row

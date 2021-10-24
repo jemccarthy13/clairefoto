@@ -20,11 +20,11 @@ export default function Header() {
         <Link href="/#/family" underline="hover">
           Family
         </Link>
-        <Link href="/#/pricing" underline="hover">
-          Pricing
-        </Link>
         <Link href="/#/portraits" underline="hover">
           Portraits
+        </Link>
+        <Link href="/#/pricing" underline="hover">
+          Pricing
         </Link>
         <Link href="/#/contact" underline="hover">
           Contact
