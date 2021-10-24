@@ -146,6 +146,7 @@ export default function PricingEditor() {
   const apiRef: any = useApiRef();
 
   useEffect(() => {
+    const test = backend.getPricing();
     const prices = backend.getPrices();
     setPrices(prices);
   }, []);

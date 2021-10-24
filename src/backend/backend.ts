@@ -14,6 +14,10 @@ class Backend {
     return await httputils.post("/database/getimages.php", formd);
   }
 
+  async getPricing() {
+    return await httputils.post("/database/getpricing.php");
+  }
+
   //-----------------------------------------------------------------------------
   //
   // Mock data generators for frontend only development

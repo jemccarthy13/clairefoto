@@ -21,7 +21,7 @@ export const httputils = {
   },
 
   // FETCH PUT for server API
-  async post(url: string, data: any, stringify = true) {
+  async post(url: string, data: any = "", stringify = true) {
     console.log(JSON.stringify(data));
     const response = await fetch(baseURL + url, {
       ...params,
