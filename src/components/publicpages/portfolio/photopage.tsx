@@ -25,7 +25,7 @@ export default function PhotoPage(props: PPProps) {
     backend.getImages(props.serverDir).then((data) => {
       setImgs(data);
     });
-  }, []);
+  }, [props.serverDir]);
 
   const openLightbox = useCallback((event, { photo, index }) => {
     setCurrentImage(index);
