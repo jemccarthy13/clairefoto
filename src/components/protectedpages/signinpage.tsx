@@ -26,13 +26,14 @@ class SignInPage extends React.Component<any, any> {
     e.preventDefault();
     e.currentTarget.form.reportValidity();
 
-    // TODO -- login auth with server / php database
-
     let prevLoc = "/";
     try {
       prevLoc = this.props.history.location.state.prevLocation;
     } catch {}
 
+    // TODO -- login auth with server / php database
+    // TODO -- store this state in cookies/localstorage to provide with
+    // every authenticated request? do not rely on localstorage to authenticate
     if (this.state.username === "admin" && this.state.password === "123456") {
       localStorage.setItem("isAuthenticated", "true");
       this.props.history.replace(prevLoc);
