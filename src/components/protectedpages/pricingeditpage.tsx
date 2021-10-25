@@ -5,6 +5,7 @@ import { PricingData } from "../../backend/backendinterface";
 import {
   DataGrid,
   GridActionsCellItem,
+  GridRowParams,
   GridToolbarContainer,
 } from "@mui/x-data-grid";
 
@@ -12,10 +13,15 @@ import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import { Button } from "@mui/material";
+import ConfirmDialog from "../confirmdialog";
 
 export default function PricingEditor() {
   const defPrices: PricingData[] = [];
   const [prices, setPrices] = useState(defPrices);
+  const [loaded, setLoaded] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const [callback, setCallback] = useState(() => (b: boolean) => {});
 
   const columns: any[] = [
     { field: "title", headerName: "Title", flex: 1.0, editable: true },
@@ -81,9 +87,11 @@ export default function PricingEditor() {
         }
       },
       valueSetter: (params: any) => {
-        const txt = params.value!.toString();
+        const txt = params.value;
         if (params.row.options) {
-          params.row.options.custom_txt = txt;
+          if (typeof txt === "string") {
+            params.row.options.custom_txt = txt.split(",");
+          }
         } else {
           params.row.options = {
             custom_txt: txt,
@@ -92,10 +100,6 @@ export default function PricingEditor() {
         return { ...params.row, txt };
       },
     },
-    // other options
-    // options: {
-    //   custom_txt: string[];
-    // };
     {
       field: "booking",
       headerName: "Book Now?",
@@ -103,7 +107,6 @@ export default function PricingEditor() {
       editable: true,
       type: "boolean",
     },
-
     {
       field: "actions",
       type: "actions",
@@ -123,7 +126,7 @@ export default function PricingEditor() {
             <GridActionsCellItem
               icon={<SaveIcon />}
               label="Save"
-              onClick={() => console.log("save")} //handleSaveClick(obj.id)}
+              onClick={() => handleSaveClick(obj.id)}
               color="primary"
             />,
           ];
@@ -134,8 +137,16 @@ export default function PricingEditor() {
             icon={<DeleteIcon />}
             label="Delete"
             onClick={() => {
-              console.log("delete");
-            }} //handleDeleteClick(id)}
+              setCallback(() => (confirmed: boolean) => {
+                setDialogOpen(false);
+                if (confirmed) {
+                  apiRef.current.updateRows([
+                    { id: obj.id, _action: "delete" },
+                  ]);
+                }
+              });
+              setDialogOpen(true);
+            }}
             color="inherit"
           />,
         ];
@@ -146,14 +157,16 @@ export default function PricingEditor() {
   const apiRef: any = useApiRef();
 
   useEffect(() => {
-    const test = backend.getPricing();
-    const prices = backend.getPrices();
-    setPrices(prices);
+    backend.getPricing().then((data) => {
+      data[0].options = JSON.parse(data[0].options);
+      setPrices(data);
+      setLoaded(true);
+    });
   }, []);
 
   function useApiRef() {
     const apiRef = useRef(null);
-    const _columns = useMemo(
+    useMemo(
       () =>
         columns.push({
           field: "__HIDDEN__",
@@ -184,7 +197,6 @@ export default function PricingEditor() {
         apiRef.current.scrollToIndexes({
           rowIndex: apiRef.current.getRowsCount() - 1,
         });
-
         apiRef.current.setCellFocus(id, "title");
       });
     };
@@ -209,6 +221,17 @@ export default function PricingEditor() {
     );
   }
 
+  function rowSaveAction(params: Partial<GridRowParams>) {
+    console.log("save prices to server");
+    console.log(params.id);
+  }
+
+  function handleSaveClick(id: number) {
+    const cur = apiRef.current;
+    cur.setRowMode(id, "view");
+    rowSaveAction({ id: id });
+  }
+
   return (
     <div className="page-content">
       <div className="page-header">Pricing Editor</div>
@@ -218,6 +241,7 @@ export default function PricingEditor() {
           columns={columns}
           editMode="row"
           disableColumnFilter
+          loading={!loaded}
           hideFooterSelectedRowCount
           rowsPerPageOptions={[]}
           components={{
@@ -226,6 +250,15 @@ export default function PricingEditor() {
           componentsProps={{
             toolbar: { apiRef },
           }}
+          onRowEditStop={rowSaveAction}
+        />
+        <ConfirmDialog
+          title={"Confirm delete?"}
+          open={dialogOpen}
+          callback={callback}
+          description={
+            "You are about to permanently delete this pricing option. Are you sure?"
+          }
         />
       </div>
     </div>

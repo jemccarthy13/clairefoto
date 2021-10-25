@@ -2,7 +2,6 @@ import {
   BlackOut,
   BlackOutDate,
   BookingAppointment,
-  ImageList,
   PricingData,
 } from "./backendinterface";
 import { httputils } from "./httputils";
