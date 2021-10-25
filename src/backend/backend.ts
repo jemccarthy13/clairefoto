@@ -14,7 +14,7 @@ class Backend {
   }
 
   async getPricing() {
-    return await httputils.post("/database/getpricing.php");
+    return await httputils.get("/database/pricing/pricing.php");
   }
 
   //-----------------------------------------------------------------------------
