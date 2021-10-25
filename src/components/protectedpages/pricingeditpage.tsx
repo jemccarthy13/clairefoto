@@ -179,6 +179,7 @@ export default function PricingEditor() {
             return null;
           },
         }),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [columns]
     );
 
