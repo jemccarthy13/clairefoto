@@ -90,8 +90,12 @@ class Backend {
   getPrices(): PricingData[] {
     const array: PricingData[] = [];
 
-    array.push(this.mockPrice("1", "30-minute", "$75", "20+", "Full", []));
-    array.push(this.mockPrice("2", "45-minute", "$95", "35+", "Full", []));
+    array.push(
+      this.mockPrice("1", "30-minute", "$75", "20+", "Full", [], false)
+    );
+    array.push(
+      this.mockPrice("2", "45-minute", "$95", "35+", "Full", [], false)
+    );
     array.push(
       this.mockPrice(
         "3",
