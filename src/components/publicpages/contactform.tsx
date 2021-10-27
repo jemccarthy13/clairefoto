@@ -6,6 +6,7 @@ import SocialIcons from "../../socialicons";
 import snackActions from "../../alert/alert";
 import { useSyncState } from "../../syncstate";
 import ValidatedTextField from "../validatedtextfield";
+import backend from "../../backend/backend";
 
 export default function ContactForm(props: Record<string, unknown>) {
   // form fields
@@ -49,27 +50,8 @@ export default function ContactForm(props: Record<string, unknown>) {
 
     let success = false;
 
-    try {
-      // TODO -- build API for this?
-      const response = await fetch(
-        process.env.PUBLIC_URL + "/api/contactme.php",
-        {
-          method: "POST",
-          body: contactData,
-        }
-      );
-
-      await fetch(process.env.PUBLIC_URL + "/api/contactconfirm.php", {
-        method: "POST",
-        body: confirmData,
-      });
-
-      if (response.ok) {
-        success = true;
-      }
-    } catch {
-      // do nothing
-    }
+    const response = await backend.contactFormSubmit(contactData, confirmData);
+    success = response.ok;
 
     if (success) {
       snackActions.success("Submitted!");

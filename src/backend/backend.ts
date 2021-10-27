@@ -7,6 +7,25 @@ import {
 import { httputils } from "./httputils";
 
 class Backend {
+  async contactFormSubmit(contactData: any, confirmData: any) {
+    let response = {
+      ok: false,
+    };
+    try {
+      response = await fetch(process.env.PUBLIC_URL + "/api/contactme.php", {
+        method: "POST",
+        body: contactData,
+      });
+
+      await fetch(process.env.PUBLIC_URL + "/api/contactconfirm.php", {
+        method: "POST",
+        body: confirmData,
+      });
+    } catch {}
+
+    return response;
+  }
+
   async getImages(dir: string) {
     const formd = { directory: dir };
     return await httputils.post("/api/getimages.php", formd);
@@ -17,7 +36,6 @@ class Backend {
   }
 
   async updatePrice(data: PricingData) {
-    console.log(data);
     return await httputils.put("/api/pricing/pricing.php", data);
   }
 
