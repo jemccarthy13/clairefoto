@@ -1,6 +1,8 @@
 import React from "react";
 
-import { Box, Button } from "@mui/material";
+import { Button } from "@mui/material";
+import Grid from "@mui/material/Grid";
+
 import SocialIcons from "../../socialicons";
 
 import snackActions from "../../alert/alert";
@@ -67,29 +69,24 @@ export default function ContactForm(props: Record<string, unknown>) {
       <div className="page-header">Contact Me</div>
       <SocialIcons />
       <div style={{ width: "90%", margin: "auto" }}>
-        <Box
-          component="form"
-          style={{
-            paddingTop: "25px",
-            paddingLeft: "10px",
-            paddingRight: "10px",
-          }}
-        >
-          <div style={{ display: "inline-flex" }}>
+        <Grid container component="form">
+          <Grid item xs={6}>
             <ValidatedTextField
               id="firstname"
               label="First Name"
               postValidate={setFirstName}
               size="small"
             />
+          </Grid>
+          <Grid item xs={6}>
             <ValidatedTextField
               id="lastname"
               label="Last Name"
               postValidate={setLastName}
               size="small"
             />
-          </div>
-          <div>
+          </Grid>
+          <Grid item xs={12}>
             <ValidatedTextField
               id="email"
               label="Email Address"
@@ -98,16 +95,16 @@ export default function ContactForm(props: Record<string, unknown>) {
               size="small"
               fullWidth
             />
-          </div>
-          <div>
+          </Grid>
+          <Grid item xs={12}>
             <ValidatedTextField
               id="subject"
               label="Subject"
               postValidate={setSubj}
               fullWidth
             />
-          </div>
-          <div style={{ paddingBottom: "20px" }}>
+          </Grid>
+          <Grid item xs={12} style={{ paddingBottom: "20px" }}>
             <ValidatedTextField
               id="msgtext"
               label="Message"
@@ -116,8 +113,8 @@ export default function ContactForm(props: Record<string, unknown>) {
               multiline
               minRows={10}
             />
-          </div>
-          <div>
+          </Grid>
+          <Grid item xs={6} style={{ margin: "auto" }}>
             <Button
               style={{ border: "1px black" }}
               onClick={checkSubmit}
@@ -125,8 +122,8 @@ export default function ContactForm(props: Record<string, unknown>) {
             >
               Submit
             </Button>
-          </div>
-        </Box>
+          </Grid>
+        </Grid>
       </div>
     </div>
   );
