@@ -10,6 +10,17 @@
             return $this->con->query("SELECT `title` from `pricing`");
         }
         
+        public function find($id)
+        {
+            if($id==NULL){
+                return false;
+            }
+            $statement=$this->con->prepare("SELECT id, title, price, booking, options FROM `pricing` WHERE id = ?;");
+            $statement->bind_param("i", $id);
+            $result=$statement->execute();
+            return $result;
+        }
+
         public function findAll(){
             return $this->con->query("SELECT * from `pricing`");
         }
@@ -20,21 +31,22 @@
             return $result->rowCount();
         }
 
-        public function update($id, Array $input){
+        public function update(Array $input){
             $statement=$this->con->prepare("UPDATE `pricing` SET ".
-                "`title` = :title,".
-                "`price` = :price,".
-                "`options` = :options,".
-                "`booking` = :booking".
-                "WHERE id = :id");
-            $result = $statement->execute(array(
-                'id' => (int) $id,
-                'title' => $input['title'],
-                'price'  => $input['price'],
-                'booking' => $input['booking'],
-                'options' => $input['options'] ?? null,
-            ));
-            return $result->rowCount();
+                "title = ?,".
+                "price = ?,".
+                "options = ?,".
+                "booking = ? ".
+                "WHERE id = ?;");
+            $statement->bind_param("ssssi",
+                $input['title'],
+                $input['price'],
+                json_encode($input['options']),
+                $input['booking'],
+                $input['id']
+            );
+            $result = $statement->execute();
+            return $result;
         }
 
         public function insert(Array $input){
@@ -51,7 +63,6 @@
                 $input['options'],
                 $input['booking']);
             $result = $statement->execute();
-            var_dump($statement->error);
             return $result->rowCount();
         }
     }

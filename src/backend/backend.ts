@@ -9,12 +9,16 @@ import { httputils } from "./httputils";
 class Backend {
   async getImages(dir: string) {
     const formd = { directory: dir };
-
-    return await httputils.post("/database/getimages.php", formd);
+    return await httputils.post("/api/getimages.php", formd);
   }
 
   async getPricing() {
-    return await httputils.get("/database/pricing/pricing.php");
+    return await httputils.get("/api/pricing/pricing.php");
+  }
+
+  async updatePrice(data: PricingData) {
+    console.log(data);
+    return await httputils.put("/api/pricing/pricing.php", data);
   }
 
   //-----------------------------------------------------------------------------

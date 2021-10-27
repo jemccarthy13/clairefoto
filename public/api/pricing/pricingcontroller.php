@@ -9,10 +9,9 @@
 
         private $pricingGateway;
 
-        public function __construct($db, $requestMethod, $id){
+        public function __construct($db, $requestMethod){
             $this->con = $db;
             $this->requestMethod = $requestMethod;
-            $this->id = $id;
 
             $this->pricingGateway = new PricingGateway($db);
         }
@@ -21,6 +20,7 @@
         {
             switch ($this->requestMethod) {
             case 'GET':
+                $this->id=$_GET["id"];
                 if ($this->id) {
                     $response = $this->getPrice($this->id);
                 } else {
@@ -31,7 +31,7 @@
                 $response = $this->createPriceFromRequest();
                 break;
             case 'PUT':
-                $response = $this->updatePriceFromRequest($this->id);
+                $response = $this->updatePriceFromRequest();
                 break;
             case 'DELETE':
                 $response = $this->deletePrice($this->id);
@@ -67,6 +67,23 @@
             $this->pricingGateway->insert($input);
             $response['status_code_header'] = 'HTTP/1.1 201 Created';
             $response['body'] = null;
+            return $response;
+        }
+
+        private function updatePriceFromRequest()
+        {
+            $input = (array) json_decode(file_get_contents('php://input'), TRUE);
+            $result = $this->pricingGateway->find($input["id"]);
+            if (! $result) {
+                return notFoundResponse();
+            }
+            $result=$this->pricingGateway->update($input);
+            if($result>0){
+                $response['status_code_header'] = 'HTTP/1.1 200 OK';
+                $response['body'] = null;
+            } else {
+                return unprocessableEntityResponse();
+            }
             return $response;
         }
 

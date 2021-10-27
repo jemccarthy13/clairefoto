@@ -20,15 +20,24 @@ export const httputils = {
     return response.json();
   },
 
-  // FETCH PUT for server API
+  // FETCH POST for server API
   async post(url: string, data: any = "", stringify = true) {
-    console.log(JSON.stringify(data));
     const response = await fetch(baseURL + url, {
       ...params,
       method: "POST",
       body: stringify ? JSON.stringify(data) : data,
     });
     return response.json();
+  },
+
+  // FETCH PUT for server API
+  async put(url: string, data: any = "", stringify = true) {
+    const response = await fetch(baseURL + url, {
+      ...params,
+      method: "PUT",
+      body: stringify ? JSON.stringify(data) : data,
+    });
+    return response;
   },
 };
 

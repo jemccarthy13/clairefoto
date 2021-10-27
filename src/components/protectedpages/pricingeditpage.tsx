@@ -14,11 +14,13 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import { Button } from "@mui/material";
 import ConfirmDialog from "../confirmdialog";
+import SnackActions from "../../alert/alert";
 
 export default function PricingEditor() {
   const defPrices: PricingData[] = [];
   const [prices, setPrices] = useState(defPrices);
   const [loaded, setLoaded] = useState(false);
+  const [loadError, setLoadError] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const [callback, setCallback] = useState(() => (b: boolean) => {});
@@ -157,11 +159,18 @@ export default function PricingEditor() {
   const apiRef: any = useApiRef();
 
   useEffect(() => {
-    backend.getPricing().then((data) => {
-      data[0].options = JSON.parse(data[0].options);
-      setPrices(data);
-      setLoaded(true);
-    });
+    try {
+      backend.getPricing().then((data) => {
+        data.forEach((d: any) => {
+          d.options = JSON.parse(d.options);
+        });
+        setPrices(data);
+        setLoaded(true);
+      });
+    } catch {
+      setLoadError(true);
+      SnackActions.error("Couldn't load data. Please refresh the page.");
+    }
   }, []);
 
   function useApiRef() {
@@ -222,15 +231,23 @@ export default function PricingEditor() {
     );
   }
 
-  function rowSaveAction(params: Partial<GridRowParams>) {
-    console.log("save prices to server");
-    console.log(params.id);
+  function rowSaveAction(params: GridRowParams) {
+    const cur = apiRef.current;
+    cur.commitRowChange(params.id);
+    cur.setRowMode(params.id, "view");
+    backend.updatePrice(cur.getRow(params.id)).then((resp) => {
+      console.log(resp);
+      if (resp.ok) {
+        SnackActions.success("Saved");
+      } else {
+        SnackActions.error("Unable to update. Error code:" + resp.status);
+      }
+    });
   }
 
   function handleSaveClick(id: number) {
     const cur = apiRef.current;
-    cur.setRowMode(id, "view");
-    rowSaveAction({ id: id });
+    if (cur) rowSaveAction(cur.getRow(id));
   }
 
   return (
@@ -240,6 +257,7 @@ export default function PricingEditor() {
         <DataGrid
           rows={prices}
           columns={columns}
+          error={loadError ? true : undefined}
           editMode="row"
           disableColumnFilter
           loading={!loaded}

@@ -52,14 +52,14 @@ export default function ContactForm(props: Record<string, unknown>) {
     try {
       // TODO -- build API for this?
       const response = await fetch(
-        process.env.PUBLIC_URL + "/database/contactme.php",
+        process.env.PUBLIC_URL + "/api/contactme.php",
         {
           method: "POST",
           body: contactData,
         }
       );
 
-      await fetch(process.env.PUBLIC_URL + "/database/contactconfirm.php", {
+      await fetch(process.env.PUBLIC_URL + "/api/contactconfirm.php", {
         method: "POST",
         body: confirmData,
       });

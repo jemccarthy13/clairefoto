@@ -20,16 +20,10 @@ if ($uri[2] !== 'pricing') {
     exit();
 }
 
-// the user id is, of course, optional and must be a number:
-$userId = null;
-if (isset($uri[2])) {
-    $userId = (int) $uri[2];
-}
-
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 
 
 // pass the request method and user ID to the PersonController and process the HTTP request:
 $dbConnection = new Database();
-$controller = new PricingController($dbConnection, $requestMethod, $userId);
+$controller = new PricingController($dbConnection, $requestMethod);
 $controller->processRequest();
