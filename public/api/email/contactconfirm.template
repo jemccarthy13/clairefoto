@@ -1,18 +1,4 @@
-<?php
-require __DIR__ . '/sendmail.php';
- if( !empty($_POST['email'])){
-    $cust_email=$_POST['email'];
-    $cust_fname=$_POST['first_name'];
-    $cust_lname=$_POST['last_name'];
-
-    $headers="From:".$cust_email."\r\n";
-    $headers .= "MIME-Version: 1.0\r\n"; 
-    $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n"; 
-    $headers .= "Date: ".date("r")."\r\n";
-
-    $my_subject = "Contact Received";
-
-    $content = '<html>
+<html>
     <body style="background-color: #f7f7f7;color: #000000;">
       <div style="margin: 0 auto; min-width: 320px;max-width: 550px;background-color: #111111;">
         <div style="max-width: 320px;min-width: 550px;display: inline-flex;vertical-align: top;">
@@ -26,7 +12,7 @@ require __DIR__ . '/sendmail.php';
         </div>
     
         <div style=" text-align: left; padding-left:10px;font-family:helvetica,sans-serif; font-size:16px;">
-          <p><strong>Hi '.$cust_fname.',</strong></p>
+          <p><strong>Hi customer_firstname,</strong></p>
           <p>&nbsp;</p>
           <p>Thank you for reaching out!</p>
           <p>&nbsp;</p>
@@ -54,10 +40,4 @@ require __DIR__ . '/sendmail.php';
        </div>
       </div>
     </body>
-    </html>';
-    $my_message = $content;
-
-    $plain_text = "Hello ".$cust_fname.", thank you for reaching out.\r\n\r\nI have received your contact request and will respond shortly.\r\n\r\n-Claire";
-    send_mail($cust_email, $cust_email, $cust_email, "webmaster@parrotsour.com", $my_subject, $my_message,$plain_text);      
-}
-?>
+</html>

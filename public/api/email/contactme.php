@@ -18,27 +18,15 @@ require __DIR__ . '/sendmail.php';
 
     $my_subject = "New Contact";
 
-    $html_comments = str_replace("\r\n","<br>",$cust_comments);
-    $html_comments = str_replace("\n","<br>",$html_comments);
-    $html_comments = str_replace("\r","<br>",$html_comments);
+    $html_comments = str_replace("\r\n","<br>", $cust_comments);
+    $html_comments = str_replace("\n","<br>", $html_comments);
+    $html_comments = str_replace("\r","<br>", $html_comments);
 
-    $content = '<html>
-    <body>
-    <div style="font-family: Lato, sans-serif; padding: 0px;background-color: transparent;">
-      <div style="Margin: 0 auto;max-width: 600px; background-color: #161a39; color:#ffffff; font-size: 28px; text-align:center;">
-          New Contact
-      </div>
-      
-      <div style="margin: 0 auto; max-width: 320px;min-width: 600px; vertical-align: top; background-color: #ffffff">
-        <div style="text-align: left;">
-          <p style="padding-bottom:10px; font-size: 18px; color: #666666">From: '.$cust_email.':</p>
-          <p style="padding-bottom:10px; font-size: 18px; color: #666666">Subject: '.$cust_subject.':</p>
-          <p style="padding-bottom:10px; font-size: 18px; color: #666666">'.$html_comments.'</p>
-        </div> 
-      </div>
-    </div>
-    </body>
-    </html>';
+    $content = file_get_contents("./newcontact.template");
+    $content = str_replace("customer_email", $cust_email, $content);
+    $content = str_replace("customer_subject", $cust_subject, $content);
+    $content = str_replace("html_comments", $html_comments, $content);
+
     $content = $content."\r\n\r\nReply to this email to respond to the sender.";
     $my_message = $content;
 

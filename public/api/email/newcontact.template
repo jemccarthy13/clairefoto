@@ -1,0 +1,16 @@
+<html>
+    <body>
+        <div style="font-family: Lato, sans-serif; padding: 0px;background-color: transparent;">
+            <div style="Margin: 0 auto;max-width: 600px; background-color: #161a39; color:#ffffff; font-size: 28px; text-align:center;">
+                New Contact
+            </div>
+            <div style="margin: 0 auto; max-width: 320px;min-width: 600px; vertical-align: top; background-color: #ffffff">
+                <div style="text-align: left;">
+                    <p style="padding-bottom:10px; font-size: 18px; color: #666666">From: customer_email:</p>
+                    <p style="padding-bottom:10px; font-size: 18px; color: #666666">Subject: customer_subject:</p>
+                    <p style="padding-bottom:10px; font-size: 18px; color: #666666">html_comments</p>
+                </div> 
+            </div>
+        </div>
+    </body>
+</html>
