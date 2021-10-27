@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . "/sendmail.php";
+require __DIR__ . "./../sendmail.php";
 if (!empty($_POST["email"])) {
     $cust_email = $_POST["email"];
     $cust_fname = $_POST["first_name"];
@@ -23,12 +23,13 @@ if (!empty($_POST["email"])) {
         ", thank you for reaching out.\r\n\r\nI have received your contact request and will respond shortly.\r\n\r\n-Claire";
     send_mail(
         $cust_email,
-        $cust_email,
-        $cust_email,
-        "webmaster@parrotsour.com",
+        "info@clairemariefotografie.com",
+        "info@clairemariefotografie.com",
+        "info@clairemariefotografie.com",
         $my_subject,
         $my_message,
-        $plain_text
+        $plain_text,
+        "info@clairemariefotografie.com"
     );
 }
 ?>

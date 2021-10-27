@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/sendmail.php';
+require __DIR__ . './../sendmail.php';
  if( !empty($_POST['email'])){
     $cust_email=$_POST['email'];
     $cust_comments=$_POST['comments'];
@@ -36,12 +36,12 @@ require __DIR__ . '/sendmail.php';
     
     send_mail(
       $mail_to, 
-      $cust_email, 
-      $cust_email,
-      $cust_email, 
+      "info@clairemariefotografie.com",
+      "info@clairemariefotografie.com",
+      "info@clairemariefotografie.com",
       $my_subject,
       $my_message,
       $plain_text, 
-      "webmaster@clairemariefotografie.com");      
+      "info@clairemariefotografie.com",);      
 }
 ?>
