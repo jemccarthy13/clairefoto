@@ -12,14 +12,20 @@ class Backend {
       ok: false,
     };
     try {
-      response = await fetch(process.env.PUBLIC_URL + "/api/contactme.php", {
-        method: "POST",
-        body: contactData,
-      });
-
-      await fetch(process.env.PUBLIC_URL + "/api/contactconfirm.php", {
-        method: "POST",
-        body: confirmData,
+      await Promise.all([
+        fetch(process.env.REACT_APP_BASE_URL + "/api/email/contactme.php", {
+          method: "POST",
+          body: contactData,
+        }),
+        fetch(
+          process.env.REACT_APP_BASE_URL + "/api/email/contactconfirm.php",
+          {
+            method: "POST",
+            body: confirmData,
+          }
+        ),
+      ]).then(([response1, response2]) => {
+        response = response1;
       });
     } catch {}
 
