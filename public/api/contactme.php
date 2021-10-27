@@ -46,6 +46,14 @@ require __DIR__ . '/sendmail.php';
     $plain_text .= "Subject: ".$cust_subject."\r\n";
     $plain_text = "Message: ".$cust_comments."\r\n";
     
-    send_mail($mail_to, $cust_email, $cust_email, $cust_email, $my_subject, $my_message, $plain_text);      
+    send_mail(
+      $mail_to, 
+      $cust_email, 
+      $cust_email,
+      $cust_email, 
+      $my_subject,
+      $my_message,
+      $plain_text, 
+      "webmaster@clairemariefotografie.com");      
 }
 ?>
