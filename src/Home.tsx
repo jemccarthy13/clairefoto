@@ -5,7 +5,7 @@ import "./css/snackbar.css";
 
 import { Route } from "react-router";
 import { HashRouter, Link } from "react-router-dom";
-import { ThemeProvider } from "@mui/material";
+import { CircularProgress, ThemeProvider } from "@mui/material";
 
 import mpTheme from "./apptheme";
 
@@ -53,7 +53,13 @@ export default function Home() {
         >
           <div className="app">
             <Header />
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense
+              fallback={
+                <div className="page-content">
+                  <CircularProgress />
+                </div>
+              }
+            >
               <HashRouter>
                 <Link to="/*" target="_self" />
                 <Route exact path="/">
