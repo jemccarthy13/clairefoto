@@ -254,7 +254,6 @@ export default function PricingEditor() {
     cur.commitRowChange(params.id);
     cur.setRowMode(params.id, "view");
 
-    console.log(cur.getRow(params.id).booking);
     backend.updatePrice(cur.getRow(params.id)).then((resp) => {
       if (resp.ok) {
         SnackActions.success("Saved");

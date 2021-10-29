@@ -44,7 +44,6 @@ export const httputils = {
 // class sBackend {
 //   // SELECT * FROM PRICING
 //   getPrices(): PricingData[] {
-//     console.log("get prices s");
 //     let mydata: PricingData[] = [];
 //     httputils.get("/api/prices.php").then((data: PricingData[]) => {
 //       mydata = data;
