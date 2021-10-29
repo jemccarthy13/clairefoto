@@ -34,6 +34,9 @@ img {
     animation: gradient-animation 2s ease infinite;
 }
 
+.app {
+  background-color: white !important;
+}
 .my-header {
   height: 100%;
   background: #f0f0f0;

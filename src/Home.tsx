@@ -1,6 +1,5 @@
 import React, { Suspense, useEffect, useState } from "react";
 
-import "./css/App.css";
 import "./css/snackbar.css";
 
 import { Route } from "react-router";
