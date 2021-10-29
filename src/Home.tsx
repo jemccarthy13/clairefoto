@@ -55,7 +55,7 @@ export default function Home() {
             <Header />
             <Suspense
               fallback={
-                <div className="page-content">
+                <div className="page-content" style={{ textAlign: "center" }}>
                   <CircularProgress />
                 </div>
               }

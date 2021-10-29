@@ -46,7 +46,7 @@
                 $input['id']
             );
             $result = $statement->execute();
-            return $result;
+            return $statement->affected_rows;
         }
 
         public function insert(Array $input){

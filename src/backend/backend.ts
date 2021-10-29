@@ -37,6 +37,7 @@ class Backend {
     return await httputils.post("/api/getimages.php", formd);
   }
 
+  // *************** Pricing *************//
   async getPricing() {
     return await httputils.get("/api/pricing/pricing.php");
   }
@@ -45,80 +46,13 @@ class Backend {
     return await httputils.put("/api/pricing/pricing.php", data);
   }
 
-  //-----------------------------------------------------------------------------
-  //
-  // Mock data generators for frontend only development
-  //
-  //-----------------------------------------------------------------------------
-  // Mock endpoint for getting unit data
-  mockPrice(
-    id: string,
-    title: string,
-    price: string,
-    num_images: string,
-    print_rel: string,
-    custom_txt: string[],
-    bkg?: boolean
-  ): PricingData {
-    return {
-      id,
-      title,
-      price,
-      options: {
-        num_images,
-        print_rel,
-        custom_txt,
-      },
-      booking: bkg !== false,
-    };
+  async addPricing(data: PricingData) {
+    return await httputils.post("/api/pricing/pricing.php", data);
   }
-
-  //-----------------------------------------------------------------------------
-  //
-  // Backend API is the gateway to database data.
-  //
-  // For convenience, these calls have the associated pseudo-SQL
-  //
-  //-----------------------------------------------------------------------------
 
   // Mock SELECT * FROM PRICING WHERE BOOKING=1
   getPricingOptions(): string[] {
     return ["30-minute", "45-minute"];
-  }
-
-  // Mock SELECT * FROM PRICING
-  getPrices(): PricingData[] {
-    const array: PricingData[] = [];
-
-    array.push(
-      this.mockPrice("1", "30-minute", "$75", "20+", "Full", [], false)
-    );
-    array.push(
-      this.mockPrice("2", "45-minute", "$95", "35+", "Full", [], false)
-    );
-    array.push(
-      this.mockPrice(
-        "3",
-        "Seasonal",
-        "TBD",
-        "",
-        "",
-        ["Details will be published on social media"],
-        false
-      )
-    );
-    array.push(
-      this.mockPrice(
-        "4",
-        "Packages",
-        "Contact Me",
-        "",
-        "",
-        ["Birthdays", "Weddings", "Special Events"],
-        false
-      )
-    );
-    return array;
   }
 
   cID = "jemccarthy13@gmail.com";

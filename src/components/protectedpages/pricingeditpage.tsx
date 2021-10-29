@@ -49,7 +49,7 @@ export default function PricingEditor() {
             num_images: numImgs,
           };
         }
-        return { ...params.row, numImgs };
+        return { ...params.row };
       },
     },
     {
@@ -73,7 +73,7 @@ export default function PricingEditor() {
             print_rel: printRel,
           };
         }
-        return { ...params.row, printRel };
+        return { ...params.row };
       },
     },
     {
@@ -99,7 +99,7 @@ export default function PricingEditor() {
             custom_txt: txt,
           };
         }
-        return { ...params.row, txt };
+        return { ...params.row };
       },
     },
     {
@@ -108,6 +108,20 @@ export default function PricingEditor() {
       flex: 1.0,
       editable: true,
       type: "boolean",
+      valueGetter: (params: any) => {
+        const val = params.row.booking;
+        if (typeof val === "string") return params.row.booking === "1";
+        else return params.row.booking;
+      },
+      valueSetter: (params: any) => {
+        const txt = params.value;
+        if (txt) {
+          params.row.booking = "1";
+        } else {
+          params.row.booking = "0";
+        }
+        return { ...params.row, booking: params.row.booking };
+      },
     },
     {
       field: "actions",
@@ -163,6 +177,7 @@ export default function PricingEditor() {
       backend.getPricing().then((data) => {
         data.forEach((d: any) => {
           d.options = JSON.parse(d.options);
+          d.booking = d.booking === "1" ? true : false;
         });
         setPrices(data);
         setLoaded(true);
@@ -202,6 +217,9 @@ export default function PricingEditor() {
       const id = Math.floor(Math.random() * 100000);
       apiRef.current.updateRows([{ id, isNew: true }]);
       apiRef.current.setRowMode(id, "edit");
+
+      backend.addPricing(apiRef.current.getRow(id));
+
       // Wait for the grid to render with the new row
       setTimeout(() => {
         apiRef.current.scrollToIndexes({
@@ -235,12 +253,17 @@ export default function PricingEditor() {
     const cur = apiRef.current;
     cur.commitRowChange(params.id);
     cur.setRowMode(params.id, "view");
+
+    console.log(cur.getRow(params.id).booking);
     backend.updatePrice(cur.getRow(params.id)).then((resp) => {
-      console.log(resp);
       if (resp.ok) {
         SnackActions.success("Saved");
       } else {
-        SnackActions.error("Unable to update. Error code:" + resp.status);
+        SnackActions.error(
+          "Unable to update. Error code:" +
+            resp.status +
+            ". Please reload the page."
+        );
       }
     });
   }

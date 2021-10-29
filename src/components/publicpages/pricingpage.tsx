@@ -10,6 +10,7 @@ interface PState {
   prices: PricingData[];
   failed: boolean;
   tmpTitle: string;
+  loaded: boolean;
 }
 
 class PricingPage extends React.Component<RouteComponentProps, PState> {
@@ -19,6 +20,7 @@ class PricingPage extends React.Component<RouteComponentProps, PState> {
       prices: [],
       failed: false,
       tmpTitle: "",
+      loaded: false,
     };
   }
 
@@ -30,8 +32,13 @@ class PricingPage extends React.Component<RouteComponentProps, PState> {
 
   // Retrieve the airspace list from the backend, and process for display
   loadPrices(): void {
-    const prices = backend.getPrices();
-    this.setState({ prices });
+    backend.getPricing().then((data) => {
+      data.forEach((d: any) => {
+        d.options = JSON.parse(d.options);
+        d.booking = d.booking === "1" ? true : false;
+      });
+      this.setState({ prices: data, loaded: true });
+    });
   }
 
   slotClick = (title: string) => {
@@ -89,12 +96,17 @@ class PricingPage extends React.Component<RouteComponentProps, PState> {
   };
 
   render() {
+    const { loaded } = this.state;
     return (
       <div className="page-content">
-        <div className="page-header">Pricing</div>
-        <PricingTable highlightColor="#87059c">
-          {this.getPricingRows()}
-        </PricingTable>
+        {loaded && (
+          <div>
+            <div className="page-header">Pricing</div>
+            <PricingTable highlightColor="#87059c">
+              {this.getPricingRows()}
+            </PricingTable>
+          </div>
+        )}
       </div>
     );
   }
