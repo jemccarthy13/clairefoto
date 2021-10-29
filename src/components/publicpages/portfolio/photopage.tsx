@@ -52,11 +52,11 @@ export default function PhotoPage(props: PPProps) {
     return (
       <Suspense key={riprops.photo.src} fallback={<CircularProgress />}>
         <FadeInSection>
-          <ImageFadeIn
+          <img
+            alt=""
             src={photos[riprops.index].src}
             width={riprops.photo.width}
             height={riprops.photo.height}
-            opacityTransition={1}
             style={{ margin: riprops.margin }}
             onClick={openViewer(riprops.index)}
           />
