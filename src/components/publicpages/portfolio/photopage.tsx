@@ -1,7 +1,6 @@
 import React, { Suspense, useCallback, useEffect, useState } from "react";
 import Carousel, { Modal, ModalGateway } from "react-images";
 import Gallery, { RenderImageProps } from "react-photo-gallery";
-import ImageFadeIn from "react-image-fade-in";
 import FadeInSection from "./fadeinsection";
 import { CircularProgress } from "@mui/material";
 
