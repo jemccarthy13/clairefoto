@@ -35,6 +35,7 @@ const PricingEditor = React.lazy(
 
 export default function App() {
   const [authenticated, setAuthenticated] = useState(false);
+  const [token, setToken] = useState("");
 
   useEffect(() => {
     if (localStorage.getItem("isAuthenticated") === "true") {
@@ -48,7 +49,12 @@ export default function App() {
     return (
       <ThemeProvider theme={mpTheme}>
         <AuthContext.Provider
-          value={{ auth: authenticated, setAuth: setAuthenticated }}
+          value={{
+            auth: authenticated,
+            setAuth: setAuthenticated,
+            token: token,
+            setToken: setToken,
+          }}
         >
           <div className="app">
             <Header />
