@@ -7,6 +7,7 @@ import {
 import { httputils } from "./httputils";
 
 class Backend {
+  // *************** Contact *************//
   async contactFormSubmit(contactData: any, confirmData: any) {
     let response = {
       ok: false,
@@ -32,9 +33,15 @@ class Backend {
     return response;
   }
 
+  // *************** Images *************//
   async getImages(dir: string) {
     const formd = { directory: dir };
     return await httputils.post("/api/getimages.php", formd);
+  }
+
+  // *************** Login *************//
+  async login(body: { username: string; password: string }) {
+    return await httputils.post("/api/login/login.php", body);
   }
 
   // *************** Pricing *************//

@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import SnackActions from "../../../alert/alert";
 import ValidatedTextField from "../../validatedtextfield";
 import { AuthContext } from "../../authcontext";
+import backend from "../../../backend/backend";
 
 class SignInPage extends React.Component<any, any> {
   constructor(props: any) {
@@ -36,14 +37,21 @@ class SignInPage extends React.Component<any, any> {
     // TODO -- login auth with server / php
     // TODO -- store this state in cookies/localstorage to provide with
     // every authenticated request? do not rely on localstorage to authenticate
-    if (this.state.username === "admin" && this.state.password === "123456") {
-      localStorage.setItem("isAuthenticated", "true");
-      this.props.history.replace(prevLoc);
-      this.state.authCallback(true);
-    } else {
-      SnackActions.error("Invalid username/password");
-      this.state.authCallback(false);
-    }
+    backend
+      .login({
+        username: this.state.username,
+        password: this.state.password,
+      })
+      .then((resp: any) => {
+        if (!resp.ok) {
+          SnackActions.error("Invalid username/password");
+          this.state.authCallback(false);
+        } else {
+          //localStorage.setItem("isAuthenticated", "true");
+          this.props.history.replace(prevLoc);
+          this.state.authCallback(true);
+        }
+      });
   };
 
   render = (): JSX.Element => {

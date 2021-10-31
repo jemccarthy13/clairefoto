@@ -27,7 +27,7 @@ export const httputils = {
       method: "POST",
       body: stringify ? JSON.stringify(data) : data,
     });
-    return response.json();
+    return response;
   },
 
   // FETCH PUT for server API
