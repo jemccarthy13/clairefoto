@@ -55,8 +55,18 @@ class Backend {
   }
 
   // Mock SELECT * FROM PRICING WHERE BOOKING=1
-  getPricingOptions(): string[] {
-    return ["30-minute", "45-minute"];
+  async getPricingOptions(): Promise<string[]> {
+    return backend.getPricing().then((data): string[] => {
+      let answer: string[] = [];
+      data.forEach((d: any) => {
+        console.log(typeof d.booking);
+        d.booking = d.booking === "1" ? true : false;
+        if (d.booking) {
+          answer.push(d.title);
+        }
+      });
+      return answer;
+    });
   }
 
   cID = "jemccarthy13@gmail.com";
@@ -81,29 +91,30 @@ class Backend {
     const arrDates: BlackOutDate[] = [];
     const arrTimes: BlackOutDate[] = [];
     let mydata: any;
-    return httputils
-      .get(this.calBaseURL + this.cID + "/events?key=" + this.calKey)
-      .then((data: any) => {
-        mydata = data.items;
-        mydata.forEach((date: any) => {
-          let start = new Date(date.start.dateTime);
-          let end = new Date(date.end.dateTime);
-          if (isNaN(start.getTime()) && isNaN(end.getTime())) {
-            start = new Date(date.start.date + "T00:00:00Z");
-            end = new Date(date.end.date + "T17:59:00Z");
-            arrDates.push({
-              start: start,
-              end: end,
-            });
-          } else {
-            arrTimes.push({
-              start: start,
-              end: end,
-            });
-          }
-        });
-        return { dates: arrDates, times: arrTimes };
-      });
+    return new Promise(() => []);
+    // return httputils
+    //   .get(this.calBaseURL + this.cID + "/events?key=" + this.calKey)
+    //   .then((data: any) => {
+    //     mydata = data.items;
+    //     mydata.forEach((date: any) => {
+    //       let start = new Date(date.start.dateTime);
+    //       let end = new Date(date.end.dateTime);
+    //       if (isNaN(start.getTime()) && isNaN(end.getTime())) {
+    //         start = new Date(date.start.date + "T00:00:00Z");
+    //         end = new Date(date.end.date + "T17:59:00Z");
+    //         arrDates.push({
+    //           start: start,
+    //           end: end,
+    //         });
+    //       } else {
+    //         arrTimes.push({
+    //           start: start,
+    //           end: end,
+    //         });
+    //       }
+    //     });
+    //     return { dates: arrDates, times: arrTimes };
+    //   });
   }
 }
 

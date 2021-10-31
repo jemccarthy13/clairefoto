@@ -25,6 +25,9 @@ export default function BookingPage() {
   const [email, setEmail] = React.useState("");
   const [type, setType] = React.useState("");
 
+  const defPrices: string[] = [];
+  const [priceOptions, setPriceOptions] = React.useState(defPrices);
+
   // Date Picker
   const [value, setValue] = React.useState(new Date());
   const tmpDates: BlackOutDate[] = [];
@@ -122,6 +125,12 @@ export default function BookingPage() {
     const urlParams = new URLSearchParams(queryString.replace("#/booking", ""));
     const t = urlParams.get("type");
     setType(t === null ? "30-minute" : t);
+  }, []);
+
+  useEffect(() => {
+    backend.getPricingOptions().then((data) => {
+      setPriceOptions(data);
+    });
   }, []);
 
   if (process.env.REACT_APP_BOOKING_ENABLED === "false") {
@@ -229,8 +238,13 @@ export default function BookingPage() {
                 fullWidth
                 value={type}
               >
-                <MenuItem value={"30-minute"}>30-minute</MenuItem>
-                <MenuItem value={"45-minute"}>45-minute</MenuItem>
+                {priceOptions.map((option) => {
+                  return (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  );
+                })}
               </ValidatedTextField>
             </div>
             <Button disabled={!submitEnabled()} onClick={makeBooking}>
