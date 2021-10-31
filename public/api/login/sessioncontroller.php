@@ -48,7 +48,9 @@
             }
             $response['status_code_header'] = 'HTTP/1.1 200 OK';
             $arr=array("jwt"=>$result);
-            $response['body'] = json_encode($arr);
+            header( "Set-Cookie: fotojwt=".$result."" );
+            setcookie("fotojwt",$result);
+            //$response['body'] = json_encode($arr);
             return $response;
         }
 

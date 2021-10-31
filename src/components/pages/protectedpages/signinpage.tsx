@@ -42,11 +42,14 @@ class SignInPage extends React.Component<any, any> {
         username: this.state.username,
         password: this.state.password,
       })
-      .then((resp: any) => {
+      .then(async (resp: any) => {
         if (!resp.ok) {
           SnackActions.error("Invalid username/password");
           this.state.authCallback(false);
         } else {
+          //const res = await resp.json();
+          // console.log(res.jwt);
+          console.log(document.cookie);
           //localStorage.setItem("isAuthenticated", "true");
           this.props.history.replace(prevLoc);
           this.state.authCallback(true);
