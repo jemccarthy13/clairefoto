@@ -43,10 +43,13 @@
         {
             $input = (array) json_decode(file_get_contents('php://input'), TRUE);
             $result = $this->sessionGateway->find($input);
-            if (! $result) {
+            if ($result=="") {
                 return unauthorizedResponse();
             }
-            return $result;
+            $response['status_code_header'] = 'HTTP/1.1 200 OK';
+            $arr=array("jwt"=>$result);
+            $response['body'] = json_encode($arr);
+            return $response;
         }
 
         private function logout()
