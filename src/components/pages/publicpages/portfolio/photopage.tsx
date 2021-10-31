@@ -21,8 +21,9 @@ export default function PhotoPage(props: PPProps) {
   const [photos, setImgs] = useState(defLst);
 
   useEffect(() => {
-    backend.getImages(props.serverDir).then((data) => {
-      setImgs(data);
+    backend.getImages(props.serverDir).then(async (data) => {
+      const imgs = await data.json();
+      setImgs(imgs);
     });
   }, [props.serverDir]);
 
