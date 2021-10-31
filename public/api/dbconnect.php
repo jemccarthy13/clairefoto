@@ -4,10 +4,10 @@ class Database {
 
     public function __construct()
     {
-        $host =  "pdb22.awardspace.net";
-        $username = "3325289_clairefoto";
-        $password = "claire1234";
-        $dbname = "3325289_clairefoto";
+        $host = getenv("HTTP_DB_HOST");
+        $username = getenv("HTTP_DB_USERNAME");
+        $password = getenv("HTTP_DB_PASSWORD");
+        $dbname = getenv("HTTP_DB_NAME");
 
         // Create connection
         $conn = mysqli_connect($host, $username, $password, $dbname);
