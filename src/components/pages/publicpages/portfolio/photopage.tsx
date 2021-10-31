@@ -4,9 +4,9 @@ import Gallery, { RenderImageProps } from "react-photo-gallery";
 import FadeInSection from "./fadeinsection";
 import { CircularProgress } from "@mui/material";
 
-import backend from "../../../backend/backend";
+import backend from "../../../../backend/backend";
 
-import { ImageList } from "../../../backend/backendinterface";
+import { ImageList } from "../../../../backend/backendinterface";
 
 interface PPProps {
   title: string;

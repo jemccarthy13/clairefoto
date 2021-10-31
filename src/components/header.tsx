@@ -3,6 +3,9 @@ import { Link } from "@mui/material";
 export default function Header() {
   return (
     <div className="my-header">
+      <Link href="/#/signin" style={{ float: "right" }} underline="hover">
+        Sign In
+      </Link>
       <div>
         <header className="centerText">Claire-Marie</header>
         <h2 className="centerText h2-compressed">Photography | Fotografie</h2>

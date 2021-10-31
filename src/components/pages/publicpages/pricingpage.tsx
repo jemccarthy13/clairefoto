@@ -2,9 +2,9 @@ import React from "react";
 
 import { PricingTable, PricingSlot, PricingDetail } from "react-pricing-table";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { PricingData } from "../../backend/backendinterface";
+import { PricingData } from "../../../backend/backendinterface";
 
-import backend from "../../backend/backend";
+import backend from "../../../backend/backend";
 
 interface PState {
   prices: PricingData[];

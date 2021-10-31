@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import backend from "../../backend/backend";
-import { PricingData } from "../../backend/backendinterface";
+import backend from "../../../backend/backend";
+import { PricingData } from "../../../backend/backendinterface";
 
 import {
   DataGrid,
@@ -13,8 +13,8 @@ import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import { Button } from "@mui/material";
-import ConfirmDialog from "../confirmdialog";
-import SnackActions from "../../alert/alert";
+import ConfirmDialog from "../../confirmdialog";
+import SnackActions from "../../../alert/alert";
 
 export default function PricingEditor() {
   const defPrices: PricingData[] = [];

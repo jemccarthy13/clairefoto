@@ -13,24 +13,24 @@ import Header from "./components/header";
 import { AuthContext } from "./components/authcontext";
 import ProtectedRoute from "./components/protectedroute";
 
-const HomePage = React.lazy(() => import("./components/publicpages/homepage"));
+const HomePage = React.lazy(() => import("./components/pages/homepage"));
 const PhotoPage = React.lazy(
-  () => import("./components/publicpages/portfolio/photopage")
+  () => import("./components/pages/publicpages/portfolio/photopage")
 );
 const ContactForm = React.lazy(
-  () => import("./components/publicpages/contactform")
+  () => import("./components/pages/publicpages/contactform")
 );
 const PricingPage = React.lazy(
-  () => import("./components/publicpages/pricingpage")
+  () => import("./components/pages/publicpages/pricingpage")
 );
 const BookingPage = React.lazy(
-  () => import("./components/publicpages/bookingpage")
+  () => import("./components/pages/publicpages/bookingpage")
 );
 const SignInPage = React.lazy(
-  () => import("./components/protectedpages/signinpage")
+  () => import("./components/pages/protectedpages/signinpage")
 );
 const PricingEditor = React.lazy(
-  () => import("./components/protectedpages/pricingeditpage")
+  () => import("./components/pages/protectedpages/pricingeditpage")
 );
 
 export default function Home() {

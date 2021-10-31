@@ -3,12 +3,12 @@ import React from "react";
 import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 
-import SocialIcons from "../../socialicons";
+import SocialIcons from "../../../socialicons";
 
-import snackActions from "../../alert/alert";
-import { useSyncState } from "../../syncstate";
-import ValidatedTextField from "../validatedtextfield";
-import backend from "../../backend/backend";
+import snackActions from "../../../alert/alert";
+import { useSyncState } from "../../../syncstate";
+import ValidatedTextField from "../../validatedtextfield";
+import backend from "../../../backend/backend";
 
 export default function ContactForm(props: Record<string, unknown>) {
   // form fields
