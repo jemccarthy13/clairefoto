@@ -26,9 +26,10 @@
         }
 
         public function delete($id){
-            $statement=$this->con->prepare("DELETE FROM `pricing` WHERE id = :id");
-            $result = $statement->execute(array('id'=>$id));
-            return $result->rowCount();
+            $statement=$this->con->prepare("DELETE FROM `pricing` WHERE id = ?");
+            $statement->bind_param("i", $id);
+            $result = $statement->execute();
+            return $statement->affected_rows;
         }
 
         public function update(Array $input){

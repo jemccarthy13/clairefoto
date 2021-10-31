@@ -23,7 +23,7 @@ export default function PricingEditor() {
   const [loadError, setLoadError] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const [callback, setCallback] = useState(() => (b: boolean) => {});
+  const [delCallback, setDelCallback] = useState(() => (b: boolean) => {});
 
   const columns: any[] = [
     { field: "title", headerName: "Title", flex: 1.0, editable: true },
@@ -153,9 +153,13 @@ export default function PricingEditor() {
             icon={<DeleteIcon />}
             label="Delete"
             onClick={() => {
-              setCallback(() => (confirmed: boolean) => {
+              setDelCallback(() => (confirmed: boolean) => {
                 setDialogOpen(false);
                 if (confirmed) {
+                  const row = apiRef.current.getRow(obj.id);
+                  backend.deletePricing(row).then((data) => {
+                    SnackActions.success("Deleted " + row.title);
+                  });
                   apiRef.current.updateRows([
                     { id: obj.id, _action: "delete" },
                   ]);
@@ -253,10 +257,10 @@ export default function PricingEditor() {
     const cur = apiRef.current;
     cur.commitRowChange(params.id);
     cur.setRowMode(params.id, "view");
-
-    backend.updatePrice(cur.getRow(params.id)).then((resp) => {
+    const row = cur.getRow(params.id);
+    backend.updatePrice(row).then((resp) => {
       if (resp.ok) {
-        SnackActions.success("Saved");
+        SnackActions.success("Saved " + row.title);
       } else {
         SnackActions.error(
           "Unable to update. Error code:" +
@@ -296,7 +300,7 @@ export default function PricingEditor() {
         <ConfirmDialog
           title={"Confirm delete?"}
           open={dialogOpen}
-          callback={callback}
+          callback={delCallback}
           description={
             "You are about to permanently delete this pricing option. Are you sure?"
           }

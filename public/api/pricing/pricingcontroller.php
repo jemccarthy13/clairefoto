@@ -34,7 +34,7 @@
                 $response = $this->updatePriceFromRequest();
                 break;
             case 'DELETE':
-                $response = $this->deletePrice($this->id);
+                $response = $this->deletePriceFromRequest();
                 break;
             case 'OPTIONS':
                 $response['status_code_header'] = 'HTTP/1.1 200 OK';
@@ -85,6 +85,17 @@
                 return unprocessableEntityResponse();
             }
             return $response;
+        }
+
+        private function deletePriceFromRequest()
+        {
+            $input = (array) json_decode(file_get_contents('php://input'), TRUE);
+            $result = $this->pricingGateway->delete($input["id"]);
+            var_dump($result);
+            if ($result!=1) {
+                return unprocessableEntityResponse();
+            }
+            return $result;
         }
 
         private function validatePrice($input)
