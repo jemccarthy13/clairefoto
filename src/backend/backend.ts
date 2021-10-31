@@ -50,6 +50,10 @@ class Backend {
     return await httputils.post("/api/pricing/pricing.php", data);
   }
 
+  async deletePricing(data: PricingData) {
+    return await httputils.delete("/api/pricing/pricing.php", data);
+  }
+
   // Mock SELECT * FROM PRICING WHERE BOOKING=1
   getPricingOptions(): string[] {
     return ["30-minute", "45-minute"];

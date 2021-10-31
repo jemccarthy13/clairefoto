@@ -39,17 +39,16 @@ export const httputils = {
     });
     return response;
   },
-};
 
-// class sBackend {
-//   // SELECT * FROM PRICING
-//   getPrices(): PricingData[] {
-//     let mydata: PricingData[] = [];
-//     httputils.get("/api/prices.php").then((data: PricingData[]) => {
-//       mydata = data;
-//     });
-//     return mydata;
-//   }
-// }
+  // FETCH DETE for server API
+  async delete(url: string, data: any = "", stringify = true) {
+    const response = await fetch(baseURL + url, {
+      ...params,
+      method: "DELETE",
+      body: stringify ? JSON.stringify(data) : data,
+    });
+    return response;
+  },
+};
 
 export default httputils;
