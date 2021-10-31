@@ -1,6 +1,6 @@
 import { AuthContext } from "../authcontext";
 import Dashboard from "./protectedpages/dashboard";
-import PublicHomePage from "./publicpages/homepage/homepage";
+import PublicHomePage from "./publicpages/publichomepage";
 
 export default function HomePage() {
   return (

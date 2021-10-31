@@ -13,7 +13,7 @@ import Header from "./components/header";
 import { AuthContext } from "./components/authcontext";
 import ProtectedRoute from "./components/protectedroute";
 
-const HomePage = React.lazy(() => import("./components/pages/homepage"));
+const HomePage = React.lazy(() => import("./components/pages/home"));
 const PhotoPage = React.lazy(
   () => import("./components/pages/publicpages/portfolio/photopage")
 );
@@ -33,7 +33,7 @@ const PricingEditor = React.lazy(
   () => import("./components/pages/protectedpages/pricingeditpage")
 );
 
-export default function Home() {
+export default function App() {
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
