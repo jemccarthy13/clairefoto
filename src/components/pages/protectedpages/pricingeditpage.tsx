@@ -12,9 +12,12 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
-import { Button } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import ConfirmDialog from "../../confirmdialog";
 import SnackActions from "../../../alert/alert";
+
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { Link } from "react-router-dom";
 
 export default function PricingEditor() {
   const defPrices: PricingData[] = [];
@@ -278,7 +281,16 @@ export default function PricingEditor() {
 
   return (
     <div className="page-content">
-      <div className="page-header">Pricing Editor</div>
+      <div className="page-header">
+        Pricing Editor{" "}
+        <IconButton
+          style={{ verticalAlign: "baseline" }}
+          component={Link}
+          to="/pricing"
+        >
+          <VisibilityIcon />
+        </IconButton>
+      </div>
       <div style={{ height: "400px" }}>
         <DataGrid
           rows={prices}

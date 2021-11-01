@@ -1,10 +1,14 @@
 import React from "react";
 
 import { PricingTable, PricingSlot, PricingDetail } from "react-pricing-table";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import { PricingData } from "../../../backend/backendinterface";
 
 import backend from "../../../backend/backend";
+import { AuthContext } from "../../authcontext";
+
+import EditIcon from "@mui/icons-material/Edit";
+import { IconButton } from "@mui/material";
 
 interface PState {
   prices: PricingData[];
@@ -98,16 +102,31 @@ class PricingPage extends React.Component<RouteComponentProps, PState> {
   render() {
     const { loaded } = this.state;
     return (
-      <div className="page-content">
-        {loaded && (
-          <div>
-            <div className="page-header">Pricing</div>
-            <PricingTable highlightColor="#87059c">
-              {this.getPricingRows()}
-            </PricingTable>
+      <AuthContext.Consumer>
+        {(value) => (
+          <div className="page-content">
+            {loaded && (
+              <div>
+                <div className="page-header">
+                  Pricing{" "}
+                  {value.auth && (
+                    <IconButton
+                      style={{ verticalAlign: "baseline" }}
+                      component={Link}
+                      to="/pricingedit"
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  )}
+                </div>
+                <PricingTable highlightColor="#87059c">
+                  {this.getPricingRows()}
+                </PricingTable>
+              </div>
+            )}
           </div>
         )}
-      </div>
+      </AuthContext.Consumer>
     );
   }
 }
