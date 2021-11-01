@@ -1,10 +1,12 @@
+import { Cookies } from "react-cookie-consent";
+
 const baseURL = process.env.REACT_APP_BASE_URL;
 
 const params: RequestInit = {
   method: "GET", // *GET, POST, PUT, DELETE, etc.
   mode: "cors", // no-cors, *cors, same-origin
   cache: "no-cache",
-  credentials: "same-origin", // include, *same-origin, omit
+  credentials: "include", // include, *same-origin, omit
   headers: {
     "Content-Type": "application/json",
   },
@@ -16,6 +18,10 @@ export const httputils = {
   async get(url = "") {
     const response = await fetch(baseURL + url, {
       ...params,
+      headers: {
+        Cookie: Cookies.get("fotojwt"),
+        ...params.headers,
+      },
     });
     return response.json();
   },
@@ -24,6 +30,10 @@ export const httputils = {
   async post(url: string, data: any = "", stringify = true) {
     const response = await fetch(baseURL + url, {
       ...params,
+      headers: {
+        Cookie: Cookies.get("fotojwt"),
+        ...params.headers,
+      },
       method: "POST",
       body: stringify ? JSON.stringify(data) : data,
     });
@@ -34,6 +44,10 @@ export const httputils = {
   async put(url: string, data: any = "", stringify = true) {
     const response = await fetch(baseURL + url, {
       ...params,
+      headers: {
+        Cookie: Cookies.get("fotojwt"),
+        ...params.headers,
+      },
       method: "PUT",
       body: stringify ? JSON.stringify(data) : data,
     });
@@ -44,6 +58,10 @@ export const httputils = {
   async delete(url: string, data: any = "", stringify = true) {
     const response = await fetch(baseURL + url, {
       ...params,
+      headers: {
+        Cookie: Cookies.get("fotojwt"),
+        ...params.headers,
+      },
       method: "DELETE",
       body: stringify ? JSON.stringify(data) : data,
     });
