@@ -9,6 +9,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import backend from "../../../../backend/backend";
 
 import { ImageList } from "../../../../backend/backendinterface";
+import { AuthContext } from "../../../authcontext";
 
 interface PPProps {
   title: string;
@@ -24,8 +25,7 @@ export default function PhotoPage(props: PPProps) {
 
   useEffect(() => {
     backend.getImages(props.serverDir).then(async (data) => {
-      const imgs = await data.json();
-      setImgs(imgs);
+      setImgs(data);
     });
   }, [props.serverDir]);
 
@@ -50,6 +50,21 @@ export default function PhotoPage(props: PPProps) {
     setViewerIsOpen(false);
   };
 
+  const deletePhoto = (index: number) => {
+    const func = () => {
+      const newImgs = photos;
+      newImgs.splice(index, 1);
+      setImgs(
+        newImgs.map((d) => {
+          return d;
+        })
+      );
+
+      console.log("delete from server....");
+    };
+    return func;
+  };
+
   const render = (riprops: RenderImageProps): any => {
     return (
       <Suspense key={riprops.photo.src} fallback={<CircularProgress />}>
@@ -69,27 +84,25 @@ export default function PhotoPage(props: PPProps) {
               style={{ margin: riprops.margin, gridArea: "1/-1" }}
               onClick={openViewer(riprops.index)}
             />
-            <IconButton
-              style={{
-                verticalAlign: "baseline",
-                gridArea: "1/-1",
-                backgroundColor: "white",
-                zIndex: 99,
-                width: "min-content",
-                height: "min-content",
-              }}
-              onClick={() => {
-                const newImgs = photos;
-                newImgs.splice(riprops.index, 1);
-                setImgs(
-                  newImgs.map((d) => {
-                    return d;
-                  })
-                );
-              }}
-            >
-              <DeleteForeverIcon />
-            </IconButton>
+            <AuthContext.Consumer>
+              {(value) =>
+                value.auth && (
+                  <IconButton
+                    style={{
+                      verticalAlign: "baseline",
+                      gridArea: "1/-1",
+                      backgroundColor: "white",
+                      zIndex: 99,
+                      width: "min-content",
+                      height: "min-content",
+                    }}
+                    onClick={deletePhoto(riprops.index)}
+                  >
+                    <DeleteForeverIcon />
+                  </IconButton>
+                )
+              }
+            </AuthContext.Consumer>
           </div>
         </FadeInSection>
       </Suspense>
