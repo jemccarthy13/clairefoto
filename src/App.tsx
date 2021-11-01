@@ -13,6 +13,7 @@ import Header from "./components/header";
 import { AuthContext } from "./components/authcontext";
 import ProtectedRoute from "./components/protectedroute";
 import { Cookies } from "react-cookie-consent";
+import Footer from "./components/footer";
 
 const HomePage = React.lazy(() => import("./components/pages/home"));
 const PhotoPage = React.lazy(
@@ -105,6 +106,7 @@ export default function App() {
                 <ProtectedRoute path="/bookingedit" component={BookingEditor} />
               </HashRouter>
             </Suspense>
+            {false && <Footer />}
           </div>
         </AuthContext.Provider>
       </ThemeProvider>
