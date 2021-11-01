@@ -11,7 +11,7 @@ export default function Dashboard() {
       <div className="page-header">Dashboard</div>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <Card sx={{ maxWidth: 345 }}>
+          <Card sx={{ maxWidth: 345, margin: "auto" }}>
             <CardActionArea component={Link} to="/pricingedit">
               <CardMedia
                 component="img"
@@ -32,7 +32,7 @@ export default function Dashboard() {
           </Card>
         </Grid>
         <Grid item xs={6}>
-          <Card sx={{ maxWidth: 345 }}>
+          <Card sx={{ maxWidth: 345, margin: "auto" }}>
             <CardActionArea component={Link} to="/bookingedit">
               <CardMedia
                 component="img"
