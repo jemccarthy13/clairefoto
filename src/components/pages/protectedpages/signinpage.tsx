@@ -67,7 +67,7 @@ class SignInPage extends React.Component<any, any> {
           }
           return (
             <div className="page-content" style={{ textAlign: "center" }}>
-              <div className="page-header">Signin User</div>
+              <div className="page-header">Signin</div>
 
               <div style={{ width: "90%", margin: "auto" }}>
                 <Box
