@@ -1,9 +1,10 @@
 import React from "react";
+import { Cookies } from "react-cookie-consent";
 import { Redirect, Route } from "react-router-dom";
 
 const ProtectedRoute = ({ component, path, ...rest }: any) => {
   const isAuth = () => {
-    return localStorage.getItem("isAuthenticated") === "true";
+    return Cookies.get("fotojwt") !== undefined;
   };
 
   const RouteComponent = (props: any) =>
