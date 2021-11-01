@@ -53,7 +53,7 @@ class SignInPage extends React.Component<any, any> {
           const d = new Date(0);
           d.setUTCSeconds(res.expires);
 
-          Cookies.set("fotojwt", res.jwt, { expires: d, httponly: "true" });
+          Cookies.set("fotojwt", res.jwt, { expires: d });
 
           this.props.history.replace(prevLoc);
           this.state.authCallback(true);

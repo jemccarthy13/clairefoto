@@ -2,7 +2,9 @@ import React, { Suspense, useCallback, useEffect, useState } from "react";
 import Carousel, { Modal, ModalGateway } from "react-images";
 import Gallery, { RenderImageProps } from "react-photo-gallery";
 import FadeInSection from "./fadeinsection";
-import { CircularProgress } from "@mui/material";
+
+import { CircularProgress, IconButton } from "@mui/material";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 import backend from "../../../../backend/backend";
 
@@ -52,14 +54,43 @@ export default function PhotoPage(props: PPProps) {
     return (
       <Suspense key={riprops.photo.src} fallback={<CircularProgress />}>
         <FadeInSection>
-          <img
-            alt=""
-            src={photos[riprops.index].src}
-            width={riprops.photo.width}
-            height={riprops.photo.height}
-            style={{ margin: riprops.margin }}
-            onClick={openViewer(riprops.index)}
-          />
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr",
+              gridTemplateRows: "1fr",
+            }}
+          >
+            <img
+              alt=""
+              src={photos[riprops.index].src}
+              width={riprops.photo.width}
+              height={riprops.photo.height}
+              style={{ margin: riprops.margin, gridArea: "1/-1" }}
+              onClick={openViewer(riprops.index)}
+            />
+            <IconButton
+              style={{
+                verticalAlign: "baseline",
+                gridArea: "1/-1",
+                backgroundColor: "white",
+                zIndex: 99,
+                width: "min-content",
+                height: "min-content",
+              }}
+              onClick={() => {
+                const newImgs = photos;
+                newImgs.splice(riprops.index, 1);
+                setImgs(
+                  newImgs.map((d) => {
+                    return d;
+                  })
+                );
+              }}
+            >
+              <DeleteForeverIcon />
+            </IconButton>
+          </div>
         </FadeInSection>
       </Suspense>
     );
