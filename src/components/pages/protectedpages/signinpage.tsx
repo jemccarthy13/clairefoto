@@ -7,6 +7,8 @@ import ValidatedTextField from "../../validatedtextfield";
 import { AuthContext } from "../../authcontext";
 import backend from "../../../backend/backend";
 
+import { Cookies } from "react-cookie-consent";
+
 class SignInPage extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
@@ -47,10 +49,12 @@ class SignInPage extends React.Component<any, any> {
           SnackActions.error("Invalid username/password");
           this.state.authCallback(false);
         } else {
-          //const res = await resp.json();
-          // console.log(res.jwt);
-          console.log(document.cookie);
-          //localStorage.setItem("isAuthenticated", "true");
+          const res = await resp.json();
+          const d = new Date(0);
+          d.setUTCSeconds(res.expires);
+
+          Cookies.set("fotojwt", res.jwt, { expires: d, httponly: "true" });
+
           this.props.history.replace(prevLoc);
           this.state.authCallback(true);
         }

@@ -12,6 +12,7 @@ import Header from "./components/header";
 
 import { AuthContext } from "./components/authcontext";
 import ProtectedRoute from "./components/protectedroute";
+import { Cookies } from "react-cookie-consent";
 
 const HomePage = React.lazy(() => import("./components/pages/home"));
 const PhotoPage = React.lazy(
@@ -38,7 +39,7 @@ export default function App() {
   const [token, setToken] = useState("");
 
   useEffect(() => {
-    if (localStorage.getItem("isAuthenticated") === "true") {
+    if (Cookies.get("fotojwt") !== undefined) {
       setAuthenticated(true);
     }
   }, []);

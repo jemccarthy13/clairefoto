@@ -4,7 +4,7 @@
         $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
 
         // Create token payload as a JSON string
-        $user['exp'] = time()+(60*20);
+        $user['exp'] = time()+(60*60*6);
         $payload = json_encode($user);
 
         // Encode Header to Base64Url String

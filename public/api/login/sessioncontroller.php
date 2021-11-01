@@ -47,10 +47,8 @@
                 return unauthorizedResponse();
             }
             $response['status_code_header'] = 'HTTP/1.1 200 OK';
-            $arr=array("jwt"=>$result);
-            header( "Set-Cookie: fotojwt=".$result."" );
-            setcookie("fotojwt",$result);
-            //$response['body'] = json_encode($arr);
+            $arr=array("jwt"=>$result, 'expires'=>time()+60*60*6);
+            $response['body'] = json_encode($arr);
             return $response;
         }
 
