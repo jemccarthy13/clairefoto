@@ -36,9 +36,6 @@ class SignInPage extends React.Component<any, any> {
       prevLoc = this.props.history.location.state.prevLocation;
     } catch {}
 
-    // TODO -- login auth with server / php
-    // TODO -- store this state in cookies/localstorage to provide with
-    // every authenticated request? do not rely on localstorage to authenticate
     backend
       .login({
         username: this.state.username,

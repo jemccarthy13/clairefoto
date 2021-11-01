@@ -1,7 +1,8 @@
 import {
   BlackOut,
-  BlackOutDate,
+  // BlackOutDate,
   BookingAppointment,
+  ImageList,
   PricingData,
 } from "./backendinterface";
 import { httputils } from "./httputils";
@@ -34,9 +35,11 @@ class Backend {
   }
 
   // *************** Images *************//
-  async getImages(dir: string) {
+  async getImages(dir: string): Promise<ImageList[]> {
     const formd = { directory: dir };
-    return await httputils.post("/api/getimages.php", formd);
+    return httputils.post("/api/getimages.php", formd).then((data) => {
+      return data.json();
+    });
   }
 
   // *************** Login *************//
@@ -95,9 +98,9 @@ class Backend {
   }
 
   getBlackOutDates(): Promise<BlackOut> {
-    const arrDates: BlackOutDate[] = [];
-    const arrTimes: BlackOutDate[] = [];
-    let mydata: any;
+    // const arrDates: BlackOutDate[] = [];
+    // const arrTimes: BlackOutDate[] = [];
+    // let mydata: any;
     return new Promise(() => []);
     // return httputils
     //   .get(this.calBaseURL + this.cID + "/events?key=" + this.calKey)
