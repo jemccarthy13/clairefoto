@@ -25,5 +25,10 @@ class ImageGateway {
         }
         return $entries;
     }
+
+    public function delete($file){
+        $file_url=$_SERVER['DOCUMENT_ROOT'].$file;
+        return unlink($file_url);
+    }
 }
 ?>

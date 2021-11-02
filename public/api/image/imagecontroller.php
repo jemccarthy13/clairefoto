@@ -1,6 +1,7 @@
 <?php
     require "./imagegateway.php";
     require "../responses.php";
+    require "../login/token.php";
 
     class ImageController {
         private $con;
@@ -23,10 +24,12 @@
                 $response = $this->getImagesFromRequest();
                 break;
             case 'PUT':
+                validateToken();
                 $response = $this->putImageFromRequest();
                 break;
             case 'DELETE':
-                $response = $this->logout();
+                validateToken();
+                $response = $this->deleteImageFromRequest();
                 break;
             case 'OPTIONS':
                 $response['status_code_header'] = 'HTTP/1.1 200 OK';
@@ -63,6 +66,21 @@
             $destination=$input['directory'];
             $response['status_code_header'] = 'HTTP/1.1 404 Not Found';
             var_dump($destination);
+        }
+
+        private function deleteImageFromRequest(){
+            $input = json_decode(file_get_contents('php://input'), true);
+            $file=$input['file'];
+
+            if($file==NULL){
+                return unprocessableEntityResponse();
+            }
+            $result = $this->imageGateway->delete($file);
+            if(!$result){
+                return unprocessableEntityResponse();
+            }
+            $response['status_code_header'] = 'HTTP/1.1 200 OK';
+            return $response;
         }
     }
 ?>

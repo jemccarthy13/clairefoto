@@ -10,6 +10,8 @@ import backend from "../../../../backend/backend";
 
 import { ImageList } from "../../../../backend/backendinterface";
 import { AuthContext } from "../../../authcontext";
+import SnackActions from "../../../../alert/alert";
+import ConfirmDialog from "../../../confirmdialog";
 
 interface PPProps {
   title: string;
@@ -22,6 +24,9 @@ export default function PhotoPage(props: PPProps) {
 
   const defLst: ImageList[] = [];
   const [photos, setImgs] = useState(defLst);
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [delCallback, setDelCallback] = useState(() => (b: boolean) => {});
 
   useEffect(() => {
     backend.getImages(props.serverDir).then(async (data) => {
@@ -52,16 +57,33 @@ export default function PhotoPage(props: PPProps) {
 
   const deletePhoto = (index: number) => {
     const func = () => {
-      const newImgs = photos;
-      newImgs.splice(index, 1);
-      setImgs(
-        newImgs.map((d) => {
-          return d;
-        })
-      );
-
-      console.log("delete from server....");
+      setDelCallback(() => (confirmed: boolean) => {
+        setDialogOpen(false);
+        if (confirmed) {
+          const row = index;
+          console.log("confirmed");
+          backend.deleteImage(photos[row].src).then((data) => {
+            console.log(data);
+            if (data.ok) {
+              SnackActions.success("Deleted " + photos[row].src);
+              const newImgs = photos;
+              newImgs.splice(index, 1);
+              setImgs(
+                newImgs.map((d) => {
+                  return d;
+                })
+              );
+            } else {
+              SnackActions.error(
+                "Unable to delete: error code - " + data.status
+              );
+            }
+          });
+        }
+      });
+      setDialogOpen(true);
     };
+
     return func;
   };
 
@@ -132,6 +154,14 @@ export default function PhotoPage(props: PPProps) {
           </Modal>
         ) : null}
       </ModalGateway>
+      <ConfirmDialog
+        title={"Confirm delete?"}
+        open={dialogOpen}
+        callback={delCallback}
+        description={
+          "You are about to permanently delete this image from this gallery. Are you sure?"
+        }
+      />
     </div>
   );
 }

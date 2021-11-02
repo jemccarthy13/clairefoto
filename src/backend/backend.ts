@@ -42,6 +42,12 @@ class Backend {
     });
   }
 
+  async deleteImage(src: string): Promise<Response> {
+    return await httputils.delete("/api/image/image.php", {
+      file: src,
+    });
+  }
+
   // *************** Login *************//
   async login(body: { username: string; password: string }) {
     return await httputils.post("/api/login/login.php", body);
