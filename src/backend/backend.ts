@@ -69,7 +69,6 @@ class Backend {
     return backend.getPricing().then((data): string[] => {
       let answer: string[] = [];
       data.forEach((d: any) => {
-        console.log(typeof d.booking);
         d.booking = d.booking === "1" ? true : false;
         if (d.booking) {
           answer.push(d.title);
