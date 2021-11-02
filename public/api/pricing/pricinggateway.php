@@ -64,7 +64,7 @@
                 $input['options'],
                 $input['booking']);
             $result = $statement->execute();
-            return $result->rowCount();
+            return $statement->affected_rows;
         }
     }
 ?>

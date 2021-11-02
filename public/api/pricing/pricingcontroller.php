@@ -1,6 +1,7 @@
 <?php
     require "./pricinggateway.php";
     require "../responses.php";
+    require "../login/token.php";
 
     class PricingController {
         private $con;
@@ -28,12 +29,15 @@
                 };
                 break;
             case 'POST':
+                validateToken();
                 $response = $this->createPriceFromRequest();
                 break;
             case 'PUT':
+                validateToken();
                 $response = $this->updatePriceFromRequest();
                 break;
             case 'DELETE':
+                validateToken();
                 $response = $this->deletePriceFromRequest();
                 break;
             case 'OPTIONS':
@@ -91,7 +95,6 @@
         {
             $input = (array) json_decode(file_get_contents('php://input'), TRUE);
             $result = $this->pricingGateway->delete($input["id"]);
-            var_dump($result);
             if ($result!=1) {
                 return unprocessableEntityResponse();
             }
