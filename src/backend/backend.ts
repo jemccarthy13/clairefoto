@@ -37,7 +37,7 @@ class Backend {
   // *************** Images *************//
   async getImages(dir: string): Promise<ImageList[]> {
     const formd = { directory: dir };
-    return httputils.post("/api/getimages.php", formd).then((data) => {
+    return httputils.post("/api/image/image.php", formd).then((data) => {
       return data.json();
     });
   }

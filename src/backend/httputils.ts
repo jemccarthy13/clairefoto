@@ -19,7 +19,6 @@ export const httputils = {
     const response = await fetch(baseURL + url, {
       ...params,
       headers: {
-        Cookie: Cookies.get("fotojwt"),
         ...params.headers,
       },
     });
