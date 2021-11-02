@@ -1,21 +1,16 @@
+-- CRM
+---- User management
 
--- pricing -> booking -> Timify / Square?
---- If Timify
----- Timify dev access  
----- Timify backend with api dev / key
----- Timify custom widget for booking (component)
----- Link products to pricing slots / tiles
----- Payment?
----- Email notification for booking
---- If Square
----- Schedule bookings -> blackout dates?
+-- TODO - upload new image to demo gallery
+-- TODO - PATCH for sessioncontroller (to allow admins to change password)
+
+-- Booking:
+---- Timify? or Self-dev?
+-- Payment?
+---- Timify included
+---- Or Square?
+---- Email notifications after booking confirmed for square pymt, IBAN, or paypal
+
 ---- Confirm bookings
 ---- After booking is confirmed, pay now button?
 ---- Send email with "pay now" link?
-
--- album linked to timify/square customers
----- Give claire ability to make albums associated with customers
----- Create page for album (password entry screen), load photos from the database
--------- Enable download for photos associated with an album
--------- Timed Cookies for save login to re-visit album site
----- When album is created, send email notification (avail to download)
