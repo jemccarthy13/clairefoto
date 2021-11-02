@@ -31,7 +31,7 @@ export const httputils = {
     const response = await fetch(baseURL + url, {
       ...params,
       headers: {
-        Cookie: Cookies.get("fotojwt"),
+        Authorization: "Bearer " + Cookies.get("fotojwt"),
         ...params.headers,
       },
       method: "POST",
@@ -45,7 +45,7 @@ export const httputils = {
     const response = await fetch(baseURL + url, {
       ...params,
       headers: {
-        Cookie: Cookies.get("fotojwt"),
+        Authorization: "Bearer " + Cookies.get("fotojwt"),
         ...params.headers,
       },
       method: "PUT",
@@ -59,7 +59,7 @@ export const httputils = {
     const response = await fetch(baseURL + url, {
       ...params,
       headers: {
-        Cookie: Cookies.get("fotojwt"),
+        Authorization: "Bearer " + Cookies.get("fotojwt"),
         ...params.headers,
       },
       method: "DELETE",
