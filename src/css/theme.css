@@ -8,35 +8,34 @@ body, html {
   display:inline-flex;
   margin:0px;
 }
-
-@-webkit-keyframes gradient-animation {
-  0%{background-position:left}
-  50%{background-position:left 50%}
-  100%{background-position:left 100%}
+    
+@-webkit-keyframes Gradient {
+  0%{background-position:0% 50%}
+  100%{background-position:100% 50%}
 }
-@-moz-keyframes gradient-animation {
-  0%{background-position:right}
-  100%{background-position:left}
+@-moz-keyframes Gradient {
+  0%{background-position:0% 50%}
+  100%{background-position:100% 50%}
 }
-@keyframes gradient-animation {
-  0%{background-position:right}
-  100%{background-position:left}
+@keyframes Gradient { 
+  0%{background-position:0% 50%}
+  100%{background-position:100% 50%}
 }
 
 img {
-    content: "";
-    z-index: 10;  
-    background: linear-gradient(to right, rgb(180, 180, 180) 25%, #eee 50%, rgb(180, 180, 180) 75%);
-    background-size: 400% 400%;
+    z-index: 4;  
+    background: linear-gradient(to right, #B4B4B4 30%, #eee 50%, #B4B4B4 70%);
+    background-size: 200% 200%;
 
-    -webkit-animation: gradient-animation 2s ease infinite;
-    -moz-animation: gradient-animation 2s ease infinite;
-    animation: gradient-animation 2s ease infinite;
+    -webkit-animation: Gradient 2s ease infinite;
+    -moz-animation: Gradient 2s ease infinite;
+    animation: Gradient 2s ease infinite;
 }
 
 .app {
   background-color: white !important;
 }
+
 .my-header {
   height: 100%;
   background: #f0f0f0;
