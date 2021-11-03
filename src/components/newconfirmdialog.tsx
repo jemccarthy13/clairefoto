@@ -8,33 +8,18 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 interface ADProps {
   title: string;
-  callback: (confirmed: boolean) => any;
+  onConfirm: () => any;
+  onCancel: () => any;
   open: boolean;
   description: string;
 }
 
 export default function ConfirmDialog(props: ADProps) {
-  const [open, setOpen] = React.useState(false);
-
-  React.useEffect(() => {
-    setOpen(props.open);
-  }, [props.open]);
-
-  const handleCancel = () => {
-    setOpen(false);
-    props.callback(false);
-  };
-
-  const handleConfirm = () => {
-    setOpen(false);
-    props.callback(true);
-  };
-
   return (
     <div>
       <Dialog
-        open={open}
-        onClose={handleCancel}
+        open={props.open}
+        onClose={props.onCancel}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -45,8 +30,8 @@ export default function ConfirmDialog(props: ADProps) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCancel}>Cancel</Button>
-          <Button onClick={handleConfirm} autoFocus>
+          <Button onClick={props.onCancel}>Cancel</Button>
+          <Button onClick={props.onConfirm} autoFocus>
             Confirm
           </Button>
         </DialogActions>
