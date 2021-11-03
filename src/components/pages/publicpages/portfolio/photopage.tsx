@@ -4,7 +4,6 @@ import backend from "../../../../backend/backend";
 
 import { ImageList } from "../../../../backend/backendinterface";
 import SnackActions from "../../../../alert/alert";
-import ConfirmDialog from "../../../confirmdialog";
 
 import ModalCarouselAdapter from "./modalcarouseladapter";
 import GalleryAdapter from "./galleryadapter";
@@ -116,14 +115,6 @@ export default function PhotoPage(props: PPProps) {
       />
 
       {DelDialog}
-      {/* <ConfirmDialog
-        title={"Confirm delete?"}
-        open={dialogOpen}
-        callback={delCallback}
-        description={
-          "You are about to permanently delete this image from this gallery. Are you sure?"
-        }
-      /> */}
     </div>
   );
 }

@@ -30,12 +30,10 @@ export function useConfirmDialog(config: ConfirmDialogConfig, deps: any) {
   };
 
   const onConfirm = () => {
-    console.log("on confirm, use confirm");
     setOpen(false);
     confirmAct();
   };
 
-  console.log("using confirm dialog: " + isOpen);
   return (
     <ConfirmDialog
       title={config.title}
