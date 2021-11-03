@@ -8,6 +8,7 @@ import SnackActions from "../../../../alert/alert";
 import ModalCarouselAdapter from "./modalcarouseladapter";
 import GalleryAdapter from "./galleryadapter";
 import { useConfirmDialog } from "../../../useConfirmDialog";
+import DropzoneAdapter from "./dropzoneadapter";
 
 interface PPProps {
   title: string;
@@ -100,6 +101,8 @@ export default function PhotoPage(props: PPProps) {
       onContextMenu={customContext}
     >
       <div className="page-header">{props.title}</div>
+
+      <DropzoneAdapter destination={props.serverDir} />
 
       <GalleryAdapter
         photos={photos}
