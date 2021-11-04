@@ -9,19 +9,21 @@ import {
 import { Link } from "react-router-dom";
 
 interface DCardProps {
-  to: string;
+  to?: string;
   imgSrc: string;
   imgAlt: string;
   cardTitle: string;
   cardDescription: string;
   className?: string;
+  onClick?: () => any;
 }
 
 export default function DashboardCard(props: DCardProps) {
+  const lTo = props.to === undefined ? "/" : props.to;
   return (
     <Grid item xs={6}>
       <Card sx={{ maxWidth: 345, margin: "auto" }}>
-        <CardActionArea component={Link} to={props.to}>
+        <CardActionArea component={Link} to={lTo} onClick={props.onClick}>
           <CardMedia
             className={props.className}
             component="img"

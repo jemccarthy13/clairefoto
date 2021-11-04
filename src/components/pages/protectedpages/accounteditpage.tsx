@@ -1,5 +1,7 @@
 import { Box, Button } from "@mui/material";
 import { useState } from "react";
+import SnackActions from "../../../alert/alert";
+import backend from "../../../backend/backend";
 import ValidatedTextField from "../../validatedtextfield";
 
 export default function AccountEditor() {
@@ -7,6 +9,8 @@ export default function AccountEditor() {
   const [password, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordVal, setNewPasswordVal] = useState("");
+
+  const [submitEnabled, setSubmitEnabled] = useState(true);
 
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState("");
@@ -17,7 +21,20 @@ export default function AccountEditor() {
       setErrorText("Password must match");
       setError(true);
     } else {
+      setSubmitEnabled(false);
       console.log(username, password, newPassword);
+      backend
+        .changePassword(username, password, newPassword)
+        .then((resp: Response) => {
+          if (resp.ok) {
+            SnackActions.success("Changed password");
+          } else {
+            SnackActions.error(
+              "Failed to change password, error code: " + resp.status
+            );
+          }
+          setSubmitEnabled(true);
+        });
     }
   }
 
@@ -74,7 +91,11 @@ export default function AccountEditor() {
               postValidate={setNewPasswordVal}
             />
           </div>
-          <Button style={{ width: "50%" }} onClick={handleSubmit}>
+          <Button
+            style={{ width: "50%" }}
+            disabled={!submitEnabled}
+            onClick={handleSubmit}
+          >
             Submit
           </Button>
         </Box>

@@ -1,7 +1,11 @@
 import { Grid } from "@mui/material";
+import React from "react";
+import { Cookies } from "react-cookie-consent";
+import { withRouter } from "react-router";
+import { AuthContext } from "../../authcontext";
 import DashboardCard from "./dashboardcard";
 
-export default function Dashboard() {
+function Dashboard(props: any) {
   return (
     <div className="page-content">
       <div className="page-header">Dashboard</div>
@@ -28,7 +32,25 @@ export default function Dashboard() {
           cardTitle="Manage Account"
           cardDescription="Change password for this account"
         />
+        <AuthContext.Consumer>
+          {(value) => (
+            <DashboardCard
+              imgSrc="/images/dashboard/logout.png"
+              className="media-card"
+              imgAlt="account"
+              cardTitle="Logout"
+              cardDescription="Logout and view the public version of the site."
+              onClick={() => {
+                Cookies.remove("fotojwt");
+                value.setAuth(false);
+                props.history.replace("/");
+              }}
+            />
+          )}
+        </AuthContext.Consumer>
       </Grid>
     </div>
   );
 }
+
+export default React.memo(withRouter(Dashboard));
