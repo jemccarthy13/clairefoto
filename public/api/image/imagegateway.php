@@ -30,5 +30,13 @@ class ImageGateway {
         $file_url=$_SERVER['DOCUMENT_ROOT'].$file;
         return unlink($file_url);
     }
+
+    public function put($destination, $filename, $file){
+        $result = file_put_contents(
+            $_SERVER['DOCUMENT_ROOT']."/images"."/".$destination."/".$filename,
+            file_get_contents($file)
+        );
+        return !($result===false);
+    }
 }
 ?>

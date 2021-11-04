@@ -9,6 +9,7 @@ import ModalCarouselAdapter from "./modalcarouseladapter";
 import GalleryAdapter from "./galleryadapter";
 import { useConfirmDialog } from "../../../useConfirmDialog";
 import DropzoneAdapter from "./dropzoneadapter";
+import { AuthContext } from "../../../authcontext";
 
 interface PPProps {
   title: string;
@@ -55,9 +56,7 @@ export default function PhotoPage(props: PPProps) {
         "Are you sure?",
       isOpen: dialogOpen,
       confirmAction: () => {
-        console.log("called confirm action");
         if (delIndex > -1) {
-          console.log("deleting " + delIndex);
           backend.deleteImage(photos[delIndex].src).then((data) => {
             if (data.ok) {
               SnackActions.success("Deleted " + photos[delIndex].src);
@@ -102,7 +101,11 @@ export default function PhotoPage(props: PPProps) {
     >
       <div className="page-header">{props.title}</div>
 
-      <DropzoneAdapter destination={props.serverDir} />
+      <AuthContext.Consumer>
+        {(value) =>
+          value.auth && <DropzoneAdapter destination={props.serverDir} />
+        }
+      </AuthContext.Consumer>
 
       <GalleryAdapter
         photos={photos}
