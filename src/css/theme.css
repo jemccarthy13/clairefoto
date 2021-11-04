@@ -123,5 +123,6 @@ h2 {
 .media-card {
   width: 25% !important;
   height: 100% !important;
-  margin: auto
+  margin: auto;
+  background:white;
 }
