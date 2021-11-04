@@ -15,6 +15,7 @@ class SignInPage extends React.Component<any, any> {
     this.state = {
       username: "",
       password: "",
+      submitEnabled: true,
       authCallback: () => {},
     };
   }
@@ -36,11 +37,9 @@ class SignInPage extends React.Component<any, any> {
       prevLoc = this.props.history.location.state.prevLocation;
     } catch {}
 
+    this.setState({ submitEnabled: false });
     backend
-      .login({
-        username: this.state.username,
-        password: this.state.password,
-      })
+      .login(this.state.username, this.state.password)
       .then(async (resp: any) => {
         if (!resp.ok) {
           SnackActions.error("Invalid username/password");
@@ -55,6 +54,7 @@ class SignInPage extends React.Component<any, any> {
           this.props.history.replace(prevLoc);
           this.state.authCallback(true);
         }
+        this.setState({ submitEnabled: true });
       });
   };
 
@@ -95,7 +95,11 @@ class SignInPage extends React.Component<any, any> {
                       postValidate={this.setUserPassword}
                     />
                   </div>
-                  <Button style={{ width: "50%" }} onClick={this.handleSubmit}>
+                  <Button
+                    style={{ width: "50%" }}
+                    disabled={!this.state.submitEnabled}
+                    onClick={this.handleSubmit}
+                  >
                     Submit
                   </Button>
                 </Box>
