@@ -48,9 +48,21 @@ class Backend {
     });
   }
 
-  // *************** Login *************//
-  async login(body: { username: string; password: string }) {
-    return await httputils.post("/api/login/login.php", body);
+  // *************** Admin management *************//
+  async login(username: string, password: string) {
+    return await httputils.post("/api/login/login.php", { username, password });
+  }
+
+  async changePassword(
+    username: string,
+    password: string,
+    newpassword: String
+  ) {
+    return await httputils.put("/api/login/login.php", {
+      username,
+      password,
+      newpassword,
+    });
   }
 
   // *************** Pricing *************//

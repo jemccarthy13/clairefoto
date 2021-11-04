@@ -22,8 +22,8 @@
             case 'POST':
                 $response = $this->login();
                 break;
-            case 'DELETE':
-                $response = $this->logout();
+            case "PUT":
+                $response = $this->changePassword();
                 break;
             case 'OPTIONS':
                 $response['status_code_header'] = 'HTTP/1.1 200 OK';
@@ -52,9 +52,14 @@
             return $response;
         }
 
-        private function logout()
-        {
-            
+        private function changePassword(){
+            $input = (array) json_decode(file_get_contents('php://input'), TRUE);
+            $result = $this->sessionGateway->update($input);
+            if ($result<1 || $result==NULL) {
+                return unauthorizedResponse();
+            }
+            $response['status_code_header'] = 'HTTP/1.1 200 OK';
+            return $response;
         }
     }
 ?>
