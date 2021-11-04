@@ -119,3 +119,9 @@ h2 {
   transform: none;
   visibility: visible;
 }
+
+.media-card {
+  width: 25% !important;
+  height: 100% !important;
+  margin: auto
+}

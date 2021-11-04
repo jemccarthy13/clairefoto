@@ -12,7 +12,7 @@ export default class PublicHomePage extends React.PureComponent {
               textAlign: "center",
             }}
             alt="aboutme_camera"
-            src="/images/aboutme_camera.png"
+            src="/images/dashboard/aboutme_camera.png"
           />
         </div>
         <div
