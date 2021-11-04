@@ -22,6 +22,7 @@ export default function Dashboard() {
         />
         <DashboardCard
           to="/accountedit"
+          className="media-card"
           imgSrc="/images/dashboard/account.png"
           imgAlt="account"
           cardTitle="Manage Account"

@@ -37,6 +37,9 @@ const PricingEditor = React.lazy(
 const BookingEditor = React.lazy(
   () => import("./components/pages/protectedpages/bookingeditpage")
 );
+const AccountEditor = React.lazy(
+  () => import("./components/pages/protectedpages/accounteditpage")
+);
 
 export default function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -104,6 +107,7 @@ export default function App() {
                 </Route>
                 <ProtectedRoute path="/pricingedit" component={PricingEditor} />
                 <ProtectedRoute path="/bookingedit" component={BookingEditor} />
+                <ProtectedRoute path="/accountedit" component={AccountEditor} />
               </HashRouter>
             </Suspense>
             {false && <Footer />}

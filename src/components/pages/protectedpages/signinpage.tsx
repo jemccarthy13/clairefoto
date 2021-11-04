@@ -91,6 +91,7 @@ class SignInPage extends React.Component<any, any> {
                       id="password"
                       label="Password"
                       size="small"
+                      type="password"
                       postValidate={this.setUserPassword}
                     />
                   </div>
