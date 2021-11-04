@@ -1,7 +1,8 @@
+-- Disable login button while request is processing
+
 -- CRM
 ---- User management
 
--- TODO - upload new image to demo gallery
 -- TODO - PATCH for sessioncontroller (to allow admins to change password)
 -- TODO - sign out
 
