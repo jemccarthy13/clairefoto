@@ -1,16 +1,32 @@
-import { IconButton } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+
+// External Utilities
+import { Link } from "react-router-dom";
+
+// Internal Utilities
 //import backend from "../../../backend/backend";
 
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Link } from "react-router-dom";
+// Internal UI Components
 import ConfirmDialog from "../../confirmdialog";
 
+// MUI Library
+import { IconButton } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+
+/**
+ * A Component that renders the UI for the Admin's Booking page,
+ * where an admin can update, edit, remove, and manage bookings
+ * and blackout dates for the public booking page.
+ *
+ * @returns JSX.Element to render
+ */
 export default function BookingEditor() {
+  // Flag for the delete dialog
   const [dialogOpen, setDialogOpen] = useState(false);
 
+  // TODO -- update this, and use useConfirmDialog instead
   useEffect(() => {
-    setDialogOpen(false); // TODO -- remove this
+    setDialogOpen(false);
 
     // try {
     //   backend.getPricing().then((data) => {

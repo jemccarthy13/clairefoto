@@ -1,14 +1,23 @@
 import React from "react";
 
-import { Box, Button } from "@mui/material";
+// Internal Utilities
 import { withRouter } from "react-router-dom";
+import { Cookies } from "react-cookie-consent";
+
+// Internal Utilities
 import SnackActions from "../../../alert/alert";
 import ValidatedTextField from "../../validatedtextfield";
 import { AuthContext } from "../../authcontext";
 import backend from "../../../backend/backend";
 
-import { Cookies } from "react-cookie-consent";
+// MUI Library
+import { Box, Button } from "@mui/material";
 
+/**
+ * Component to render the SignIn page UI
+ *
+ * TODO -- finish the conversion to functional component
+ */
 class SignInPage extends React.Component<any, any> {
   constructor(props: any) {
     super(props);

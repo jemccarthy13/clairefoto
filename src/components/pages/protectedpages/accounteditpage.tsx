@@ -1,28 +1,42 @@
-import { Box, Button } from "@mui/material";
 import { useState } from "react";
+
+// Internal Utilities
 import SnackActions from "../../../alert/alert";
 import backend from "../../../backend/backend";
 import ValidatedTextField from "../../validatedtextfield";
 
+// MUI elements
+import { Box, Button } from "@mui/material";
+
+/**
+ * Functional component that renders the UI for changing a password
+ *
+ * @returns JSX.Element to render
+ */
 export default function AccountEditor() {
+  // State for the form values
   const [username, setUserName] = useState("");
   const [password, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordVal, setNewPasswordVal] = useState("");
 
+  // Flag to enable/disable the submit button while req is pending
   const [submitEnabled, setSubmitEnabled] = useState(true);
 
+  // Flag to set error state on the form (i.e. password mismatch)
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState("");
 
+  /**
+   * Called when the form submit button is clicked
+   */
   function handleSubmit() {
-    console.log("submit change password");
+    // standard double password entry for verification
     if (newPassword !== newPasswordVal) {
       setErrorText("Password must match");
       setError(true);
     } else {
       setSubmitEnabled(false);
-      console.log(username, password, newPassword);
       backend
         .changePassword(username, password, newPassword)
         .then((resp: Response) => {

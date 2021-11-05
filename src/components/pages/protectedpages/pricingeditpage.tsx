@@ -1,24 +1,33 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import backend from "../../../backend/backend";
-import { PricingData } from "../../../backend/backendinterface";
 
+// External Utilities
+import { Link } from "react-router-dom";
+
+// MUI Library
 import {
   DataGrid,
   GridActionsCellItem,
   GridRowParams,
   GridToolbarContainer,
 } from "@mui/x-data-grid";
-
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import { Button, IconButton } from "@mui/material";
-import ConfirmDialog from "../../confirmdialog";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+
+// Internal Utilities
+import backend from "../../../backend/backend";
+import { PricingData } from "../../../backend/backendinterface";
 import SnackActions from "../../../alert/alert";
 
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Link } from "react-router-dom";
+// TOOD -- convert to useConfirmDialog
+import ConfirmDialog from "../../confirmdialog";
 
+/**
+ * TODO -- finish commenting and reviewing this code
+ * @returns
+ */
 export default function PricingEditor() {
   const defPrices: PricingData[] = [];
   const [prices, setPrices] = useState(defPrices);
