@@ -1,29 +1,42 @@
 import React from "react";
-import { Cookies } from "react-cookie-consent";
-import { Redirect, Route } from "react-router-dom";
 
-const ProtectedRoute = ({ component, path, ...rest }: any) => {
-  const isAuth = () => {
-    return Cookies.get("fotojwt") !== undefined;
-  };
+// External Utilities
+import { Redirect, Route, RouteProps } from "react-router-dom";
 
-  const RouteComponent = (props: any) =>
-    isAuth() ? (
-      React.createElement(component, props)
-    ) : (
-      <Redirect
-        push
-        to={{
-          pathname: "/signin",
-          state: { prevLocation: path },
-        }}
-      />
-    );
+// Internal Utilities
+import { AuthContext } from "./authcontext";
+
+/**
+ * A ProtectedRoute is a Route that only renders the child component
+ * when the user is authenticated. If not authenticated, the route
+ * redirects to the signin page.
+ *
+ * @param rProps RouteProps, containing a component to render and
+ * the applicable route path (i.e. /mypage)
+ * @returns A Route component
+ */
+export default function ProtectedRoute({
+  component,
+  path,
+  ...rest
+}: RouteProps): JSX.Element {
   return (
     <Route path={path} {...rest}>
-      <RouteComponent {...rest} />
+      <AuthContext.Consumer>
+        {(value) =>
+          value.auth ? (
+            component && React.createElement(component, { ...rest })
+          ) : (
+            <Redirect
+              push
+              to={{
+                pathname: "/signin",
+                state: { prevLocation: path },
+              }}
+            />
+          )
+        }
+      </AuthContext.Consumer>
     </Route>
   );
-};
-
-export default ProtectedRoute;
+}
