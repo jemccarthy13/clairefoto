@@ -51,11 +51,13 @@ class Backend {
    * @param dir The directory on the server to get images from
    * @returns A response that is typecasted to ImageList[]
    */
-  async getImages(dir: string): Promise<ImageList[]> {
+  async getImages(dir: string, signal: AbortSignal): Promise<ImageList[]> {
     const formd = { directory: dir };
-    return httputils.post("/api/image/image.php", formd).then((data) => {
-      return data.json();
-    });
+    return httputils
+      .post("/api/image/image.php", formd, true, signal)
+      .then((data) => {
+        return data.json();
+      });
   }
 
   /**

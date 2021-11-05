@@ -48,7 +48,12 @@ export const httputils = {
    * @param stringify true iff should JSON.stringify the body
    * @returns response promise
    */
-  async post(url: string, data: any = "", stringify = true) {
+  async post(
+    url: string,
+    data: any = "",
+    stringify = true,
+    signal?: AbortSignal
+  ) {
     const response = await fetch(baseURL + url, {
       ...params,
       headers: {
@@ -57,6 +62,7 @@ export const httputils = {
       },
       method: "POST",
       body: stringify ? JSON.stringify(data) : data,
+      signal: signal,
     });
     return response;
   },

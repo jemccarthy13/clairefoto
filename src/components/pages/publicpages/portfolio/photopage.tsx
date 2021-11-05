@@ -52,9 +52,16 @@ export default function PhotoPage(props: PPProps): JSX.Element {
    * photos to render
    */
   useEffect(() => {
-    backend.getImages(props.serverDir).then(async (data) => {
-      setImgs(data);
-    });
+    const abortController = new AbortController();
+    backend
+      .getImages(props.serverDir, abortController.signal)
+      .then(async (data) => {
+        setImgs(data);
+      })
+      .catch((error) => {});
+    return () => {
+      abortController.abort();
+    };
   }, [props.serverDir]);
 
   /**
