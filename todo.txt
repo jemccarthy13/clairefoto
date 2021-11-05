@@ -3,16 +3,26 @@ Bugs & Security:
 -- Make sure image.php only deletes images from the server
 -- Add validation in .php controllers to validate the update/input is correct
 
+Refactor:
+-- Review BookingEditor, refactor and fix
+-- Review PricingEditor, refactor and fix
+-- SignIn page convert to functional component
+
+-- FOOTER
+
 -- CRM
 ---- User management
 
--- Booking:
----- Timify? or Self-dev?
--- Payment?
----- Timify included
----- Or Square?
----- Email notifications after booking confirmed for square pymt, IBAN, or paypal
+-- BOOKING:
+---- Self development
+---- Implement PHP for bookings
+---- Implement SQL for bookings
+---- Booking form uses new PHP
+---- Admin for Bookings (pending/confirmed)
 
 ---- Confirm bookings
 ---- After booking is confirmed, pay now button?
 ---- Send email with "pay now" link?
+
+-- Payment?
+---- Email notifications after booking confirmed for square pymt, IBAN, or paypal
