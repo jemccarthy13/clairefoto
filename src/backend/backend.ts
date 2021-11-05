@@ -82,7 +82,6 @@ class Backend {
     return await httputils.delete("/api/pricing/pricing.php", data);
   }
 
-  // Mock SELECT * FROM PRICING WHERE BOOKING=1
   async getPricingOptions(): Promise<string[]> {
     return backend.getPricing().then((data): string[] => {
       let answer: string[] = [];
@@ -96,9 +95,7 @@ class Backend {
     });
   }
 
-  cID = "jemccarthy13@gmail.com";
-  calBaseURL = "https://content.googleapis.com/calendar/v3/calendars/";
-  calKey = "AIzaSyCsyQYXAr3wjRTbhvvS--WDFVsESAObrS4";
+  // *************** Booking / Appointments *************//
 
   submitBookingAppt(event: BookingAppointment): Promise<boolean> {
     // let url = this.calBaseURL + this.cID + "/events?";
@@ -107,7 +104,7 @@ class Backend {
     // // const data = JSON.stringify(event);
     // return post(data, url);
 
-    let url = "/api/event.php";
+    let url = "/api/booking/booking.php";
     const data = JSON.stringify(event);
 
     httputils.post(data, url);

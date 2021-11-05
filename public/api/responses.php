@@ -8,6 +8,15 @@
         return $response;
     }
 
+    function internalServerError(){
+        $response['status_code_header'] = 'HTTP/1.1 500 Internal Server Error';
+        // TODO -- pass PHP optional param $msg?
+        // $response['body'] = json_encode([
+        //     'error' => $msg
+        // ]);
+        return $response;
+    }
+
     function unauthorizedResponse()
     {
         $response['status_code_header'] = 'HTTP/1.1 401 Unauthorized';

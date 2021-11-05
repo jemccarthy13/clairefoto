@@ -76,11 +76,11 @@ class ImageController
 
         $result = $this->imageGateway->put($destination, $filename, $file);
         
-        if ($result){
-            $response["status_code_header"] = "HTTP/1.1 200 OK";
-        } else {
-            $response["status_code_header"] = "HTTP/1.1 500 Internal Server Error";
+        if (!$result){
+            return internalServerError();
         }
+        
+        $response["status_code_header"] = "HTTP/1.1 200 OK";
         return $response;
     }
 
