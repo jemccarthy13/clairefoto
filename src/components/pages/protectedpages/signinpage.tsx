@@ -40,7 +40,7 @@ class SignInPage extends React.Component<any, any> {
     this.setState({ submitEnabled: false });
     backend
       .login(this.state.username, this.state.password)
-      .then(async (resp: any) => {
+      .then(async (resp: Response) => {
         if (!resp.ok) {
           SnackActions.error("Invalid username/password");
           this.state.authCallback(false);

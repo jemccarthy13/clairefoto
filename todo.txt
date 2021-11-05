@@ -1,3 +1,7 @@
+Bugs & Security:
+-- Make sure image.php only gets images from a given directory
+-- Make sure image.php only deletes images from the server
+-- Add validation in .php controllers to validate the update/input is correct
 
 -- CRM
 ---- User management

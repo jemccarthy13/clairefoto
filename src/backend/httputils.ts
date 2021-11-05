@@ -15,7 +15,7 @@ const params: RequestInit = {
 
 export const httputils = {
   // FETCH GET for server API
-  async get(url = "") {
+  async get(url = ""): Promise<any> {
     const response = await fetch(baseURL + url, {
       ...params,
       headers: {
@@ -40,7 +40,7 @@ export const httputils = {
   },
 
   // FETCH PUT for server API
-  async put(url: string, data: any = "", stringify = true) {
+  async put(url: string, data: any = "", stringify = true): Promise<Response> {
     const response = await fetch(baseURL + url, {
       ...params,
       headers: {
