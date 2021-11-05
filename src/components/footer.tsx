@@ -1,4 +1,10 @@
-export default function Footer() {
+/**
+ * The Footer component displayed at the bottom of
+ * every web page.
+ *
+ * @returns JSX.Element for the footer
+ */
+export default function Footer(): JSX.Element {
   return (
     <div className="my-header">
       <div style={{ padding: "20px" }}>

@@ -1,14 +1,27 @@
-import { Grid } from "@mui/material";
 import React from "react";
+
+// External Utilities
 import { Cookies } from "react-cookie-consent";
-import { withRouter } from "react-router";
+import { RouteComponentProps, withRouter } from "react-router";
+
+// Internal Utilities
 import { AuthContext } from "../../authcontext";
 import DashboardCard from "./dashboardcard";
 
-function Dashboard(props: any) {
+// MUI library
+import { Grid } from "@mui/material";
+
+/**
+ * A functional Component to render the Admin Dashboard.
+ *
+ * @param props RouteComponentProps from withRouter
+ * @returns JSX.Element to render the Admin Dashboard
+ */
+function Dashboard(props: RouteComponentProps): JSX.Element {
   return (
     <div className="page-content">
       <div className="page-header">Dashboard</div>
+      {/* Render all of the admin action cards */}
       <Grid container spacing={2}>
         <DashboardCard
           to="/pricingedit"

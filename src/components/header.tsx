@@ -1,6 +1,12 @@
 import { Link } from "@mui/material";
 
-export default function Header() {
+/**
+ * The Header component renders the title and navigation bar,
+ * displayed at the top of every web page.
+ *
+ * @returns JSX.Element for the header.
+ */
+export default function Header(): JSX.Element {
   return (
     <div className="my-header">
       <div style={{ float: "right" }}>
