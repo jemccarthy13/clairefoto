@@ -12,7 +12,7 @@ import { AuthContext } from "../../authcontext";
 import backend from "../../../backend/backend";
 
 // MUI Library
-import { Box, Button, CircularProgress } from "@mui/material";
+import { Button, CircularProgress, Grid } from "@mui/material";
 
 /**
  * Component to render the SignIn page UI
@@ -94,23 +94,16 @@ function SignInPage(props: RouteComponentProps): JSX.Element {
             <div className="page-header">Signin</div>
 
             <div style={{ width: "90%", margin: "auto" }}>
-              <Box
-                component="form"
-                style={{
-                  paddingTop: "25px",
-                  paddingLeft: "10px",
-                  paddingRight: "10px",
-                }}
-              >
-                <div>
+              <Grid container component="form" columns={{ xs: 4 }}>
+                <Grid item xs={6}>
                   <ValidatedTextField
                     id="username"
                     label="Username"
                     size="small"
                     postValidate={setUserName}
                   />
-                </div>
-                <div>
+                </Grid>
+                <Grid item xs={6}>
                   <ValidatedTextField
                     id="password"
                     label="Password"
@@ -118,21 +111,25 @@ function SignInPage(props: RouteComponentProps): JSX.Element {
                     type="password"
                     postValidate={setUserPassword}
                   />
-                </div>
-                <Button
-                  style={{ width: "50%" }}
-                  disabled={!submitEnabled}
-                  onClick={handleSubmit(context.setAuth)}
-                >
-                  Submit{" "}
-                  {!submitEnabled && (
-                    <CircularProgress
-                      style={{ marginLeft: "12px" }}
-                      size={"16px"}
-                    />
-                  )}
-                </Button>
-              </Box>
+                </Grid>
+                <Grid item xs={6}>
+                  <Button
+                    type={"submit"}
+                    style={{ width: "50%" }}
+                    disabled={!submitEnabled}
+                    onClick={handleSubmit(context.setAuth)}
+                    onSubmit={handleSubmit(context.setAuth)}
+                  >
+                    Submit{" "}
+                    {!submitEnabled && (
+                      <CircularProgress
+                        style={{ marginLeft: "12px" }}
+                        size={"16px"}
+                      />
+                    )}
+                  </Button>
+                </Grid>
+              </Grid>
             </div>
           </div>
         );
