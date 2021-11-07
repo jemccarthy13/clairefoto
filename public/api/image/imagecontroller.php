@@ -3,6 +3,14 @@ require "./imagegateway.php";
 require "../responses.php";
 require "../login/token.php";
 
+/**
+ * Class for processing requests to /api/image/image.php.
+ *
+ * This is the 'middle man', responsible for validating preconditions
+ * and verifying parameters before handling the server manipulation.
+ *
+ * Also verifies token validity for protected functions.
+ */
 class ImageController
 {
   private $con;
@@ -19,8 +27,13 @@ class ImageController
     $this->imageGateway = new ImageGateway($db);
   }
 
+  /**
+   * Main controller entry point - based on the request method,
+   * call the appropriate handler function(s).
+   */
   public function processRequest()
   {
+    // switch only handles processible request types
     switch ($this->requestMethod) {
       case "POST":
         $response = $this->getImagesFromRequest();
@@ -47,11 +60,20 @@ class ImageController
     }
   }
 
+  /**
+   * Get request handler -- return array of images from the desired
+   * server directory.
+   * @return response with header, if successful the body
+   * will contain an array of JSON objects that are compatible with
+   * the frontend gallery - height/width, src, and title
+   */
   private function getImagesFromRequest()
   {
     $input = json_decode(file_get_contents("php://input"), true);
     $dir_to_read = $input["directory"];
 
+    // Check the input 'directory' parameter to exist and be a
+    // valid image directory.
     if ($dir_to_read == "") {
       return notFoundResponse();
     }
@@ -59,8 +81,9 @@ class ImageController
       return unprocessableEntityResponse();
     }
 
+    // At this point since the image directory exists, create the return
+    // arr for all images in the given server directory
     $arr = $this->imageGateway->get($dir_to_read);
-
     $response["status_code_header"] = "HTTP/1.1 200 OK";
     $response["body"] = json_encode($arr);
     return $response;
