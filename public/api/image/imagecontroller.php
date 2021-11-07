@@ -134,6 +134,8 @@ class ImageController
       return unprocessableEntityResponse();
     }
 
+    $file = $_SERVER["DOCUMENT_ROOT"] . $file;
+
     // Prevent warnings for unlink file !exists
     if ($file == null || !is_file($file)) {
       return unprocessableEntityResponse();

@@ -56,10 +56,9 @@ class ImageGateway
    */
   public function delete($file)
   {
-    $file_url = $_SERVER["DOCUMENT_ROOT"] . $file;
     $result = false;
-    if ($this->_isImageFile($file_url)) {
-      $result = unlink($file_url);
+    if ($this->_isImageFile($file)) {
+      $result = unlink($file);
     }
     return $result;
   }
@@ -92,7 +91,7 @@ class ImageGateway
   public function put($destination, $filename, $file)
   {
     // Verify destination is valid....
-    if (!is_dir($destination)) {
+    if (!is_dir($_SERVER["DOCUMENT_ROOT"] . "/images" . "/" . $destination)) {
       return false;
     }
 
