@@ -116,18 +116,30 @@ class ImageController
     return $response;
   }
 
+  /**
+   * Perform some prechecks to determine if the file is safe to delete.
+   * If it is, delete the image.
+   */
   private function deleteImageFromRequest()
   {
     $input = json_decode(file_get_contents("php://input"), true);
     $file = $input["file"];
 
-    if (!preg_match("/\/image\/.*/", $file)) {
+    // Don't allow '..' directory movement
+    if (preg_match("/.*\.\..*/", $file)) {
+      return unprocessableEntityResponse();
+    }
+    // Only allow /images directory
+    if (!preg_match("/\/images\/.*/", $file)) {
       return unprocessableEntityResponse();
     }
 
-    if ($file == null) {
+    // Prevent warnings for unlink file !exists
+    if ($file == null || !is_file($file)) {
       return unprocessableEntityResponse();
     }
+
+    // try to do the delete
     $result = $this->imageGateway->delete($file);
     if (!$result) {
       return unprocessableEntityResponse();

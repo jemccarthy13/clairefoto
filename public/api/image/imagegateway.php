@@ -49,10 +49,19 @@ class ImageGateway
     return $entries;
   }
 
+  /**
+   * Delete the file from the server
+   * WARNING - This function only checks if file is an image.
+   * Perform all necessary prechecks before calling this function.
+   */
   public function delete($file)
   {
     $file_url = $_SERVER["DOCUMENT_ROOT"] . $file;
-    return unlink($file_url);
+    $result = false;
+    if ($this->_isImageFile($file_url)) {
+      $result = unlink($file_url);
+    }
+    return $result;
   }
 
   /**
