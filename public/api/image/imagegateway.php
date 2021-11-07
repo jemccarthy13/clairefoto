@@ -1,5 +1,10 @@
 <?php
 
+function warning_handler($errno, $errstr)
+{
+  throw new \Exception($errstr, $errno);
+}
+
 class ImageGateway
 {
   private $con = null;
@@ -50,8 +55,56 @@ class ImageGateway
     return unlink($file_url);
   }
 
+  /**
+   * A function that
+   * @return true iff extension is a whitelisted image extension
+   */
+  private function _isImageFile($file)
+  {
+    $info = pathinfo($file);
+    return in_array(strtolower($info["extension"]), [
+      "jpg",
+      "jpeg",
+      "gif",
+      "png",
+      "bmp",
+      "avif",
+      "webp",
+    ]);
+  }
+
+  /**
+   * Upload an image to a server directory
+   *
+   * @param $destination The destination /image subdirectory
+   * @param $filename The filename of the new image w/extension (i.e. "myimage.jpg")
+   * @param $file The file contents (base64 encoded)
+   */
   public function put($destination, $filename, $file)
   {
+    // Verify destination is valid....
+    if (!is_dir($destination)) {
+      return false;
+    }
+
+    // Verify the contents of the file is a base64 encoded image
+    set_error_handler("warning_handler", E_WARNING);
+    $contents = null;
+    try {
+      $contents = file_get_contents($file);
+    } catch (Exception $e) {
+      return false;
+    }
+    if (!$contents) {
+      return false;
+    }
+    restore_error_handler();
+
+    if (!$this->_isImageFile($filename)) {
+      return false;
+    }
+
+    // if passed checks, create the image in the desired image directory
     $result = file_put_contents(
       $_SERVER["DOCUMENT_ROOT"] .
         "/images" .
@@ -59,7 +112,7 @@ class ImageGateway
         $destination .
         "/" .
         $filename,
-      file_get_contents($file)
+      $contents
     );
     return !($result === false);
   }

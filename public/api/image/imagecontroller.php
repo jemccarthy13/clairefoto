@@ -63,6 +63,7 @@ class ImageController
   /**
    * Get request handler -- return array of images from the desired
    * server directory.
+   *
    * @return response with header, if successful the body
    * will contain an array of JSON objects that are compatible with
    * the frontend gallery - height/width, src, and title
@@ -89,8 +90,12 @@ class ImageController
     return $response;
   }
 
+  /**
+   * Upload an image from the request.
+   */
   private function putImageFromRequest()
   {
+    // Separate request params, only continue if basic param checks
     $input = json_decode(file_get_contents("php://input"), true);
     $destination = $input["directory"];
     $file = $input["file"];
@@ -100,8 +105,9 @@ class ImageController
       return unprocessableEntityResponse();
     }
 
+    // Do the upload, $result is false when an error is encountered
+    // in the gateway put
     $result = $this->imageGateway->put($destination, $filename, $file);
-
     if (!$result) {
       return internalServerError();
     }
@@ -114,6 +120,10 @@ class ImageController
   {
     $input = json_decode(file_get_contents("php://input"), true);
     $file = $input["file"];
+
+    if (!preg_match("/\/image\/.*/", $file)) {
+      return unprocessableEntityResponse();
+    }
 
     if ($file == null) {
       return unprocessableEntityResponse();
