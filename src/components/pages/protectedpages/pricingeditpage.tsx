@@ -7,8 +7,14 @@ import { Link } from "react-router-dom";
 import {
   DataGrid,
   GridActionsCellItem,
+  GridApiRef,
+  GridColumns,
+  GridRenderCellParams,
+  GridRowId,
   GridRowParams,
   GridToolbarContainer,
+  GridValueGetterParams,
+  GridValueSetterParams,
 } from "@mui/x-data-grid";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
@@ -23,46 +29,73 @@ import SnackActions from "../../../alert/alert";
 import { useConfirmDialog } from "../../useConfirmDialog";
 
 /**
- * TODO -- finish commenting and reviewing this code
- * @returns
+ * Component to render the UI to edit pricing options
+ *
+ * TODO -- separate logic into a PricingModel?
+ *      -- Think: loosely couple x-grid library
+ *
+ * @returns component to render
  */
 export default function PricingEditor() {
-  const defPrices: PricingData[] = [];
-  const [prices, setPrices] = useState(defPrices);
+  // Price list, and associated fetch error fields
+  const [prices, setPrices] = useState([] as PricingData[]);
   const [loaded, setLoaded] = useState(false);
   const [loadError, setLoadError] = useState(false);
+
+  // variables (flags/state) for the delete confirm dialog
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [delObj, setDelObj] = useState({} as GridRowParams);
 
-  const [delObj, setDelObj] = useState("" as any);
   /**
-   * Custom effect of using a confirmation dialog to
-   * perform an action; in this case, delete an image
-   *
-   * @param dialogOpen Dependancy to toggle the delete dialog
+   * After mount, load the prices from the backend
    */
-  const DelDialog = useConfirmDialog(
-    {
-      title: "Confirm delete?",
-      description:
-        "You are about to permanently delete this pricing option. Are you sure?",
-      isOpen: dialogOpen,
-      confirmAction: () => {
-        const row = apiRef.current.getRow(delObj.id);
-        backend.deletePricing(row).then((data) => {
-          SnackActions.success("Deleted " + row.title);
+  useEffect(() => {
+    try {
+      backend.getPricing().then((data) => {
+        data.forEach((d: any) => {
+          d.options = JSON.parse(d.options);
+          d.booking = d.booking === "1" ? true : false;
         });
-        apiRef.current.updateRows([{ id: delObj.id, _action: "delete" }]);
+        setPrices(data);
+        setLoaded(true);
+      });
+    } catch {
+      setLoadError(true);
+      SnackActions.error("Couldn't load data. Please refresh the page.");
+    }
+  }, []);
 
-        setDialogOpen(false);
-      },
-      cancelAction: () => {
-        setDialogOpen(false);
-      },
-    },
-    [dialogOpen]
-  );
+  /**
+   * Hook to store the current GridAPI ref
+   *
+   * @returns ref
+   */
+  function useApiRef() {
+    const apiRef: React.MutableRefObject<GridApiRef | null> = useRef(null);
+    useMemo(
+      () =>
+        columns.push({
+          field: "__HIDDEN__",
+          headerName: "__HIDDEN__",
+          editable: false,
+          width: 0,
+          minWidth: 0,
+          renderCell: (params: GridRenderCellParams) => {
+            apiRef.current = params.api;
+            return null;
+          },
+        }),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [columns]
+    );
 
-  const columns: any[] = [
+    return apiRef;
+  }
+
+  /**
+   * Properties and formatting for the CRUD editor's columns
+   */
+  const columns: GridColumns = [
     { field: "title", headerName: "Title", flex: 1.0, editable: true },
     { field: "price", headerName: "Price", flex: 1.0, editable: true },
     {
@@ -70,14 +103,16 @@ export default function PricingEditor() {
       headerName: "Digital Imgs",
       flex: 1.0,
       editable: true,
-      valueGetter: (params: any) => {
+      // since num_images is part of the options object, we need
+      // a custom getter/setter
+      valueGetter: (params: GridValueGetterParams) => {
         if (params.row.options && params.row.options.num_images) {
           return params.row.options.num_images;
         } else {
           return "";
         }
       },
-      valueSetter: (params: any) => {
+      valueSetter: (params: GridValueSetterParams) => {
         const numImgs = params.value!.toString();
         if (params.row.options) {
           params.row.options.num_images = numImgs;
@@ -94,14 +129,16 @@ export default function PricingEditor() {
       headerName: "Print Release",
       flex: 1.0,
       editable: true,
-      valueGetter: (params: any) => {
+      // since print_rel is part of the options object, we need
+      // a custom getter/setter
+      valueGetter: (params: GridValueGetterParams) => {
         if (params.row.options && params.row.options.print_rel) {
           return params.row.options.print_rel;
         } else {
           return "";
         }
       },
-      valueSetter: (params: any) => {
+      valueSetter: (params: GridValueSetterParams) => {
         const printRel = params.value!.toString();
         if (params.row.options) {
           params.row.options.print_rel = printRel;
@@ -118,15 +155,19 @@ export default function PricingEditor() {
       headerName: "Custom Text",
       flex: 2.0,
       editable: true,
-      valueGetter: (params: any) => {
+      // since custom_txt is part of the options object, we need
+      // a custom getter/setter
+      valueGetter: (params: GridValueGetterParams) => {
         if (params.row.options && params.row.options.custom_txt) {
           return params.row.options.custom_txt;
         } else {
           return "";
         }
       },
-      valueSetter: (params: any) => {
+      valueSetter: (params: GridValueSetterParams) => {
         const txt = params.value;
+        // based on current state, we do slightly different operations
+        // to set a new value
         if (params.row.options) {
           if (typeof txt === "string") {
             params.row.options.custom_txt = txt.split(",");
@@ -145,12 +186,14 @@ export default function PricingEditor() {
       flex: 1.0,
       editable: true,
       type: "boolean",
-      valueGetter: (params: any) => {
+      // to render booking properly (typing from server problem), we need
+      // a custom getter/setter
+      valueGetter: (params: GridValueGetterParams) => {
         const val = params.row.booking;
         if (typeof val === "string") return params.row.booking === "1";
         else return params.row.booking;
       },
-      valueSetter: (params: any) => {
+      valueSetter: (params: GridValueSetterParams) => {
         const txt = params.value;
         if (txt) {
           params.row.booking = "1";
@@ -166,7 +209,8 @@ export default function PricingEditor() {
       headerName: "Actions",
       flex: 1.0,
 
-      getActions: (obj: any) => {
+      // Get the edit actions column component
+      getActions: (obj: GridRowParams) => {
         const apiCur = apiRef.current;
         let isInEditMode = false;
 
@@ -200,54 +244,64 @@ export default function PricingEditor() {
     },
   ];
 
-  const apiRef: any = useApiRef();
+  const apiRef: any = useApiRef(); // must be after columns is defined
 
-  useEffect(() => {
-    try {
-      backend.getPricing().then((data) => {
-        data.forEach((d: any) => {
-          d.options = JSON.parse(d.options);
-          d.booking = d.booking === "1" ? true : false;
+  /**
+   * Custom effect of using a confirmation dialog to
+   * perform an action; in this case, delete a pricing option
+   *
+   * @param dialogOpen Dependancy to toggle the delete dialog
+   */
+  const DelDialog = useConfirmDialog(
+    {
+      title: "Confirm delete?",
+      description:
+        "You are about to permanently delete this pricing option. Are you sure?",
+      isOpen: dialogOpen,
+      confirmAction: () => {
+        const row = apiRef.current.getRow(delObj.id);
+        backend.deletePricing(row).then((data) => {
+          SnackActions.success("Deleted " + row.title);
         });
-        setPrices(data);
-        setLoaded(true);
-      });
-    } catch {
-      setLoadError(true);
-      SnackActions.error("Couldn't load data. Please refresh the page.");
-    }
-  }, []);
+        apiRef.current.updateRows([{ id: delObj.id, _action: "delete" }]);
 
-  function useApiRef() {
-    const apiRef = useRef(null);
-    useMemo(
-      () =>
-        columns.push({
-          field: "__HIDDEN__",
-          headerName: "__HIDDEN__",
-          editable: false,
-          width: 0,
-          minWidth: 0,
-          renderCell: (params: any) => {
-            apiRef.current = params.api;
-            return null;
-          },
-        }),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [columns]
-    );
+        setDialogOpen(false);
+      },
+      cancelAction: () => {
+        setDialogOpen(false);
+      },
+    },
+    [dialogOpen]
+  );
 
-    return apiRef;
+  /**
+   * Function called when the save icon button is clicked in a row
+   * @param id ID of the row to save
+   */
+  function handleSaveClick(id: GridRowId) {
+    const cur = apiRef.current;
+    if (cur) rowSaveAction(cur.getRow(id));
   }
 
-  function EditToolbar(props: any) {
+  /**
+   * Functional component for the edit toolbar
+   *
+   * @param props Props for the component
+   * @returns Element to render
+   */
+  function EditToolbar(props: any): JSX.Element {
     const { apiRef } = props;
 
-    const handleClick = () => {
+    /**
+     * Function called when "Add Record" is clicked on the toolbar
+     */
+    const handleAddClick = () => {
       const id = Math.floor(Math.random() * 100000);
+      // update local/frontend
       apiRef.current.updateRows([{ id, isNew: true }]);
       apiRef.current.setRowMode(id, "edit");
 
+      // update server/backend
       backend.addPricing(apiRef.current.getRow(id));
 
       // Wait for the grid to render with the new row
@@ -271,7 +325,7 @@ export default function PricingEditor() {
           size="small"
           color="primary"
           startIcon={<AddIcon />}
-          onClick={handleClick}
+          onClick={handleAddClick}
         >
           Add record
         </Button>
@@ -279,10 +333,17 @@ export default function PricingEditor() {
     );
   }
 
+  /**
+   * Function called when a row is saved (save btn or click icon)
+   * @param params
+   */
   function rowSaveAction(params: GridRowParams) {
+    // change in the UI / local
     const cur = apiRef.current;
     cur.commitRowChange(params.id);
     cur.setRowMode(params.id, "view");
+
+    // update the backend
     const row = cur.getRow(params.id);
     backend.updatePrice(row).then((resp) => {
       if (resp.ok) {
@@ -297,11 +358,9 @@ export default function PricingEditor() {
     });
   }
 
-  function handleSaveClick(id: number) {
-    const cur = apiRef.current;
-    if (cur) rowSaveAction(cur.getRow(id));
-  }
-
+  /**
+   * Return the component for rendering
+   */
   return (
     <div className="page-content">
       <div className="page-header">
