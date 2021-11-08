@@ -20,9 +20,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import backend from "../../../backend/backend";
 import { PricingData } from "../../../backend/backendinterface";
 import SnackActions from "../../../alert/alert";
-
-// TOOD -- convert to useConfirmDialog
-import ConfirmDialog from "../../confirmdialog";
+import { useConfirmDialog } from "../../useConfirmDialog";
 
 /**
  * TODO -- finish commenting and reviewing this code
@@ -35,7 +33,34 @@ export default function PricingEditor() {
   const [loadError, setLoadError] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const [delCallback, setDelCallback] = useState(() => (b: boolean) => {});
+  const [delObj, setDelObj] = useState("" as any);
+  /**
+   * Custom effect of using a confirmation dialog to
+   * perform an action; in this case, delete an image
+   *
+   * @param dialogOpen Dependancy to toggle the delete dialog
+   */
+  const DelDialog = useConfirmDialog(
+    {
+      title: "Confirm delete?",
+      description:
+        "You are about to permanently delete this pricing option. Are you sure?",
+      isOpen: dialogOpen,
+      confirmAction: () => {
+        const row = apiRef.current.getRow(delObj.id);
+        backend.deletePricing(row).then((data) => {
+          SnackActions.success("Deleted " + row.title);
+        });
+        apiRef.current.updateRows([{ id: delObj.id, _action: "delete" }]);
+
+        setDialogOpen(false);
+      },
+      cancelAction: () => {
+        setDialogOpen(false);
+      },
+    },
+    [dialogOpen]
+  );
 
   const columns: any[] = [
     { field: "title", headerName: "Title", flex: 1.0, editable: true },
@@ -165,18 +190,7 @@ export default function PricingEditor() {
             icon={<DeleteIcon />}
             label="Delete"
             onClick={() => {
-              setDelCallback(() => (confirmed: boolean) => {
-                setDialogOpen(false);
-                if (confirmed) {
-                  const row = apiRef.current.getRow(obj.id);
-                  backend.deletePricing(row).then((data) => {
-                    SnackActions.success("Deleted " + row.title);
-                  });
-                  apiRef.current.updateRows([
-                    { id: obj.id, _action: "delete" },
-                  ]);
-                }
-              });
+              setDelObj(obj);
               setDialogOpen(true);
             }}
             color="inherit"
@@ -318,14 +332,7 @@ export default function PricingEditor() {
           }}
           onRowEditStop={rowSaveAction}
         />
-        <ConfirmDialog
-          title={"Confirm delete?"}
-          open={dialogOpen}
-          callback={delCallback}
-          description={
-            "You are about to permanently delete this pricing option. Are you sure?"
-          }
-        />
+        {DelDialog}
       </div>
     </div>
   );
