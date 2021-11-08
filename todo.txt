@@ -2,8 +2,10 @@ Bugs & Security:
 -- Add validation in .php controllers to validate the update/input is correct
 
 Refactor:
--- Review BookingEditor, refactor and fix
+-- Implement BookingEditor
+----- Fix PricingEditor first, then figure out if this should be the same
 -- Review PricingEditor, refactor and fix
+----- Think about separating out a GridModel w/most of the logic
 
 -- FOOTER
 
