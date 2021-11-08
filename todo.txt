@@ -4,7 +4,6 @@ Bugs & Security:
 Refactor:
 -- Review BookingEditor, refactor and fix
 -- Review PricingEditor, refactor and fix
--- SignIn page convert to functional component
 
 -- FOOTER
 
