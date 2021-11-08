@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import Grid from "@mui/material/Grid";
 
 import SocialIcons from "../../../socialicons";
@@ -118,9 +118,16 @@ export default function ContactForm(props: Record<string, unknown>) {
             <Button
               style={{ border: "1px black" }}
               onClick={checkSubmit}
+              onSubmit={checkSubmit}
               disabled={!submitEnabled()}
             >
-              Submit
+              Submit{" "}
+              {!submitEnabled() && (
+                <CircularProgress
+                  style={{ marginLeft: "12px" }}
+                  size={"16px"}
+                />
+              )}
             </Button>
           </Grid>
         </Grid>
