@@ -12,14 +12,14 @@ import FadeInSection from "./fadeinsection";
 import { ImageList } from "../../../../backend/backendinterface";
 import { AuthContext } from "../../../authcontext";
 
-interface IGProps {
+interface IGalleryAdapterProps {
   photos: ImageList[];
   openViewer: (idx: number) => () => void;
   onDelete: (idx: number) => () => void;
 }
 
-export default function GalleryAdapter(props: IGProps) {
-  const render = (riprops: RenderImageProps): any => {
+export default function GalleryAdapter(props: IGalleryAdapterProps) {
+  const render = (riprops: RenderImageProps): JSX.Element => {
     return (
       <Suspense key={riprops.photo.src} fallback={<CircularProgress />}>
         <FadeInSection>
