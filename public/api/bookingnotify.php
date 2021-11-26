@@ -63,15 +63,15 @@ require __DIR__ . '/sendmail.php';
   </head>
   <body>
     <div class="msg-content">
-      <a href="http://claire.parrotsour.com" target="_blank">
-        <img class="image" align="center" src="http://claire.parrotsour.com/images/email/logo.png" alt="Logo" title="Logo"/>
+      <a href="http://www.clairemariefotografie.com" target="_blank">
+        <img class="image" align="center" src="http://www.clairemariefotografie.com/images/email/logo.png" alt="Logo" title="Logo"/>
       </a>
     
       <div class="reminder-header">
         <div style="padding:20px;">
             Upcoming Appointment Reminder
         </div>
-        <img class="image" src="http://claire.parrotsour.com/images/email/calendar-transparent.png" alt="Calendar" title="Calendar" style="width: 25%;max-width: 130px;padding:20px"/>
+        <img class="image" src="http://www.clairemariefotografie.com/images/email/calendar-transparent.png" alt="Calendar" title="Calendar" style="width: 25%;max-width: 130px;padding:20px"/>
       </div>
   
       <div class="reminder">
@@ -94,11 +94,11 @@ require __DIR__ . '/sendmail.php';
           
         <div style="display:flex; text-align:center;width:max-content;margin:auto">
           <a style="padding:10px" href="https://www.instagram.com/clairemariefotografie" title="Instagram" target="_blank">
-            <img class="image" src="http://claire.parrotsour.com/images/email/insta-icon-color.png" alt="Instagram" title="Instagram" width="32" style="height: auto;max-width: 32px !important">
+            <img class="image" src="http://www.clairemariefotografie.com/images/email/insta-icon-color.png" alt="Instagram" title="Instagram" width="32" style="height: auto;max-width: 32px !important">
           </a>
   
           <a style="padding:10px" href="https://www.facebook.com/clairemariefotografie" title="Facebook" target="_blank">
-            <img class="image" src="http://claire.parrotsour.com/images/email/fb-icon-color.png" alt="Facebook" title="Facebook" width="32" style="height: auto;max-width: 32px !important">
+            <img class="image" src="http://www.clairemariefotografie.com/images/email/fb-icon-color.png" alt="Facebook" title="Facebook" width="32" style="height: auto;max-width: 32px !important">
           </a>
         </div>
       </div>
